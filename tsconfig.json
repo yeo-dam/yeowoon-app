@@ -6,12 +6,12 @@
     "emitDecoratorMetadata": true,
     "strict": true,
     "paths": {
-      "~presentation/*": ["presentation/*"],
       "~components/*": ["components/*"],
       "~domain/*": ["domain/*"],
       "~data/*": ["data/*"],
       "~assets/*": ["assets/*"]
-    }
+    },
+    "strictPropertyInitialization": false
   },
   "jsx": "react-native",
   "moduleResolution": "node"

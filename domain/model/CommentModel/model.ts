@@ -1,4 +1,4 @@
-import { Type } from "class-transformer";
+import { Type } from "unsafe-class-transformer";
 import { IsDate, IsNotEmpty, IsNumber, IsString } from "class-validator";
 import CommentEntity from "~data/entity/CommentEntity";
 import UserModel from "../UserModel/model";

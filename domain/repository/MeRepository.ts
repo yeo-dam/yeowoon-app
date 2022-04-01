@@ -1,5 +1,5 @@
-import { plainToClass } from "class-transformer";
 import { validate } from "class-validator";
+import { plainToClass } from "unsafe-class-transformer";
 import ListEntity from "~data/entity/ListEntity";
 import PlaceEntity from "~data/entity/PlaceEntity";
 import PagerModel from "~domain/model/PagerModel";

@@ -9,9 +9,9 @@ import {
   Text,
   View,
   TouchableNativeFeedback,
-} from "react-native"
+} from "react-native";
 import styled from "styled-components/native";
-import GoogleLogo from "../../../assets/Icons/Login/Google.svg";
+import GoogleLogo from "~assets/Icons/Login/Google.svg";
 import { useEffect, useState } from "react";
 import { getRootViewModel } from "~components/Screens/VmManager";
 import ProviderType from "~domain/enum/ProviderType";

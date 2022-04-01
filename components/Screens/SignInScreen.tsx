@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import Layout from "../constants/Layout";
+import Layout from "constants/Layout";
 import * as React from "react";
 import {
   Button,
@@ -13,7 +13,7 @@ import styled from "styled-components/native";
 import GoogleLogin from "~components/Shared/GoogleLogin";
 import Typography from "~components/Shared/Typography";
 
-const SplashImagePath = "../assets/images/main.png";
+const SplashImagePath = "~assets/images/main.png";
 
 // TODO : 성공 시, Main으로 이동. 실패 시, 다른 동작이 필요할 것.
 
@@ -28,7 +28,7 @@ export default function SignInScreen({
 }) {
   return (
     <ImageBackground
-      source={require(SplashImagePath)}
+      source={require("~assets/images/main.png")}
       resizeMode="cover"
       style={{ flex: 1, width: windowWidth, height: windowHeight + 10 }}
     >

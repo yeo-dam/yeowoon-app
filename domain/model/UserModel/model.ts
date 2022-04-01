@@ -1,4 +1,4 @@
-import { Type } from "class-transformer";
+import { Type } from "unsafe-class-transformer";
 import {
   IsDate,
   IsEnum,

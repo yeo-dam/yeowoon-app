@@ -14,7 +14,7 @@ import ImageFileModel from "~domain/model/ImageFileModel/model";
 import PlaceModel from "~domain/model/PlaceModel";
 import UserModel from "~domain/model/UserModel";
 import CommentModel from "~domain/model/CommentModel";
-import { Exclude, Type } from "class-transformer";
+import { Exclude, Type } from "unsafe-class-transformer";
 import TransformDate from "helper/transformDate";
 import TagModel from "../TagModel";
 

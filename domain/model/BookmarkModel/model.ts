@@ -1,4 +1,4 @@
-import { Type } from "class-transformer";
+import { Type } from "unsafe-class-transformer";
 import { IsNotEmpty, IsOptional, IsString } from "class-validator";
 import WishlistEntity from "~data/entity/WishlistEntity";
 import PostModel from "../PostModel/model";

@@ -1,4 +1,4 @@
-import { Transform } from "class-transformer";
+import { Transform } from "unsafe-class-transformer";
 
 export default function TransformDate() {
   const toPlain = Transform(

@@ -1,11 +1,44 @@
 import React, { PropsWithChildren, useContext } from "react";
 import AuthViewModel, { AuthTokenType } from "./AuthViewModel";
+import CommentViewModel from "./Main/Comment/Comment.vm";
+import MainViewModel from "./Main/Main.vm";
+import MyPageViewModel from "./MyPage/MyPage.vm";
+import SearchViewModel from "./Create/Post/Search/Search.vm";
+import LikeViewModel from "./MyPage/Likes/Likes.vm";
+import MapViewModel from "./MyPage/Map/Map.vm";
+import SettingViewModel from "./MyPage/Setting/Setting.vm";
+import ProfileEditViewModel from "./MyPage/Setting/ProfileEdit/ProfileEdit.vm";
+import EventViewModel from "./MyPage/Setting/Event/Event.vm";
+import NoticeViewModel from "./MyPage/Setting/Notice/Notice.vm";
+import NotificationViewModel from "./MyPage/Setting/Notification/Notification.vm";
+import PolicyViewModel from "./MyPage/Setting/Policy/Policy.vm";
+import UserViewModel from "./MyPage/Users/UserList.vm";
+import PostViewModel from "./Create/Post/CreatePost.vm";
 
 const createViewModel = ({
   accessToken,
 }: Pick<AuthTokenType, "accessToken">) => {
   return {
-    tab: {},
+    tab: {
+      Main: MainViewModel.GetInstance({ accessToken }),
+      Search: SearchViewModel.GetInstance({ accessToken }),
+      Comment: CommentViewModel.GetInstance({ accessToken }),
+      Post: PostViewModel.GetInstance({ accessToken }),
+      MyPage: MyPageViewModel.GetInstance({ accessToken }),
+      Likes: LikeViewModel.GetInstance({ accessToken }),
+      Map: MapViewModel.GetInstance({ accessToken }),
+      User: UserViewModel.GetInstance({ accessToken }),
+      Setting: SettingViewModel.GetInstance({ accessToken }),
+      Event: EventViewModel.GetInstance({ accessToken }),
+      Notice: NoticeViewModel.GetInstance({ accessToken }),
+      Notification: NotificationViewModel.GetInstance({
+        accessToken,
+      }),
+      Policy: PolicyViewModel.GetInstance({ accessToken }),
+      ProfileEdit: ProfileEditViewModel.GetInstance({
+        accessToken,
+      }),
+    },
     auth: AuthViewModel.GetInstance({ accessToken }),
   };
 };

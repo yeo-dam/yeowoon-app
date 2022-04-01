@@ -1,5 +1,5 @@
 import { toNestError, validateFieldsNatively } from "@hookform/resolvers";
-import { ClassConstructor, plainToInstance } from "class-transformer";
+import { ClassConstructor, plainToInstance } from "unsafe-class-transformer";
 import { ValidatorOptions, validate } from "class-validator";
 import { ResolverOptions } from "react-hook-form";
 import parseErrors from "../ParseError";

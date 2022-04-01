@@ -14,23 +14,34 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { ColorSchemeName, Pressable } from "react-native";
 
-import Colors from "../constants/Colors";
+import MyPageScreen from "~components/Screens/MyPage";
+import CreateScreen from "~components/Screens/Create";
+
 import useColorScheme from "../hooks/useColorScheme";
-import ModalScreen from "../screens/ModalScreen";
-import NotFoundScreen from "../screens/NotFoundScreen";
-import SignInScreen from "../screens/SignInScreen";
-import TabOneScreen from "../screens/TabOneScreen";
-import TabTwoScreen from "../screens/TabTwoScreen";
+import ModalScreen from "~components/Screens/ModalScreen";
+import NotFoundScreen from "~components/Screens/NotFoundScreen";
+import SignInScreen from "~components/Screens/SignInScreen";
+import TabTwoScreen from "~components/Screens/TabTwoScreen";
 import {
   RootStackParamList,
   RootTabParamList,
   RootTabScreenProps,
 } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
+import { BNB_SCREEN_NAME } from "constants/SCREEN_NAME";
+import MainScreen from "~components/Screens/Main";
+import styled from "styled-components/native";
+import Typography from "~components/Shared/Typography";
+import FeedLogo from "~assets/Icons/Navigation/Feed/Feed.svg";
+import ClickedFeedLogo from "~assets/Icons/Navigation/Feed/Feed_clicked.svg";
+import ClickedCreateLogo from "~assets/Icons/Navigation/Create/Create_clicked.svg";
+import CreateLogo from "~assets/Icons/Navigation/Create/Create.svg";
+import ClickedSettingLogo from "~assets/Icons/Navigation/Setting/Setting_clicked.svg";
+import SettingLogo from "~assets/Icons/Navigation/Setting/Setting.svg";
 
 export default function Navigation({
   colorScheme,
-  setToken
+  setToken,
 }: {
   colorScheme: ColorSchemeName;
   setToken: (data: string) => void;
@@ -40,7 +51,7 @@ export default function Navigation({
       linking={LinkingConfiguration}
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
-      <RootNavigator setToken={setToken}/>
+      <RootNavigator setToken={setToken} />
     </NavigationContainer>
   );
 }
@@ -74,63 +85,77 @@ function RootNavigator({ setToken }: { setToken: (data: string) => void }) {
   );
 }
 
-/**
- * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
- * https://reactnavigation.org/docs/bottom-tab-navigator
- */
-const BottomTab = createBottomTabNavigator<RootTabParamList>();
+export type BnbMainNavigator = {
+  [BNB_SCREEN_NAME.MAIN]: undefined;
+  [BNB_SCREEN_NAME.CREATE]: undefined;
+  [BNB_SCREEN_NAME.MYPAGE]: undefined;
+};
+
+const BottomTab = createBottomTabNavigator<BnbMainNavigator>();
 
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName={BNB_SCREEN_NAME.MAIN}
+      backBehavior="order"
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
+        headerShown: false,
       }}
     >
       <BottomTab.Screen
-        name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<"TabOne">) => ({
-          title: "Tab One",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate("Modal")}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}
-            >
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
+        name={BNB_SCREEN_NAME.MAIN}
+        component={MainScreen}
+        options={{
+          tabBarLabel: ({ focused }) => (
+            <BottomBarTypo isClicked={focused}>피드</BottomBarTypo>
           ),
-        })}
+          tabBarIcon: ({ focused }) =>
+            focused ? <ClickedFeedLogo /> : <FeedLogo />,
+        }}
       />
       <BottomTab.Screen
-        name="TabTwo"
-        component={TabTwoScreen}
+        name={BNB_SCREEN_NAME.CREATE}
+        component={CreateScreen}
         options={{
-          title: "Tab Two",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarLabel: ({ focused }) => (
+            <BottomBarTypo isClicked={focused}>입력</BottomBarTypo>
+          ),
+          tabBarIcon: ({ focused }) =>
+            focused ? (
+              <ClickedCreateLogo />
+            ) : (
+              <CreateBtnBox>
+                <CreateLogo />
+              </CreateBtnBox>
+            ),
+        }}
+      />
+      <BottomTab.Screen
+        name={BNB_SCREEN_NAME.MYPAGE}
+        component={MyPageScreen}
+        options={{
+          tabBarLabel: ({ focused }) => (
+            <BottomBarTypo isClicked={focused}>마이</BottomBarTypo>
+          ),
+          tabBarIcon: ({ focused }) =>
+            focused ? <ClickedSettingLogo /> : <SettingLogo />,
         }}
       />
     </BottomTab.Navigator>
   );
 }
 
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>["name"];
-  color: string;
-}) {
-  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
-}
+const CreateBtnBox = styled.View`
+  padding-top: 8px;
+`;
+
+const BottomBarTypo = styled(Typography).attrs({
+  textSize: "10px",
+})<{
+  isClicked: boolean;
+}>`
+  color: ${({ theme, isClicked }) =>
+    isClicked ? theme.colors.primary.sub : theme.colors.grey.AA};
+`;
