@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 
 import EditScreenInfo from "../components/EditScreenInfo";
+import { getRootViewModel } from "../components/Screens/VmManager";
 import { Text, View } from "../components/Themed";
 import theme from "../themes";
 import { RootTabScreenProps } from "../types";
@@ -8,6 +9,16 @@ import { RootTabScreenProps } from "../types";
 export default function TabOneScreen({
   navigation,
 }: RootTabScreenProps<"TabOne">) {
+  const vm = getRootViewModel((vm) => vm.auth);
+  console.log(
+    `TCL ~ [TabOneScreen.tsx] ~ line ~ 13 ~ vm`,
+    vm.auth?.accessToken
+  );
+
+  console.log(
+    `TCL ~ [TabOneScreen.tsx] ~ line ~ 18 ~ process.env.HOSTNAME`,
+    process.env.HOSTNAME
+  );
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab One</Text>
