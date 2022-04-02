@@ -64,7 +64,7 @@ export default class CreatePostViewModel extends BaseViewModel {
   private _searchedWord = observable.box<string>(undefined);
 
   @observable
-  private _selectedPlace = observable.box<PlaceList>(undefined);
+  private _selectedPlace = observable.box<PlaceList | undefined>(undefined);
 
   @observable
   private _isFront = observable.box<boolean>(true);
@@ -139,6 +139,11 @@ export default class CreatePostViewModel extends BaseViewModel {
   @action
   resetUploadImages(){
     this._uploadedImages.clear();
+  }
+
+  @action
+  resetSelctedPlace(){
+    this._selectedPlace.set(undefined);
   }
 
   @action

@@ -31,7 +31,7 @@ const Component: FC<Props> = ({ vm, navigation }) => {
               <ImageUploadText>이미지를 넣어주세요!</ImageUploadText>
             </ImageUploadSection>
           </TouchableWithoutFeedback>
-          <Input name="images" />
+          <Input name="images" height="0px" />
         </ImageUploadWrapper>
       );
     } else {

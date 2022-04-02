@@ -39,11 +39,10 @@ const Component: FC<Props> = ({ vm, navigation, onSubmit }: Props) => {
     `TCL ~ [index.tsx] ~ line ~ 35 ~ formState.errors`,
     formState.errors
   );
+
   // 여기서 직접 값을 set 해주는 UI 필요함
   return (
     <DescriptionInnerBox>
-      <Input name="place.placeId" hidden />
-      <Input name="place.placeName" hidden />
       {/* 장소 이름 */}
       <Pressable onPress={() => navigation.navigate("Search")}>
         <GreyTypo variant="subhead-medium">
@@ -66,22 +65,27 @@ const Component: FC<Props> = ({ vm, navigation, onSubmit }: Props) => {
           <Input name="place.address" hidden />
         </Pressable>
       </FlexBox>
+      <Input name="place.placeId" hidden />
+      <Input name="place.placeName" height="0px" />
       <Interval height="14px" />
       <ContentInputBox>
         <Input
           name="description"
           placeholder="내용을 입력하세요"
           color={theme.colors.background.paper}
+          multiline={true}
           numberOfLines={10}
           fontSize="14px"
+          height="114px"
           placeholderTextColor={theme.colors.grey[99]}
           inputAccessoryViewID={CREATE_SCREEN_NAME.POST}
         />
       </ContentInputBox>
-      <Interval height="3px" />
+      <Interval height={formState.errors.description ? "14px" : "3px"} />
       <TagInputBox>
         <Tags />
       </TagInputBox>
+      <Input name="tags" height="0px" />
       <InputAccessoryView nativeID={CREATE_SCREEN_NAME.POST}>
         <SubmitButton
           color={
@@ -110,6 +114,7 @@ const ContentInputBox = styled.View`
 const TagInputBox = styled.View`
   width: 100%;
   height: 19px;
+  flex-wrap: wrap;
   background-color: #2f2f2f;
 `;
 

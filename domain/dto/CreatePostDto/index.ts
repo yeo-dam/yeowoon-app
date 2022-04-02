@@ -12,7 +12,7 @@ import { PickType } from "helper/mappedTypes";
 import PlaceModel from "~domain/model/PlaceModel/model";
 import PostModel from "~domain/model/PostModel";
 
-class Place extends PickType(PlaceModel, ["type"]) {}
+class Place extends PickType(PlaceModel, ["placeId", "placeName", "type"]) {}
 class CreatePostDto extends PickType(PostModel, ["description"]) {
   @MinLength(8, { message: "YYYY.DD.MM 형태로 입력해주세요" })
   @IsString()
@@ -23,8 +23,7 @@ class CreatePostDto extends PickType(PostModel, ["description"]) {
   @IsOptional()
   date?: string;
 
-  @Type(() => Place)
-  @IsNotEmpty()
+  // submit 시 validating
   place: Place;
 
   @IsString({ each: true })
@@ -32,6 +31,7 @@ class CreatePostDto extends PickType(PostModel, ["description"]) {
   @IsNotEmpty()
   tags: string[];
 
+  // submit 시 validating
   images: number[];
 }
 
