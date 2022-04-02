@@ -39,8 +39,9 @@ const MyPageScreen = ({
     <ContentLayout title="Tab Three">
       <View>
         <Typography>마이페이지</Typography>
-        <TouchableIcon onPress={() => navigation.navigate("Map")}>
-3        </TouchableIcon>
+        <TouchableIcon
+          onPress={() => navigation.navigate("Map")}
+        ></TouchableIcon>
       </View>
     </ContentLayout>
   );

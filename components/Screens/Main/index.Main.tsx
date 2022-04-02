@@ -38,38 +38,38 @@ const MainScreen = ({
   }, []);
 
   const renderList = () => {
-    if (vm.posts && vm.posts.length === 0) {
-      return <NoData />;
-    } else {
-      return (
-        <FlatList<PostModel>
-          data={vm.posts}
-          ListHeaderComponent={
-            <>
-              <NavSection>
-                <Nav />
-              </NavSection>
-              {/* TODO : MainImage 및 Text 반영되도록 변경 필요 */}
-              <Carousel
-                aspectRatio={375 / 346}
-                pages={[
-                  { id: "1", url: "https://picsum.photos/375/346" },
-                  { id: "2", url: "https://picsum.photos/375/346" },
-                ]}
-                isTextImg={false}
-              />
-            </>
-          }
-          renderItem={({ item }) => (
-            <MainItemCard vm={vm} item={item} navigation={navigation} />
-          )}
-          keyExtractor={(item) => item.id}
-          // onEndReached={handleLoadMore}
-          onEndReachedThreshold={0.3}
-          // onRefresh={handleRefresh}
-        ></FlatList>
-      );
-    }
+    // if (vm.posts && vm.posts.length === 0) {
+    //   return <NoData />;
+    // } else {
+    return (
+      <FlatList<PostModel>
+        data={vm.posts}
+        ListHeaderComponent={
+          <>
+            <NavSection>
+              <Nav />
+            </NavSection>
+            {/* TODO : MainImage 및 Text 반영되도록 변경 필요 */}
+            <Carousel
+              aspectRatio={375 / 346}
+              pages={[
+                { id: "1", url: "https://picsum.photos/375/346" },
+                { id: "2", url: "https://picsum.photos/375/346" },
+              ]}
+              isTextImg={false}
+            />
+          </>
+        }
+        renderItem={({ item }) => (
+          <MainItemCard vm={vm} item={item} navigation={navigation} />
+        )}
+        keyExtractor={(item) => item.id}
+        // onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.3}
+        // onRefresh={handleRefresh}
+      ></FlatList>
+    );
+    // }
   };
 
   // const handleLoadMore = () => {

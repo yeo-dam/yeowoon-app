@@ -4,7 +4,6 @@ import * as ImagePicker from "expo-image-picker";
 import { FlatList, Text, View } from "react-native";
 import { Orientation } from "expo-screen-orientation";
 import * as MediaLibrary from "expo-media-library";
-import { Asset, PagedInfo } from "expo-media-library";
 import ImageTile from "./ImageTile";
 import styled from "styled-components/native";
 import Typography from "../Typography";
@@ -27,7 +26,7 @@ interface getPhotoParams extends Record<string, any> {
 
 type Props = {
   max: number;
-  callback: (data: Promise<Asset[]>) => void;
+  callbackHandler: (data: Promise<MediaLibrary.Asset[]>) => void;
   onChange: (data: number, func: () => void) => void;
   loadCount?: number;
   mediaType?: MediaType;
@@ -38,7 +37,7 @@ type Props = {
 const ImageBrowser: FC<Props> = ({
   max,
   onChange,
-  callback,
+  callbackHandler,
   loadCount = 50,
   mediaType = [MediaLibrary.MediaType.photo],
   sortBy,
@@ -51,7 +50,7 @@ const ImageBrowser: FC<Props> = ({
   const [numColumns, setNumColumns] = useState<number | undefined>(undefined);
   const [after, setAfter] = useState<any | null>(null);
   const [hasNextPage, setHasNextPage] = useState<boolean>(true);
-  const [photos, setPhotos] = useState<Asset[]>([]);
+  const [photos, setPhotos] = useState<MediaLibrary.Asset[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
   const [isEmpty, setIsEmpty] = useState<boolean>(false);
 
@@ -89,7 +88,9 @@ const ImageBrowser: FC<Props> = ({
     setNumColumns(numColumns);
   };
 
-  const processPhotos = async (data: PagedInfo<Asset>) => {
+  const processPhotos = async (
+    data: MediaLibrary.PagedInfo<MediaLibrary.Asset>
+  ) => {
     if (data.totalCount) {
       if (after === data.endCursor) return;
       const assets = data.assets;
@@ -113,7 +114,13 @@ const ImageBrowser: FC<Props> = ({
 
   const getItemLayout = () => {};
 
-  const renderImageTile = ({ item, index }: { item: Asset; index: number }) => {
+  const renderImageTile = ({
+    item,
+    index,
+  }: {
+    item: MediaLibrary.Asset;
+    index: number;
+  }) => {
     const IsSelected = selected.indexOf(index) !== -1;
     const selectedItemNumber = selected.indexOf(index) + 1;
 
@@ -155,12 +162,12 @@ const ImageBrowser: FC<Props> = ({
   const prepareCallback = () => {
     const selectedPhotos = selected.map((i) => photos[i]);
     if (!loadCompleteMetadata) {
-      callback(Promise.all(selectedPhotos));
+      callbackHandler(Promise.all(selectedPhotos));
     } else {
       const assetsInfo = Promise.all(
         selectedPhotos.map((i) => MediaLibrary.getAssetInfoAsync(i))
       );
-      callback(assetsInfo);
+      callbackHandler(assetsInfo);
     }
   };
 

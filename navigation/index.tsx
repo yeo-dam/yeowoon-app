@@ -38,6 +38,7 @@ import ClickedCreateLogo from "~assets/Icons/Navigation/Create/Create_clicked.sv
 import CreateLogo from "~assets/Icons/Navigation/Create/Create.svg";
 import ClickedSettingLogo from "~assets/Icons/Navigation/Setting/Setting_clicked.svg";
 import SettingLogo from "~assets/Icons/Navigation/Setting/Setting.svg";
+import { getRootViewModel } from "~components/Screens/VmManager";
 
 export default function Navigation({
   colorScheme,
@@ -56,18 +57,20 @@ export default function Navigation({
   );
 }
 
-/**
- * A root stack navigator is often used for displaying modals on top of all other content.
- * https://reactnavigation.org/docs/modal
- */
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator({ setToken }: { setToken: (data: string) => void }) {
+  const authVm = getRootViewModel((vm) => vm.auth);
+  const accessToken = authVm.auth?.accessToken;
+
+  console.log(`TCL ~ [index.tsx] ~ line ~ 70 ~ accessToken`, accessToken);
   return (
     <Stack.Navigator>
-      <Stack.Screen name="SignIn" options={{ headerShown: false }}>
-        {(props) => <SignInScreen {...props} setToken={setToken} />}
-      </Stack.Screen>
+      {/* {!accessToken && (
+        <Stack.Screen name="SignIn" options={{ headerShown: false }}>
+          {(props) => <SignInScreen {...props} setToken={setToken} />}
+        </Stack.Screen>
+      )} */}
       <Stack.Screen
         name="Root"
         component={BottomTabNavigator}

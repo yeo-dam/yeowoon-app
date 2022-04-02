@@ -68,11 +68,11 @@ const CreateScreen = ({ navigation }: any) => {
   };
 
   const handleBackToMain = () => {
-    // 폼에 있는 데이터도 리셋해준다. 실제 리셋은 생성화면에서 할 것.
-    // 업로드된 이미지를 지워준다.
+    // 업로드된 이미지와 선택된 장소 정보를 지워준다.
     runInAction(() => {
-      if (vm.uploadedImages) {
+      if (vm.uploadedImages || vm.selectedPlace) {
         vm.resetUploadImages();
+        vm.resetSelctedPlace();
       }
       vm.formReset();
     });

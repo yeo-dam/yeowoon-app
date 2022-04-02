@@ -13,6 +13,8 @@ export type Props = {
   placeholderTextColor?: string;
   color?: string;
   disabled?: boolean;
+  width?: string;
+  height?: string;
 } & TextInputProps;
 
 const Component: FC<Props> = ({
@@ -20,6 +22,8 @@ const Component: FC<Props> = ({
   errMsg,
   hidden = false,
   placeholder,
+  width,
+  height,
   fontSize,
   color,
   disabled = false,
@@ -30,30 +34,30 @@ const Component: FC<Props> = ({
   const error = get(formState.errors, name);
 
   return (
-    <InputWrapper hidden={hidden}>
-      <Controller
-        name={name}
-        control={control}
-        render={({ field: { onChange, value } }) => (
-          <>
-            <StyledTextInput
-              name={name}
-              onChangeText={(e) => {
-                onChange(e);
-              }}
-              value={value}
-              placeholder={placeholder}
-              placeholderTextColor={placeholderTextColor}
-              fontSize={fontSize}
-              editable={!disabled}
-              color={color}
-              {...rest}
-            />
-            {error && <ErrMsg>{renderErrMsg(error, errMsg)}</ErrMsg>}
-          </>
-        )}
-      />
-    </InputWrapper>
+    <Controller
+      name={name}
+      control={control}
+      render={({ field: { onChange, value } }) => (
+        <InputWrapper hidden={hidden}>
+          <StyledTextInput
+            name={name}
+            onChangeText={(e) => {
+              onChange(e);
+            }}
+            value={value}
+            placeholder={placeholder}
+            placeholderTextColor={placeholderTextColor}
+            fontSize={fontSize}
+            editable={!disabled}
+            color={color}
+            width={width}
+            height={height}
+            {...rest}
+          />
+          {error && <ErrMsg>{renderErrMsg(error, errMsg)}</ErrMsg>}
+        </InputWrapper>
+      )}
+    />
   );
 };
 
@@ -61,10 +65,14 @@ export default Component;
 
 const InputWrapper = styled.View<{ hidden: boolean }>`
   display: ${({ hidden }) => (hidden ? "none" : "flex")};
+  align-items: flex-start;
+  justify-content: flex-start;
 `;
 
 const StyledTextInput = styled(TextInput)<Props>`
   color: ${({ color }) => (color ? color : "black")};
+  width: ${({ width }) => (width ? width : "100%")};
+  height: ${({ height }) => (height ? height : "100%")};
   font-size: ${({ fontSize }) => (fontSize ? fontSize : "14px")};
 `;
 

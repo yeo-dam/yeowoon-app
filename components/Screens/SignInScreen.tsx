@@ -15,8 +15,6 @@ import Typography from "~components/Shared/Typography";
 
 const SplashImagePath = "~assets/images/main.png";
 
-// TODO : 성공 시, Main으로 이동. 실패 시, 다른 동작이 필요할 것.
-
 const {
   window: { width: windowWidth, height: windowHeight },
 } = Layout;
