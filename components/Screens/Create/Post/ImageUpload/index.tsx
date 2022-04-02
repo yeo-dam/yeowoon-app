@@ -50,7 +50,7 @@ const Component = ({
             body: formdata,
           });
 
-          navigation.navigate(CREATE_SCREEN_NAME.POST, uploaded);
+          navigation.navigate(CREATE_SCREEN_NAME.POST);
         }
       })
       .catch((e: any) => console.log(e));

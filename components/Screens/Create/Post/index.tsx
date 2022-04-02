@@ -18,6 +18,10 @@ import DescriptionForm from "components/Local/DescriptionForm";
 import ImageForm from "components/Local/ImageForm";
 import Layout from "constants/Layout";
 import { getRootViewModel } from "~components/Screens/VmManager";
+import { FormProvider, useForm } from "react-hook-form";
+import { classValidatorResolver } from "@hookform/resolvers/class-validator";
+import { useEffect } from "react";
+import { runInAction } from "mobx";
 
 const {
   window: { width: windowWidth, height: windowHeight },
@@ -26,11 +30,35 @@ const {
 const CreatePost = ({
   navigation,
 }: RootTabScreenProps<typeof CREATE_SCREEN_NAME.POST>) => {
+  const resolver = classValidatorResolver(CreatePostDto);
+  const form = useForm<CreatePostDto>({
+    resolver,
+    defaultValues: {
+      place: {
+        type: undefined,
+      },
+      description: undefined,
+      tags: [],
+      inputDateTime: undefined,
+    },
+    mode: "all",
+    reValidateMode: "onChange",
+  });
+
   const vm = getRootViewModel<CreatePostViewModel>(
     (viewModel) => viewModel.tab.Post
   );
 
   const onSubmit = async (data: CreatePostDto) => {
+    // 이미지 미업로드시 막아줘야 함.
+    if (vm.uploadedImages.length === 0) {
+      form.setError("images", {
+        message: "이미지를 입력해주세요",
+      });
+      runInAction(() => vm.setFront(true));
+      return;
+    }
+
     const dateTime = data.inputDateTime;
     const year = dateTime.slice(0, 4);
     const month = dateTime.slice(4, 6);
@@ -50,7 +78,7 @@ const CreatePost = ({
 
     try {
       await vm.createPost({ body: formmatedDto });
-      navigation.push("Root");
+      // navigation.push("Root");
     } catch (error) {
       console.log(error);
     }
@@ -85,21 +113,11 @@ const CreatePost = ({
 
   return (
     <FormLayout>
-      <Form<CreatePostDto>
-        schema={CreatePostDto}
-        defaultValues={{
-          place: {
-            type: undefined,
-          },
-          description: undefined,
-          tags: [],
-          inputDateTime: undefined,
-        }}
-      >
+      <FormProvider {...form}>
         <Wrapper>
           <InnerWrapper>{renderForm()}</InnerWrapper>
         </Wrapper>
-      </Form>
+      </FormProvider>
     </FormLayout>
   );
 };
