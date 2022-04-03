@@ -77,7 +77,6 @@ const Component: FC<Props> = () => {
             inputAccessoryViewID={CREATE_SCREEN_NAME.POST}
             onKeyPress={({ nativeEvent: { key } }) => handleKeyPress(key)}
             onChangeText={(value) => setInputValue(idx, value)}
-            value={watch(`tags.${idx}`)}
             onSubmitEditing={handleSubmit}
             placeholder="placeholder"
           />

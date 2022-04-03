@@ -91,11 +91,11 @@ const CreatePost = ({
     const day = dateTime.slice(6, 8);
     const transformed = `${year}.${month}.${day}`;
     const ImageIds = vm.uploadedImages.map((item) => item.id);
-    const newTags = data.tags.map((item) => (item ? item : ""));
+    const newTags = data.tags.filter((tag) => tag !== "");
     const formmatedDto: CreatePostDto = {
       ...data,
       place: { ...vm.selectedPlace, type: data.place.type },
-      tags: newTags as string[],
+      tags: newTags,
       date: transformed,
       images: ImageIds,
     };
