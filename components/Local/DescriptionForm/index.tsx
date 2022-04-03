@@ -30,16 +30,6 @@ type Props = {
 const Component: FC<Props> = ({ vm, navigation, onSubmit }: Props) => {
   const { watch, formState } = useFormContext();
 
-  console.log(`TCL ~ [index.tsx] ~ line ~ 33 ~ watch()`, watch());
-  console.log(
-    `TCL ~ [index.tsx] ~ line ~ 34 ~ formState.isValid`,
-    formState.isValid
-  );
-  console.log(
-    `TCL ~ [index.tsx] ~ line ~ 35 ~ formState.errors`,
-    formState.errors
-  );
-
   // 여기서 직접 값을 set 해주는 UI 필요함
   return (
     <DescriptionInnerBox>

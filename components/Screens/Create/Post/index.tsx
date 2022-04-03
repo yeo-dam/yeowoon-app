@@ -62,9 +62,10 @@ const CreatePost = ({
     (viewModel) => viewModel.tab.Post
   );
 
-  useEffect(() => {
+  if (vm.resetTrigger) {
     form.reset();
-  }, [vm.resetTrigger]);
+    runInAction(() => vm.formReset(false));
+  }
 
   const onSubmit = async (data: CreatePostDto) => {
     // 이미지 미업로드시 막아줘야 함.
@@ -103,6 +104,9 @@ const CreatePost = ({
 
     try {
       await vm.createPost({ body: formmatedDto });
+      // 생성 후, sucess response 달라고 성공시 요청 할 것
+      // const success = await vm.createPost({ body: formmatedDto });
+      // if(success){navigation.push("Root"); form.reset()};
       // navigation.push("Root");
     } catch (error) {
       console.log(error);
@@ -167,7 +171,6 @@ const InnerWrapper = styled.View`
 
 const FormWrapper = styled(Flex)`
   flex: 1;
-  border: 1px solid black;
 `;
 
 const DateInput = styled(Input)`
