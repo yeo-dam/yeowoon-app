@@ -1,8 +1,3 @@
-/**
- * If you are not familiar with React Navigation, refer to the "Fundamentals" guide:
- * https://reactnavigation.org/docs/getting-started
- *
- */
 import { FontAwesome } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
@@ -66,11 +61,11 @@ function RootNavigator({ setToken }: { setToken: (data: string) => void }) {
   console.log(`TCL ~ [index.tsx] ~ line ~ 70 ~ accessToken`, accessToken);
   return (
     <Stack.Navigator>
-      {/* {!accessToken && (
+      {!accessToken && (
         <Stack.Screen name="SignIn" options={{ headerShown: false }}>
           {(props) => <SignInScreen {...props} setToken={setToken} />}
         </Stack.Screen>
-      )} */}
+      )}
       <Stack.Screen
         name="Root"
         component={BottomTabNavigator}

@@ -120,8 +120,8 @@ export default class CreatePostViewModel extends BaseViewModel {
   }
 
   @action
-  formReset(){
-    this._resetTrigger.set(true);
+  formReset(bool: boolean){
+    this._resetTrigger.set(bool);
   }
 
   @action

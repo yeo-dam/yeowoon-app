@@ -65,16 +65,19 @@ const Component: FC<Props> = () => {
     // FIXME : 화면전환 시, 인풋 값 날라감
     const inputs: JSX.Element[] = [];
     for (let idx = 0; idx < numberInputs + 1; idx++) {
+      const currentInput = watch(`tags.${idx}`);
       inputs.push(
-        <InputBox key={idx}>
+        <InputBox key={idx} isEmpty={numberInputs === 0}>
           <Input
             name={`tags.${idx}`}
             fontSize="14px"
+            width={currentInput ? "100%" : "200px"}
+            height="14px"
             color={theme.colors.background.paper}
             inputAccessoryViewID={CREATE_SCREEN_NAME.POST}
             onKeyPress={({ nativeEvent: { key } }) => handleKeyPress(key)}
             onChangeText={(value) => setInputValue(idx, value)}
-            value={refInputs.current[idx]}
+            value={watch(`tags.${idx}`)}
             onSubmitEditing={handleSubmit}
             placeholder="placeholder"
           />
@@ -94,6 +97,7 @@ const StyledFlexBox = styled(FlexBox)`
   height: 100%;
 `;
 
-const InputBox = styled(View)`
+const InputBox = styled(FlexBox)<{ isEmpty?: boolean }>`
+  /* flex: 1; */
   margin-right: 4px;
 `;

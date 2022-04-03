@@ -74,7 +74,7 @@ const CreateScreen = ({ navigation }: any) => {
         vm.resetUploadImages();
         vm.resetSelctedPlace();
       }
-      vm.formReset();
+      vm.formReset(true);
     });
     // 홈 화면으로 이동한다.
     navigation.navigate(MAIN_SCREEN_NAME.HOME);
