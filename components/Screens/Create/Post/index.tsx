@@ -4,7 +4,14 @@ import { observer } from "mobx-react";
 import Typography from "components/Shared/Typography";
 import styled from "styled-components/native";
 import { RootTabScreenProps } from "types";
-import { View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  TextInput,
+  View,
+  StyleSheet,
+  Keyboard,
+} from "react-native";
 import Input from "components/Shared/Input";
 import FormLayout from "components/Layout/FormLayout";
 import Form from "components/Shared/Form";
@@ -22,6 +29,8 @@ import { FormProvider, useForm } from "react-hook-form";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { useEffect } from "react";
 import { runInAction } from "mobx";
+import KeyboardAvoiding from "~components/Shared/KeyboardAvoiding";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const {
   window: { width: windowWidth, height: windowHeight },
@@ -30,11 +39,15 @@ const {
 const CreatePost = ({
   navigation,
 }: RootTabScreenProps<typeof CREATE_SCREEN_NAME.POST>) => {
+  console.log(`TCL ~ [index.tsx] ~ line ~ 40 ~ windowHeight`, windowHeight);
+
   const resolver = classValidatorResolver(CreatePostDto);
   const form = useForm<CreatePostDto>({
     resolver,
     defaultValues: {
       place: {
+        placeId: undefined,
+        placeName: undefined,
         type: undefined,
       },
       description: undefined,
@@ -49,6 +62,10 @@ const CreatePost = ({
     (viewModel) => viewModel.tab.Post
   );
 
+  useEffect(() => {
+    form.reset();
+  }, [vm.resetTrigger]);
+
   const onSubmit = async (data: CreatePostDto) => {
     // 이미지 미업로드시 막아줘야 함.
     if (vm.uploadedImages.length === 0) {
@@ -56,6 +73,14 @@ const CreatePost = ({
         message: "이미지를 입력해주세요",
       });
       runInAction(() => vm.setFront(true));
+      return;
+    }
+
+    // 장소 미선택시 업로드를 막아줘야 함.
+    if (!vm.selectedPlace) {
+      form.setError("place.placeName", {
+        message: "장소를 선택해주세요.",
+      });
       return;
     }
 
@@ -97,28 +122,33 @@ const CreatePost = ({
               onSubmit={onSubmit}
             />
           </DescriptionBox>
-          <DateFlexBox>
-            <DateInput
-              maxLength={8}
-              name="inputDateTime"
-              placeholder="날짜(YYYY-MM-DD)를 입력해주세요"
-              keyboardType="number-pad"
-              inputAccessoryViewID={CREATE_SCREEN_NAME.POST}
-            />
-          </DateFlexBox>
         </View>
       );
     }
   };
 
   return (
-    <FormLayout>
+    <KeyboardAvoiding>
       <FormProvider {...form}>
-        <Wrapper>
-          <InnerWrapper>{renderForm()}</InnerWrapper>
-        </Wrapper>
+        <FormWrapper>
+          <Wrapper>
+            <InnerWrapper>{renderForm()}</InnerWrapper>
+          </Wrapper>
+        </FormWrapper>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <DateFlexBox>
+            <DateInput
+              maxLength={8}
+              height="20px"
+              name="inputDateTime"
+              placeholder="날짜(YYYY-MM-DD)를 입력해주세요"
+              keyboardType="number-pad"
+              inputAccessoryViewID={CREATE_SCREEN_NAME.POST}
+            />
+          </DateFlexBox>
+        </TouchableWithoutFeedback>
       </FormProvider>
-    </FormLayout>
+    </KeyboardAvoiding>
   );
 };
 
@@ -126,8 +156,8 @@ export default observer(CreatePost);
 
 const Wrapper = styled.View`
   margin: 0 auto;
-  width: 351px;
-  height: 526px;
+  width: ${windowWidth * 0.936 + "px"};
+  height: ${windowHeight * 0.647 + "px"};
   background-color: white;
 `;
 
@@ -135,12 +165,14 @@ const InnerWrapper = styled.View`
   padding: 32px 16px 104px 16px;
 `;
 
-const DateFlexBox = styled(Flex)`
-  justify-content: flex-end;
-  padding-top: 73px;
+const FormWrapper = styled(Flex)`
+  flex: 1;
+  border: 1px solid black;
 `;
 
-const DateInput = styled(Input)``;
+const DateInput = styled(Input)`
+  margin-bottom: 36px;
+`;
 
 const TitleBox = styled(Flex)`
   justify-content: center;
@@ -148,21 +180,28 @@ const TitleBox = styled(Flex)`
   padding: 0px 0px 16px 0px;
 `;
 
+const DateFlexBox = styled(Flex)`
+  justify-content: flex-end;
+  padding-bottom: 70px;
+  border: 1px solid red;
+`;
+
 const ImageUploadWrapper = styled.View``;
 
 const ImageUploadSection = styled(View)`
   justify-content: center;
   align-items: center;
-  width: 319px;
-  height: 390px;
+  width: ${windowWidth * 0.85 + "px"};
+  height: ${windowHeight * 0.48 + "px"};
   background-color: ${({ theme }) => theme.colors.grey.ED};
 `;
 
 const DescriptionBox = styled(View)`
   justify-content: center;
-  width: 319px;
-  height: 390px;
+  width: ${windowWidth * 0.85 + "px"};
+  height: ${windowHeight * 0.48 + "px"};
   background-color: ${({ theme }) => theme.colors.grey.black};
+  border: 1px solid red;
 `;
 
 const DescriptionInnerBox = styled.View`
