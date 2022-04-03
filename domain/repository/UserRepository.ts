@@ -2,8 +2,8 @@ import { validate } from "class-validator";
 import { plainToClass } from "unsafe-class-transformer";
 import ListEntity from "~data/entity/ListEntity";
 import UserEntity from "~data/entity/UserEntity";
-import PagerModel from "~domain/model/PagerModel/model";
-import UserModel from "~domain/model/UserModel/model";
+import PagerModel from "~domain/model/Shared/PagerModel/model";
+import UserModel from "~domain/model/Shared/UserModel/model";
 import BaseRepository, { ConstructorParameter } from "./Repository";
 
 interface UserRepository {

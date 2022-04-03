@@ -1,12 +1,12 @@
 import { validate } from "class-validator";
 import ListEntity from "~data/entity/ListEntity";
 import PostEntity from "~data/entity/PostEntity";
-import PagerModel from "~domain/model/PagerModel";
-import PostModel from "~domain/model/PostModel";
+import PagerModel from "~domain/model/Shared/PagerModel";
 import BaseRepository, { ConstructorParameter } from "./Repository";
 import FindDto from "~domain/dto/FindPostDto";
 import CreatePostDto from "~domain/dto/CreatePostDto";
 import { plainToClass } from "unsafe-class-transformer";
+import PostListModel from "~domain/model/Local/PostListModel";
 
 export default class PostRepositoryImpl extends BaseRepository {
   private static _Instance: PostRepositoryImpl;
@@ -24,18 +24,19 @@ export default class PostRepositoryImpl extends BaseRepository {
 
   // TODO : 다양한 쿼리 추가되어야 함
   /** 전체 Post 목록 불러오기 (필요 없을 수 있음) **/
-  async find(dto: { query: FindDto }): Promise<PostModel[]> {
+  async find(dto: { query: FindDto }): Promise<PostListModel[]> {
     const { posts } = await this._remote._fetcher<{ posts: PostEntity[] }>(
       `/post/list?page=${dto.query.pageNum}`
     );
 
-    console.log(`TCL ~ [PostRepository.ts] ~ line ~ 34 ~ posts`, posts);
+    console.log(`TCL ~ [PostRepository.ts] ~ line ~ 32 ~ posts`, posts);
+    console.log(`TCL ~ [PostRepository.ts] ~ line ~ 32 ~ posts`, posts);
 
-    const postInstances = posts.map((post) =>
-      plainToClass<PostModel, PostEntity>(PostModel, { ...post })
+    const postInstances = posts.map((post: PostEntity) =>
+      plainToClass<PostListModel, PostEntity>(PostListModel, post)
     );
 
-    postInstances.forEach(async (item) => {
+    postInstances.forEach(async (item: PostListModel) => {
       const postError = await validate(item);
       if (postError.length > 0) {
         throw postError;

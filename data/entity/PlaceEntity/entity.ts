@@ -1,8 +1,8 @@
 import PlaceType from "domain/enum/PlaceType";
 
 export default interface Entity {
-  placeId: number;
-  type: PlaceType;
+  placeId: string;
+  placeType: PlaceType;
   placeName: string;
   address: string;
   title: string;

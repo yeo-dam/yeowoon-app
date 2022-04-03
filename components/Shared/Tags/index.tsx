@@ -14,6 +14,7 @@ const Component: FC<Props> = () => {
   const { watch, setValue } = useFormContext();
   const watchedTags = watch("tags");
 
+  console.log(`TCL ~ [index.tsx] ~ line ~ 17 ~ watchedTags`, watchedTags);
   // this will be attached with each input onChangeText
   const [textValue, setTextValue] = useState("");
   // our number of inputs, we can add the length or decrease
@@ -76,6 +77,7 @@ const Component: FC<Props> = () => {
             color={theme.colors.background.paper}
             inputAccessoryViewID={CREATE_SCREEN_NAME.POST}
             onKeyPress={({ nativeEvent: { key } }) => handleKeyPress(key)}
+            value={watch(`tags.${idx}`)}
             onChangeText={(value) => setInputValue(idx, value)}
             onSubmitEditing={handleSubmit}
             placeholder="placeholder"
@@ -99,4 +101,5 @@ const StyledFlexBox = styled(FlexBox)`
 const InputBox = styled(FlexBox)<{ isEmpty?: boolean }>`
   /* flex: 1; */
   margin-right: 4px;
+  border: 1px solid green;
 `;

@@ -1,6 +1,6 @@
 import CreateTokenDto from "~domain/dto/CreateTokenDto";
-import PagerModel from "~domain/model/PagerModel/model";
-import UserModel from "~domain/model/UserModel/model";
+import PagerModel from "~domain/model/Shared/PagerModel/model";
+import UserModel from "~domain/model/Shared/UserModel/model";
 import BaseRepository, { ConstructorParameter } from "./Repository";
 
 interface AuthRepository {}

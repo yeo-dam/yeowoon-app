@@ -3,23 +3,24 @@ import {
   IsDate,
   IsEnum,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
 } from "class-validator";
 import TransformDate from "helper/transformDate";
-import UserEntity from "../../../data/entity/UserEntity";
-import ProviderType from "../../enum/ProviderType";
-import UserMbtiType from "../../enum/UserMbtiType";
 import ImageFileModel from "../ImageFileModel";
+import UserMbtiType from "~domain/enum/UserMbtiType";
+import ProviderType from "~domain/enum/ProviderType";
+import UserEntity from "~data/entity/UserEntity";
 
 export default class UserModel implements UserEntity {
   @IsString()
   @IsNotEmpty()
-  id: string;
+  userId: string;
 
   @IsString()
   @IsNotEmpty()
-  name: string;
+  userName: string;
 
   @IsString()
   @IsNotEmpty()
@@ -40,5 +41,5 @@ export default class UserModel implements UserEntity {
 
   @Type(() => ImageFileModel)
   @IsOptional()
-  avatar?: ImageFileModel;
+  userImage?: ImageFileModel;
 }

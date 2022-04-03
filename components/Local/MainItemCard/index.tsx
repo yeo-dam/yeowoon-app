@@ -2,16 +2,16 @@ import React, { FC, useState } from "react";
 import styled from "styled-components/native";
 import PhotoCard from "components/Local/PhotoCard";
 import DescriptionCard from "components/Local/DescriptionCard";
-import PostModel from "~domain/model/PostModel";
 import PhotoContainer from "components/Local/PhotoContainer";
 import { Animated, View } from "react-native";
 import DoubleTap from "components/Shared/DoubleTap";
 import MainViewModel from "components/Screens/Main/Main.vm";
 import Loadable from "components/Shared/Loadable";
+import PostListModel from "~domain/model/Local/PostListModel";
 
 type Props = {
   vm: MainViewModel;
-  item: PostModel;
+  item: PostListModel;
   navigation: any;
 };
 
@@ -44,7 +44,7 @@ const Component: FC<Props> = ({ vm, item, navigation }) => {
     );
   };
 
-  const renderCard = (postItem: PostModel, router: any) => {
+  const renderCard = (postItem: PostListModel, router: any) => {
     if (vm.isLoading) {
       return <Loadable />;
     } else {

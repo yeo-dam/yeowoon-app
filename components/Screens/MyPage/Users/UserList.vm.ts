@@ -1,7 +1,7 @@
-import PagerModel from "domain/model/PagerModel";
-import PostModel from "domain/model/PostModel/model";
+import PagerModel from "~domain/model/Shared/PagerModel";
+import PostModel from "~domain/model/Shared/PostModel/model";
 import { action, computed, flow, observable } from "mobx";
-import UserModel from "~domain/model/UserModel/model";
+import UserModel from "~domain/model/Shared/UserModel/model";
 import MeRepositoryImpl from "~domain/repository/MeRepository";
 import { ConstructorParameter } from "~domain/repository/Repository";
 import UserRepositoryImpl from "~domain/repository/UserRepository";
@@ -65,7 +65,7 @@ export default class ThisViewModel extends BaseViewModel {
       // TODO : 추후에 아래 메서드로 변경해 줄 것.
       // const [pagerInstance, userInstances] = yield this._meRepo.findPosts();
       userInstances.forEach((item: UserModel) => {
-        this._users.set(item.id, item);
+        this._users.set(item.userId, item);
       });
       this._pager.set(pagerInstance);
     } catch (error) {

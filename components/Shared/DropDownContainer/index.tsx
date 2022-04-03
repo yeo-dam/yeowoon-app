@@ -25,10 +25,10 @@ const Component: React.FC<PropsWithChildren<Props>> = ({
         animationType="slide"
         transparent={true}
         visible={modalVisible}
-        // onRequestClose={() => {
-        // Alert.alert("Modal has been closed.");
-        // setModalVisible(false);
-        // }}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(false);
+        }}
       >
         <ModalSafeAreaView />
         <ModalBackground />

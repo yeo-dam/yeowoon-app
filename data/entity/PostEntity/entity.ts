@@ -5,14 +5,14 @@ import TagEntity from "../TagEntity";
 import UserEntity from "../UserEntity";
 
 export default interface Entity {
-  id: string;
+  postId: string;
   user: UserEntity;
   place: PlaceEntity;
   title: string;
   description: string;
   createdAt: Date;
   updatedAt?: Date;
-  images: ImageFileEntity[];
+  imageLocations: ImageFileEntity[];
   comments?: CommentEntity[];
   tags?: TagEntity[];
 }

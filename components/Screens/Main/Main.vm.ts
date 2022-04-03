@@ -1,11 +1,12 @@
-import PagerModel from "domain/model/PagerModel";
-import PostModel from "domain/model/PostModel/model";
+import PagerModel from "~domain/model/Shared/PagerModel";
+import PostModel from "~domain/model/Shared/PostModel/model";
 import PostRepositoryImpl from "domain/repository/PostRepository";
 import { action, computed, flow, observable } from "mobx";
 import FindDto from "~domain/dto/FindPostDto";
 import MeRepositoryImpl from "~domain/repository/MeRepository";
 import { ConstructorParameter } from "~domain/repository/Repository";
 import BaseViewModel from "../BaseViewModel";
+import PostListModel from "~domain/model/Local/PostListModel";
 
 export default class MainViewModel extends BaseViewModel {
   private static _Instance: MainViewModel;
@@ -42,7 +43,7 @@ export default class MainViewModel extends BaseViewModel {
   private _pager = observable.box<PagerModel>(undefined);
 
   @observable
-  private _posts = observable.map<string, PostModel>(undefined);
+  private _posts = observable.map<string, PostListModel>(undefined);
 
   @computed
   public get isLoading() {
@@ -67,11 +68,10 @@ export default class MainViewModel extends BaseViewModel {
   @action
   load = flow(function* (this: MainViewModel, query: FindDto) {
     try {
-      const [pager, postInstances] = yield this._postRepo.find({ query });
-      postInstances.forEach((item: PostModel) => {
-        this._posts.set(item.id, item);
+      const postInstances = yield this._postRepo.find({ query });
+      postInstances.forEach((item: PostListModel) => {
+        this._posts.set(item.postId, item);
       });
-      this._pager.set(pager);
     } catch (error) {
       console.error(error);
       this._isError.set(true);

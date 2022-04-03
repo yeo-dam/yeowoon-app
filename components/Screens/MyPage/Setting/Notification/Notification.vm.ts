@@ -1,7 +1,7 @@
-import PagerModel from "domain/model/PagerModel";
-import PostModel from "domain/model/PostModel/model";
+import PagerModel from "~domain/model/Shared/PagerModel";
+import PostModel from "~domain/model/Shared/PostModel/model";
 import { action, computed, flow, observable } from "mobx";
-import NotificationModel from "~domain/model/NotificationModel";
+import NotificationModel from "~domain/model/Shared/NotificationModel";
 import MeRepositoryImpl from "~domain/repository/MeRepository";
 import NotificationRepositoryImpl from "~domain/repository/NotificationRepository";
 import { ConstructorParameter } from "~domain/repository/Repository";

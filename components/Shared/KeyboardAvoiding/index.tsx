@@ -16,7 +16,9 @@ const KeyboardAvoding: FC<Props> = ({ children }) => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
-      <View style={styles.inner}>{children}</View>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={styles.inner}>{children}</View>
+      </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
 };

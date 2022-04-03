@@ -43,6 +43,7 @@ export default function Navigation({
   setToken: (data: string) => void;
 }) {
   return (
+    // FIXME : Linking Config 수정하기
     <NavigationContainer
       linking={LinkingConfiguration}
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}

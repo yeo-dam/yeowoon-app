@@ -1,8 +1,7 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import styled from "styled-components/native";
 import FlexBox from "~components/Shared/FlexBox";
 import Avatar from "~components/Shared/Avatar";
-import PostModel from "~domain/model/PostModel";
 import DropDownMenu from "~components/Shared/DropDownMenu";
 import DropDownContainer from "~components/Shared/DropDownContainer";
 import Flex from "~components/Shared/FlexBox";
@@ -13,21 +12,29 @@ import ShareLogo from "~assets/Icons/Popup/Share.svg";
 import ReportLogo from "~assets/Icons/Popup/Report.svg";
 import DownloadLogo from "~assets/Icons/Popup/Download.svg";
 import { View } from "react-native";
+import PostListModel from "~domain/model/Local/PostListModel";
 
 type Props = {
-  item: PostModel;
+  item: PostListModel;
 };
 
 const Component: FC<Props> = ({ item, children }) => {
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <Wrapper>
       <PhotoHeader>
-        <Avatar name={item.user.name} imageSource={item.user.avatar?.url} />
+        <Avatar
+          name={item.user.userName}
+          imageSource={item.user.userImage?.url}
+        />
         <IconSection>
           <IconBox>
             <WishlistLogo />
           </IconBox>
           <DropDownContainer
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
             content={
               <View>
                 <Flex>

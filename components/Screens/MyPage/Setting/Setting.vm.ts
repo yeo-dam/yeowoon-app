@@ -1,5 +1,5 @@
-import PagerModel from "domain/model/PagerModel";
-import PostModel from "domain/model/PostModel/model";
+import PagerModel from "~domain/model/Shared/PagerModel";
+import PostModel from "~domain/model/Shared/PostModel/model";
 import PostRepositoryImpl from "domain/repository/PostRepository";
 import { action, computed, flow, observable } from "mobx";
 import { ConstructorParameter } from "~domain/repository/Repository";

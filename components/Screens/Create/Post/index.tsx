@@ -141,18 +141,16 @@ const CreatePost = ({
             <InnerWrapper>{renderForm()}</InnerWrapper>
           </Wrapper>
         </FormWrapper>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <DateFlexBox>
-            <DateInput
-              maxLength={8}
-              height="20px"
-              name="inputDateTime"
-              placeholder="날짜(YYYY-MM-DD)를 입력해주세요"
-              keyboardType="number-pad"
-              inputAccessoryViewID={CREATE_SCREEN_NAME.POST}
-            />
-          </DateFlexBox>
-        </TouchableWithoutFeedback>
+        <DateFlexBox>
+          <DateInput
+            maxLength={8}
+            height="20px"
+            name="inputDateTime"
+            placeholder="날짜(YYYY-MM-DD)를 입력해주세요"
+            keyboardType="number-pad"
+            inputAccessoryViewID={CREATE_SCREEN_NAME.POST}
+          />
+        </DateFlexBox>
       </FormProvider>
     </KeyboardAvoiding>
   );
@@ -176,7 +174,8 @@ const FormWrapper = styled(Flex)`
 `;
 
 const DateInput = styled(Input)`
-  margin-bottom: 36px;
+  /* margin-bottom: 36px; */
+  border: 1px solid blue;
 `;
 
 const TitleBox = styled(Flex)`

@@ -1,4 +1,3 @@
-import PostModel from "domain/model/PostModel";
 import React from "react";
 import { TouchableWithoutFeedback } from "react-native";
 import styled from "styled-components/native";
@@ -6,9 +5,11 @@ import Image from "components/Shared/Image";
 import Typography from "components/Shared/Typography";
 import { dateFormatter } from "helper/Formatter/DateFormatter";
 import FlexBox from "components/Shared/FlexBox";
+import PostListModel from "~domain/model/Local/PostListModel";
+import Carousel from "~components/Shared/Carousel";
 
 export type Props = {
-  item: PostModel;
+  item: PostListModel;
   setIsFront: (data: boolean) => void;
 };
 
@@ -17,11 +18,12 @@ const PhotoCard = ({ item, setIsFront }: Props) => {
     <PhotoFrame>
       <PhotoContent>
         <TouchableWithoutFeedback onPress={() => setIsFront(false)}>
-          <MainImage source={{ uri: item.images[0].url }} />
+          {/* TODO : 캐로젤로 변경해줄 필요가 있음 */}
+          <MainImage source={{ uri: item.imageLocations[0] }} />
         </TouchableWithoutFeedback>
         <PhotoDate>
           <PhotoDateTypo type="Number" variant="digit">
-            {dateFormatter(item.createdAt)}
+            {item.date}
           </PhotoDateTypo>
         </PhotoDate>
       </PhotoContent>
