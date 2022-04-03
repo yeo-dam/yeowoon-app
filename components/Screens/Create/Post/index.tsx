@@ -30,7 +30,6 @@ import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { useEffect } from "react";
 import { runInAction } from "mobx";
 import KeyboardAvoiding from "~components/Shared/KeyboardAvoiding";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const {
   window: { width: windowWidth, height: windowHeight },
@@ -39,8 +38,6 @@ const {
 const CreatePost = ({
   navigation,
 }: RootTabScreenProps<typeof CREATE_SCREEN_NAME.POST>) => {
-  console.log(`TCL ~ [index.tsx] ~ line ~ 40 ~ windowHeight`, windowHeight);
-
   const resolver = classValidatorResolver(CreatePostDto);
   const form = useForm<CreatePostDto>({
     resolver,
@@ -160,8 +157,6 @@ export default observer(CreatePost);
 
 const Wrapper = styled.View`
   margin: 0 auto;
-  width: ${windowWidth * 0.936 + "px"};
-  height: ${windowHeight * 0.647 + "px"};
   background-color: white;
 `;
 
@@ -174,7 +169,6 @@ const FormWrapper = styled(Flex)`
 `;
 
 const DateInput = styled(Input)`
-  /* margin-bottom: 36px; */
   border: 1px solid blue;
 `;
 
@@ -188,16 +182,6 @@ const DateFlexBox = styled(Flex)`
   justify-content: flex-end;
   padding-bottom: 70px;
   border: 1px solid red;
-`;
-
-const ImageUploadWrapper = styled.View``;
-
-const ImageUploadSection = styled(View)`
-  justify-content: center;
-  align-items: center;
-  width: ${windowWidth * 0.85 + "px"};
-  height: ${windowHeight * 0.48 + "px"};
-  background-color: ${({ theme }) => theme.colors.grey.ED};
 `;
 
 const DescriptionBox = styled(View)`

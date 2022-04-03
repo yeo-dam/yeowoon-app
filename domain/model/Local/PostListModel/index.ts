@@ -27,6 +27,7 @@ class _PlaceModel extends PickType(PlaceModel, [
   "placeId",
   "placeName",
   "placeType",
+  "address",
 ]) {}
 
 class PostListModel extends PickType(PostModel, ["postId", "title"]) {

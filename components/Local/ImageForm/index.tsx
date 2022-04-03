@@ -10,12 +10,16 @@ import Typography from "~components/Shared/Typography";
 import { observer } from "mobx-react";
 import Carousel from "~components/Shared/Carousel";
 import NoImageLogo from "~assets/images/No_image.svg";
-import { useFormContext } from "react-hook-form";
 import Input from "~components/Shared/Input";
+import Layout from "constants/Layout";
 
 type Props = {
   vm: CreatePostViewModel;
 } & Pick<RootTabScreenProps<typeof CREATE_SCREEN_NAME.POST>, "navigation">;
+
+const {
+  window: { width: windowWidth, height: windowHeight },
+} = Layout;
 
 const Component: FC<Props> = ({ vm, navigation }) => {
   const renderForm = () => {
@@ -56,8 +60,8 @@ const ImageUploadWrapper = styled.View``;
 const ImageUploadSection = styled(View)`
   justify-content: center;
   align-items: center;
-  width: 319px;
-  height: 390px;
+  width: ${windowWidth * 0.85 + "px"};
+  height: ${windowHeight * 0.48 + "px"};
   background-color: ${({ theme }) => theme.colors.grey.ED};
 `;
 

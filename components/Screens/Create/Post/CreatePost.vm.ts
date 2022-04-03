@@ -58,7 +58,7 @@ export default class CreatePostViewModel extends BaseViewModel {
   private _uploadedImages = observable.map<string, ImageFileModel>(undefined);
 
   @observable
-  private _searchedList = observable.map<number, PlaceList>(undefined);
+  private _searchedList = observable.map<string, PlaceList>(undefined);
 
   @observable
   private _searchedWord = observable.box<string>(undefined);
@@ -147,7 +147,7 @@ export default class CreatePostViewModel extends BaseViewModel {
   }
 
   @action
-  selectPlace(id: number) {
+  selectPlace(id: string) {
     const place = this._searchedList.get(id);
     if (place) {
       this._selectedPlace.set(place);

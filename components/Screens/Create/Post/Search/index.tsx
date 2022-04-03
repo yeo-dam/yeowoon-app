@@ -35,7 +35,7 @@ const MyPageScreen = ({
     (viewModel) => viewModel.tab.Post
   );
 
-  const handlePress = (placeId: number) => {
+  const handlePress = (placeId: string) => {
     runInAction(() => vm.selectPlace(placeId));
     navigation.navigate("CreatePost");
   };

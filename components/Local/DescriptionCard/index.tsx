@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components/native";
-import { TouchableWithoutFeedback, View } from "react-native";
+import { Pressable, View } from "react-native";
 import Typography from "components/Shared/Typography";
 import { FollowerNum } from "helper/Formatter/FollowerNumFormatter";
 import PlaceTypeFormatter from "helper/Formatter/PlaceTypeFormatter";
@@ -9,78 +9,84 @@ import Divider from "components/Shared/Divider";
 import { Props as PhotoCardProps } from "../PhotoCard";
 import Interval from "components/Shared/Interval";
 import { MAIN_SCREEN_NAME } from "constants/SCREEN_NAME";
+import Layout from "constants/Layout";
 
 export type Props = {
   navigation: any;
 } & PhotoCardProps;
 
+const {
+  window: { width: windowWidth, height: windowHeight },
+} = Layout;
+
 const Component = ({ item, setIsFront, navigation }: Props) => {
   const handlePress = () => navigation.push(MAIN_SCREEN_NAME.MAP);
 
   return (
-    <TouchableWithoutFeedback onPress={() => setIsFront(true)}>
+    <Pressable onPress={() => setIsFront(true)}>
       <PhotoFrame>
         <PhotoBox>
           <ContentBox>
-            <TouchableWithoutFeedback onPress={handlePress}>
+            <Pressable onPress={handlePress}>
               <View>
                 <WhiteTitleTypo>{item.title}</WhiteTitleTypo>
                 <Interval height="8px" />
                 <GreyFlexBox>
                   <GreyBlackTypo>
-                    {PlaceTypeFormatter(item.place.type)}
+                    {PlaceTypeFormatter(item.place.placeType)}
                   </GreyBlackTypo>
                   <Interval width="4px" />
                   <Divider orientation="Vertical" />
                   <Interval width="4px" />
-                  {/* TODO : Address Formatting 관련 서버 쪽과 이야기 해봐야 할 것. 위경도 데이터를 주소 형태로 변형해줄 수 있을지 따져봐야 함 */}
-                  <GreyBlackTypo>{item.place.latitude}</GreyBlackTypo>
+                  <GreyBlackTypo>{item.place.address}</GreyBlackTypo>
                   {/* TODO : 아이콘 추가 필요 */}
                   {/* <BiChevronRight color="#AAAAAA" size={12} /> */}
                 </GreyFlexBox>
               </View>
-            </TouchableWithoutFeedback>
+            </Pressable>
             <Interval height="20px" />
             <WhiteTypo>{item.description}</WhiteTypo>
             <Interval height="8px" />
             <TagFlexBox>
               {item.tags &&
                 item.tags.map((tag, idx) => (
-                  <TagTypo key={idx}>{`#${tag.title} `}</TagTypo>
+                  <TagTypo key={idx}>{`#${tag} `}</TagTypo>
                 ))}
             </TagFlexBox>
           </ContentBox>
           <Divider />
-          {/* TODO : 값 Counting은 서버에서 줘야 할 것 같음 */}
           <CommentBox>
-            <GreyTypo>{FollowerNum()} 명</GreyTypo>
+            <GreyTypo>{item.likeCount} 명</GreyTypo>
             <Interval height="6px" />
-            <TouchableWithoutFeedback
+            <Pressable
               onPress={() => navigation.navigate(MAIN_SCREEN_NAME.COMMENT)}
             >
               {/* FIXME : 댓글을 표현하는 순서가 변경되어야 할 것임. */}
               <GreyTypo>
                 {item.comments &&
-                  `${(item.comments[0].user.name, item.comments[0].content)}`}
+                  `${
+                    (item.comments[0].user.userName, item.comments[0].content)
+                  }`}
               </GreyTypo>
-            </TouchableWithoutFeedback>
+            </Pressable>
           </CommentBox>
         </PhotoBox>
       </PhotoFrame>
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 };
 
 const PhotoFrame = styled(View)`
   background-color: ${({ theme }) => theme.colors.background.paper};
+  height: ${windowHeight * 0.647 + "px"};
   padding: 30px 16px 16px 16px;
 `;
 
 const PhotoBox = styled(View)<{ isFront?: boolean }>`
   display: flex;
   justify-content: flex-end;
-  width: 100%;
-  height: 390px;
+  width: ${windowWidth * 0.85 + "px"};
+  height: ${windowHeight * 0.48 + "px"};
   background-color: ${({ theme }) => theme.colors.grey.black};
 `;
 
