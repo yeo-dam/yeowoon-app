@@ -103,11 +103,13 @@ const CreatePost = ({
     console.log(`formmatedDto >>> `, formmatedDto);
 
     try {
-      await vm.createPost({ body: formmatedDto });
-      // 생성 후, sucess response 달라고 성공시 요청 할 것
-      // const success = await vm.createPost({ body: formmatedDto });
-      // if(success){navigation.push("Root"); form.reset()};
-      // navigation.push("Root");
+      const id = await vm.createPost({ body: formmatedDto });
+      if (id) {
+        vm.resetUploadImages();
+        vm.resetSelctedPlace();
+        form.reset();
+        navigation.push("Root");
+      }
     } catch (error) {
       console.log(error);
     }

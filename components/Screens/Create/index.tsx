@@ -2,7 +2,7 @@ import * as React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import CreatePost from "./Post";
 import ImageUpload from "./Post/ImageUpload";
-import { InputAccessoryView, Pressable, View, Text } from "react-native";
+import { InputAccessoryView, Pressable, View } from "react-native";
 import { CREATE_SCREEN_NAME, MAIN_SCREEN_NAME } from "constants/SCREEN_NAME";
 import Typography from "components/Shared/Typography";
 import CreatePostViewModel from "./Post/CreatePost.vm";

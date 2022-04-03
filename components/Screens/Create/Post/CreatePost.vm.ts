@@ -120,7 +120,7 @@ export default class CreatePostViewModel extends BaseViewModel {
   }
 
   @action
-  formReset(bool: boolean){
+  formReset(bool: boolean) {
     this._resetTrigger.set(bool);
   }
 
@@ -137,12 +137,12 @@ export default class CreatePostViewModel extends BaseViewModel {
   }
 
   @action
-  resetUploadImages(){
+  resetUploadImages() {
     this._uploadedImages.clear();
   }
 
   @action
-  resetSelctedPlace(){
+  resetSelctedPlace() {
     this._selectedPlace.set(undefined);
   }
 
@@ -161,9 +161,10 @@ export default class CreatePostViewModel extends BaseViewModel {
   ) {
     try {
       this._isUploadLoading.set(true);
-      yield this._postRepo.createPost({
+      const res = yield this._postRepo.createPost({
         body: dto.body,
       });
+      return res;
     } catch (error) {
       console.error(error);
       this._isError.set(true);
