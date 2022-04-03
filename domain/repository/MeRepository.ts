@@ -2,8 +2,8 @@ import { validate } from "class-validator";
 import { plainToClass } from "unsafe-class-transformer";
 import ListEntity from "~data/entity/ListEntity";
 import PlaceEntity from "~data/entity/PlaceEntity";
-import PagerModel from "~domain/model/PagerModel";
-import PlaceModel from "~domain/model/PlaceModel/model";
+import PagerModel from "~domain/model/Shared/PagerModel";
+import PlaceModel from "~domain/model/Shared/PlaceModel/model";
 import BaseRepository, { ConstructorParameter } from "./Repository";
 
 interface MeRepository {}

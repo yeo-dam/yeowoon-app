@@ -9,10 +9,13 @@ import {
   MinLength,
 } from "class-validator";
 import { PickType } from "helper/mappedTypes";
-import PlaceModel from "~domain/model/PlaceModel/model";
-import PostModel from "~domain/model/PostModel";
+import PlaceModel from "~domain/model/Shared/PlaceModel/model";
+import PostModel from "~domain/model/Shared/PostModel";
+import PlaceType from "~domain/enum/PlaceType";
 
-class Place extends PickType(PlaceModel, ["placeId", "placeName", "type"]) {}
+class Place extends PickType(PlaceModel, ["placeId", "placeName"]) {
+  type: PlaceType;
+}
 class CreatePostDto extends PickType(PostModel, ["description"]) {
   @MinLength(8, { message: "YYYY.DD.MM 형태로 입력해주세요" })
   @IsString()

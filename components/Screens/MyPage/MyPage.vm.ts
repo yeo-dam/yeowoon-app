@@ -1,5 +1,5 @@
-import PagerModel from "domain/model/PagerModel";
-import WishlistModel from "~domain/model/BookmarkModel";
+import PagerModel from "~domain/model/Shared/PagerModel";
+import WishlistModel from "~domain/model/Shared/BookmarkModel";
 import { action, computed, flow, observable } from "mobx";
 import MeRepositoryImpl from "~domain/repository/MeRepository";
 import { ConstructorParameter } from "~domain/repository/Repository";

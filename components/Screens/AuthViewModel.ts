@@ -1,6 +1,6 @@
 import { action, computed, flow, observable } from "mobx";
 import ProviderType from "~domain/enum/ProviderType";
-import DecodedIdTokenModel from "~domain/model/DecodedIdTokenModel";
+import DecodedIdTokenModel from "~domain/model/Shared/DecodedIdTokenModel";
 import AuthRepositoryImpl from "~domain/repository/AuthRepository";
 import { ConstructorParameter } from "~domain/repository/Repository";
 

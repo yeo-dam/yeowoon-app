@@ -1,7 +1,7 @@
 import PlaceRepositoryImpl from "~domain/repository/PlaceRepository";
 import { action, computed, flow, observable } from "mobx";
-import PagerModel from "~domain/model/PagerModel";
-import PlaceModel from "~domain/model/PlaceModel/model";
+import PagerModel from "~domain/model/Shared/PagerModel";
+import PlaceModel from "~domain/model/Shared/PlaceModel/model";
 import MeRepositoryImpl from "~domain/repository/MeRepository";
 import { ConstructorParameter } from "~domain/repository/Repository";
 import BaseViewModel from "../../BaseViewModel";

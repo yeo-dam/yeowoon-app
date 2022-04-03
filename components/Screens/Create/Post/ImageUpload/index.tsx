@@ -24,7 +24,7 @@ const Component = ({
     return <ActivityIndicator size="small" color={"#0580FF"} />;
   };
 
-  const ImagesCallback = (callback: any) => {
+  const ImagesCallback = (callback: Promise<Asset[]>) => {
     navigation.setOptions({
       headerRight: () => _getHeaderLoader(),
     });
@@ -56,7 +56,7 @@ const Component = ({
       .catch((e: any) => console.log(e));
   };
 
-  const _renderDoneButton = (count: number, onSubmit: any) => {
+  const _renderDoneButton = (count: number, onSubmit: () => void) => {
     if (!count) return null;
     return (
       <ImageUploadHeader onPress={onSubmit}>
@@ -80,7 +80,7 @@ const Component = ({
         <ImageBrowser
           max={3}
           onChange={updateHandler}
-          callback={ImagesCallback}
+          callbackHandler={ImagesCallback}
         />
       </View>
     </FormLayout>

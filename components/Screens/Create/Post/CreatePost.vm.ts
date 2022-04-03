@@ -2,8 +2,8 @@ import { action, computed, flow, observable } from "mobx";
 import PlaceEntity from "~data/entity/PlaceEntity";
 import CreatePostDto from "~domain/dto/CreatePostDto";
 import PlaceSearchDto from "~domain/dto/PlaceSearchDto";
-import ImageFileModel from "~domain/model/ImageFileModel";
-import PagerModel from "~domain/model/PagerModel";
+import ImageFileModel from "~domain/model/Shared/ImageFileModel";
+import PagerModel from "~domain/model/Shared/PagerModel";
 import PlaceRepositoryImpl from "~domain/repository/PlaceRepository";
 import PostRepositoryImpl from "~domain/repository/PostRepository";
 import { ConstructorParameter } from "~domain/repository/Repository";
@@ -120,8 +120,8 @@ export default class CreatePostViewModel extends BaseViewModel {
   }
 
   @action
-  formReset(){
-    this._resetTrigger.set(true);
+  formReset(bool: boolean) {
+    this._resetTrigger.set(bool);
   }
 
   @action
@@ -137,12 +137,12 @@ export default class CreatePostViewModel extends BaseViewModel {
   }
 
   @action
-  resetUploadImages(){
+  resetUploadImages() {
     this._uploadedImages.clear();
   }
 
   @action
-  resetSelctedPlace(){
+  resetSelctedPlace() {
     this._selectedPlace.set(undefined);
   }
 
@@ -161,9 +161,10 @@ export default class CreatePostViewModel extends BaseViewModel {
   ) {
     try {
       this._isUploadLoading.set(true);
-      yield this._postRepo.createPost({
+      const res = yield this._postRepo.createPost({
         body: dto.body,
       });
+      return res;
     } catch (error) {
       console.error(error);
       this._isError.set(true);

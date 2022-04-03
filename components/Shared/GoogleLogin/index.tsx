@@ -17,7 +17,7 @@ import { getRootViewModel } from "~components/Screens/VmManager";
 import ProviderType from "~domain/enum/ProviderType";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-import DecodedIdTokenModel from "~domain/model/DecodedIdTokenModel";
+import DecodedIdTokenModel from "~domain/model/Shared/DecodedIdTokenModel";
 WebBrowser.maybeCompleteAuthSession();
 
 export default function Component({

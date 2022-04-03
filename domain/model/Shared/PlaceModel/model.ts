@@ -1,10 +1,10 @@
 import { IsEnum, IsNotEmpty, IsNumber, IsString } from "class-validator";
-import PlaceType from "../../enum/PlaceType";
+import PlaceType from "~domain/enum/PlaceType";
 
 class PlaceModel {
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
-  placeId: number;
+  placeId: string;
 
   @IsString()
   @IsNotEmpty()
@@ -20,7 +20,7 @@ class PlaceModel {
 
   @IsEnum(PlaceType)
   @IsNotEmpty()
-  type: PlaceType;
+  placeType: PlaceType;
 
   @IsNumber()
   @IsNotEmpty()

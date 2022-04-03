@@ -2,13 +2,7 @@ import * as React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import CreatePost from "./Post";
 import ImageUpload from "./Post/ImageUpload";
-import {
-  InputAccessoryView,
-  Pressable,
-  TouchableWithoutFeedback,
-  View,
-  Text,
-} from "react-native";
+import { InputAccessoryView, Pressable, View } from "react-native";
 import { CREATE_SCREEN_NAME, MAIN_SCREEN_NAME } from "constants/SCREEN_NAME";
 import Typography from "components/Shared/Typography";
 import CreatePostViewModel from "./Post/CreatePost.vm";
@@ -74,7 +68,7 @@ const CreateScreen = ({ navigation }: any) => {
         vm.resetUploadImages();
         vm.resetSelctedPlace();
       }
-      vm.formReset();
+      vm.formReset(true);
     });
     // 홈 화면으로 이동한다.
     navigation.navigate(MAIN_SCREEN_NAME.HOME);
@@ -88,9 +82,9 @@ const CreateScreen = ({ navigation }: any) => {
         options={{
           headerShown: true,
           headerLeft: () => (
-            <TouchableWithoutFeedback onPress={handleBackToMain}>
+            <Pressable onPress={handleBackToMain}>
               <CloseLogo />
-            </TouchableWithoutFeedback>
+            </Pressable>
           ),
           headerRight: () => (
             <HeaderView>
@@ -113,9 +107,9 @@ const CreateScreen = ({ navigation }: any) => {
           headerTitle: "",
           headerLeft: () => {
             return (
-              <TouchableWithoutFeedback onPress={() => navigation.pop()}>
+              <Pressable onPress={() => navigation.pop()}>
                 <BackPushLogo />
-              </TouchableWithoutFeedback>
+              </Pressable>
             );
           },
         }}
@@ -128,11 +122,11 @@ const CreateScreen = ({ navigation }: any) => {
           headerLeft: () => {
             return (
               <>
-                <TouchableWithoutFeedback
+                <Pressable
                   onPress={() => navigation.navigate(CREATE_SCREEN_NAME.POST)}
                 >
                   <BackPushLogo />
-                </TouchableWithoutFeedback>
+                </Pressable>
                 <Interval width="10px" />
                 <Form schema={FindPostDto}>
                   <SearchBox>

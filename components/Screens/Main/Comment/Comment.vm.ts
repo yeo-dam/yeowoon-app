@@ -1,7 +1,7 @@
 import { action, computed, flow, observable } from "mobx";
 import FindDto from "~domain/dto/FindPostDto";
-import CommentModel from "~domain/model/CommentModel";
-import PagerModel from "~domain/model/PagerModel";
+import CommentModel from "~domain/model/Shared/CommentModel";
+import PagerModel from "~domain/model/Shared/PagerModel";
 import CommentRepositoryImpl from "~domain/repository/CommentRepository";
 import MeRepositoryImpl from "~domain/repository/MeRepository";
 import { ConstructorParameter } from "~domain/repository/Repository";

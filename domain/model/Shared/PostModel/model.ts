@@ -10,18 +10,18 @@ import {
   ValidateNested,
 } from "class-validator";
 import PostEntity from "~data/entity/PostEntity";
-import ImageFileModel from "~domain/model/ImageFileModel/model";
-import PlaceModel from "~domain/model/PlaceModel";
-import UserModel from "~domain/model/UserModel";
-import CommentModel from "~domain/model/CommentModel";
-import { Exclude, Type } from "unsafe-class-transformer";
+import ImageFileModel from "~domain/model/Shared/ImageFileModel/model";
+import PlaceModel from "~domain/model/Shared/PlaceModel";
+import UserModel from "~domain/model/Shared/UserModel";
+import CommentModel from "~domain/model/Shared/CommentModel";
+import { Type } from "unsafe-class-transformer";
 import TransformDate from "helper/transformDate";
 import TagModel from "../TagModel";
 
 class PostModel implements PostEntity {
   @IsString()
   @IsNotEmpty()
-  id: string;
+  postId: string;
 
   @ValidateNested()
   @Type(() => UserModel)
@@ -56,7 +56,7 @@ class PostModel implements PostEntity {
   @IsArray()
   @ArrayNotEmpty()
   @IsNotEmpty()
-  images: ImageFileModel[];
+  imageLocations: ImageFileModel[];
 
   @IsBoolean()
   @IsNotEmpty()

@@ -7,6 +7,15 @@
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "light",
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "사진첩 접근을 허용하시겠습니까?",
+          "cameraPermisson": "카메라 접근을 허용하시겠습니까?"
+        }
+      ]
+    ],
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
