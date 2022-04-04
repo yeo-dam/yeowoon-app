@@ -11,8 +11,11 @@ import WishlistLogo from "~assets/Icons/wishlist.svg";
 import ShareLogo from "~assets/Icons/Popup/Share.svg";
 import ReportLogo from "~assets/Icons/Popup/Report.svg";
 import DownloadLogo from "~assets/Icons/Popup/Download.svg";
-import { View } from "react-native";
+import { Image, View } from "react-native";
 import PostListModel from "~domain/model/Local/PostListModel";
+
+const NoImageProfile = "~assets/Icons/no-profile.png";
+import NoProfile from "~assets/Icons/no-image-profile.svg";
 
 type Props = {
   item: PostListModel;
@@ -28,6 +31,7 @@ const Component: FC<Props> = ({ item, children }) => {
           name={item.user.userName}
           imageSource={item.user.userImage?.url}
         />
+        <Image source={{ uri: "~assets/images/No_image.png" }} />
         <IconSection>
           <IconBox>
             <WishlistLogo />
@@ -89,3 +93,10 @@ const DropDownBox = styled.View`
 `;
 
 const DropDownTypo = styled(Typography).attrs({ variant: "subhead-regular" })``;
+
+const ProfileIconBox = styled.View`
+  display: flex;
+  width: 24px;
+  height: 24px;
+  border: 1px solid red;
+`;

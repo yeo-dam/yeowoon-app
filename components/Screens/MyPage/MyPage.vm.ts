@@ -4,6 +4,7 @@ import { action, computed, flow, observable } from "mobx";
 import MeRepositoryImpl from "~domain/repository/MeRepository";
 import { ConstructorParameter } from "~domain/repository/Repository";
 import BaseViewModel from "../BaseViewModel";
+import UserModel from "~domain/model/Shared/UserModel/model";
 
 export default class ThisViewModel extends BaseViewModel {
   private static _Instance: ThisViewModel;
@@ -35,7 +36,15 @@ export default class ThisViewModel extends BaseViewModel {
   private _pager = observable.box<PagerModel>(undefined);
 
   @observable
+  private _user = observable.box<UserModel>(undefined);
+
+  @observable
   private _wishlist = observable.map<string, WishlistModel>(undefined);
+
+  @computed
+  public get user() {
+    return this._user.get();
+  }
 
   @computed
   public get isLoading() {
