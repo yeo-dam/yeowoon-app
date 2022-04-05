@@ -12,7 +12,7 @@ const Component: FC<Props> = ({
   orientation = "Horizontal",
   color,
   border,
-  height,
+  height = "1px",
 }) => {
   return (
     <Divider
@@ -27,7 +27,7 @@ const Component: FC<Props> = ({
 export default Component;
 
 const Divider = styled.View<Props>`
-  ${({ orientation, height }) =>
+  ${({ orientation }) =>
     orientation === "Horizontal"
       ? css`
           height: 1px;
@@ -35,5 +35,5 @@ const Divider = styled.View<Props>`
       : css`
           width: 1px;
         `}
-  background: ${({ color }) => (color ? color : "#999")};
+  height: ${({ height }) => height};  background: ${({ color }) => (color ? color : "#999")};
 `;
