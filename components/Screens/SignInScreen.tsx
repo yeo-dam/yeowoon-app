@@ -43,8 +43,8 @@ export default function SignInScreen({
 }
 
 const InnerWrapper = styled.View`
-  position: relative;
   flex: 1;
+  position: relative;
   align-items: center;
   justify-content: center;
 `;

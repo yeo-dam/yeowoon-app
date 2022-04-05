@@ -48,13 +48,13 @@ const MyPageScreen = ({
               <Flex>
                 <LeftContentBox>
                   {/* TODO : Avatar 이미지가 nullable인가? */}
-                  <Avatar imageSource={item.user.avatar?.filePath || ""} />
+                  <Avatar imageSource={item.user.userImage?.url || ""} />
                 </LeftContentBox>
                 <Interval width="8px" />
                 <RightContentBox>
                   <UserFlexBox>
                     <Flex>
-                      <Text>{item.user.name}</Text>
+                      <Text>{item.user.userName}</Text>
                       <Interval width="8px" />
                       <GreyTypo>{timeForToday(item.createDateTime)}</GreyTypo>
                     </Flex>

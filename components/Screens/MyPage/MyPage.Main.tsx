@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import ContentLayout from "~components/Layout/ContentLayout";
 import ErrorMsg from "~components/Shared/ErrorMsg";
@@ -21,6 +21,7 @@ import Avatar from "~components/Shared/Avatar";
 import AuthViewModel from "../AuthViewModel";
 import Image from "~components/Shared/Image";
 import Divider from "~components/Shared/Divider";
+import StatusBarLayout from "~components/Layout/StatusBarLayout";
 
 const MyPageScreen = ({
   navigation,
@@ -28,6 +29,10 @@ const MyPageScreen = ({
   const vm = getRootViewModel<MyPageViewModel>(
     (viewModel) => viewModel.tab.MyPage
   );
+
+  const [currentTab, setTab] = useState<
+    "게시글" | "저장글" | "팔로워" | "팔로잉"
+  >();
 
   useEffect(() => {
     async function loadPosts() {
@@ -45,7 +50,7 @@ const MyPageScreen = ({
   }
 
   return (
-    <Wrapper>
+    <Layout paddingLeft={24} paddingRight={24}>
       <IconSection>
         <Pressable onPress={() => navigation.navigate("Map")}>
           <MapLogo />
@@ -53,6 +58,7 @@ const MyPageScreen = ({
         <Interval width="14px" />
         <SettingLogo />
       </IconSection>
+
       <ProfileSection>
         <Avatar name="" imageSource={"https://picsum.photos/58/58"} />
         <View>
@@ -66,28 +72,36 @@ const MyPageScreen = ({
           </GreyTypo>
         </View>
       </ProfileSection>
-      <ContentSection>
-        <ContentHeader>
-          <HeaderItem>
+      <ContentHeader>
+        <Pressable onPress={() => setTab("게시글")}>
+          <HeaderItem isClicked={true}>
             <CountItem>12</CountItem>
             <Typography>게시글</Typography>
           </HeaderItem>
-          <Divider orientation="Vertical" />
-          <HeaderItem>
+        </Pressable>
+        <Divider orientation="Vertical" height={"15px"} />
+        <Pressable onPress={() => setTab("저장글")}>
+          <HeaderItem isClicked={false}>
             <CountItem>42</CountItem>
             <Typography>저장글</Typography>
           </HeaderItem>
-          <Divider orientation="Vertical" />
-          <HeaderItem>
+        </Pressable>
+        <Divider orientation="Vertical" height={"15px"} />
+        <Pressable onPress={() => setTab("팔로워")}>
+          <HeaderItem isClicked={false}>
             <CountItem>27</CountItem>
             <Typography>팔로워</Typography>
           </HeaderItem>
-          <Divider orientation="Vertical" />
-          <HeaderItem>
+        </Pressable>
+        <Divider orientation="Vertical" height={"15px"} />
+        <Pressable onPress={() => setTab("팔로잉")}>
+          <HeaderItem isClicked={false}>
             <CountItem>27</CountItem>
             <Typography>팔로잉</Typography>
           </HeaderItem>
-        </ContentHeader>
+        </Pressable>
+      </ContentHeader>
+      <ContentSection>
         <Divider />
         <ContentBody>
           <Image
@@ -112,22 +126,25 @@ const MyPageScreen = ({
           />
         </ContentBody>
       </ContentSection>
-    </Wrapper>
+    </Layout>
   );
 };
 
 export default observer(MyPageScreen);
 
-const Wrapper = styled.View`
-  align-items: flex-start;
-  justify-content: flex-start;
-  padding: 24px;
+const Layout = styled(StatusBarLayout).attrs({
+  alignItems: "flex-start",
+  justifyContent: "flex-start",
+})`
+  flex: 1;
 `;
 
 const IconSection = styled(FlexBox)`
-  margin-top: 50px;
-  width: 100%;
+  align-items: center;
+  justify-content: flex-end;
   border: 1px solid blue;
+  height: 48px;
+  flex: 1;
 `;
 
 const ProfileSection = styled(FlexBox)`
@@ -138,7 +155,7 @@ const GreyTypo = styled(Typography)`
   color: ${({ theme }) => theme.colors.grey[99]};
 `;
 
-const ContentSection = styled.View`
+const ContentSection = styled.ScrollView`
   border: 1px solid green;
 `;
 
@@ -152,6 +169,10 @@ const ContentBody = styled(FlexBox)`
   flex-wrap: wrap;
 `;
 
-const HeaderItem = styled.View``;
+const HeaderItem = styled(View)<{ isClicked?: boolean }>`
+  align-items: center;
+  color: ${({ isClicked, theme }) =>
+    isClicked ? theme.colors.grey.black : theme.colors.grey.AA};
+`;
 
 const CountItem = styled.Text``;
