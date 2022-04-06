@@ -5,14 +5,25 @@ import Image from "components/Shared/Image";
 import Typography from "../Typography";
 
 type Props = {
+  width?: number;
+  height?: number;
   name?: string;
   imageSource?: string;
 };
 
-const Component: FC<Props> = ({ name, imageSource }) => {
+const Component: FC<Props> = ({
+  name,
+  imageSource,
+  width = 58,
+  height = 58,
+}) => {
   return (
     <Wrapper>
-      <StyledImage source={{ uri: imageSource }} />
+      <StyledImage
+        width={width}
+        height={height}
+        source={{ uri: imageSource }}
+      />
       <UserName>{name}</UserName>
     </Wrapper>
   );
@@ -24,11 +35,11 @@ const Wrapper = styled.View`
   flex-direction: row;
 `;
 
-const StyledImage = styled(Image)`
-  width: 24px;
-  height: 24px;
+const StyledImage = styled(Image)<{ width?: number; height?: number }>`
+  width: ${({ width }) => `${width}px`};
+  height: ${({ height }) => `${height}px`};
+  border-radius: ${({ width }) => `${width}px`};
   margin-right: 8px;
-  border-radius: 24px;
 `;
 
 const UserName = styled(Typography).attrs({ variant: "english-regular" })`
