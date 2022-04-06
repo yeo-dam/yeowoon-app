@@ -40,14 +40,13 @@ const StyledSafeAreaView = styled(SafeAreaView)<{
   paddingLeft?: number;
   paddingRight?: number;
 }>`
-  flex: 1;
   padding-left: ${({ paddingLeft }) => `${paddingLeft}px`};
   padding-right: ${({ paddingRight }) => `${paddingRight}px`};
+  flex: 1;
 `;
 
 const Wrapper = styled.View<Props>`
-  flex: 1;
-  border: 1px solid red;
   align-items: ${({ alignItems }) => alignItems};
   justify-content: ${({ justifyContent }) => justifyContent};
+  flex: 1;
 `;

@@ -1,13 +1,11 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 
-import ContentLayout from "~components/Layout/ContentLayout";
 import ErrorMsg from "~components/Shared/ErrorMsg";
 import Loadable from "~components/Shared/Loadable";
 import MyPageViewModel from "./MyPage.vm";
 import { observer } from "mobx-react";
 import Typography from "~components/Shared/Typography";
-import TouchableIcon from "~components/Shared/TouchableIcon";
 import { Pressable, View } from "react-native";
 import { MYPAGE_SCREEN_NAME } from "constants/SCREEN_NAME";
 import { RootTabScreenProps } from "types";
@@ -18,10 +16,10 @@ import styled from "styled-components/native";
 import FlexBox from "~components/Shared/FlexBox";
 import Interval from "~components/Shared/Interval";
 import Avatar from "~components/Shared/Avatar";
-import AuthViewModel from "../AuthViewModel";
 import Image from "~components/Shared/Image";
 import Divider from "~components/Shared/Divider";
 import StatusBarLayout from "~components/Layout/StatusBarLayout";
+import theme from "themes";
 
 const MyPageScreen = ({
   navigation,
@@ -60,50 +58,70 @@ const MyPageScreen = ({
       </IconSection>
 
       <ProfileSection>
-        <Avatar name="" imageSource={"https://picsum.photos/58/58"} />
-        <View>
+        <Avatar
+          name=""
+          width={58}
+          height={58}
+          imageSource={"https://picsum.photos/58/58"}
+        />
+        <ProfileTextBox>
           <Typography variant="subhead-medium">userName</Typography>
-          <GreyTypo>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-            Consequatur debitis rem magni aliquid minus quae praesentium
-            laboriosam? Natus adipisci accusantium excepturi voluptatibus,
-            distinctio, ex consequuntur iure magni quibusdam praesentium
-            architecto?
+          <GreyTypo numberOfLines={2} ellipsizeMode="tail">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam
+            dolorum iste praesentium aspernatur reprehenderit quas quis deleniti
+            nemo, qui eligendi! Officia sapiente praesentium ut adipisci
+            ducimus. Optio fugit et iusto!
           </GreyTypo>
-        </View>
+        </ProfileTextBox>
       </ProfileSection>
       <ContentHeader>
         <Pressable onPress={() => setTab("게시글")}>
-          <HeaderItem isClicked={true}>
-            <CountItem>12</CountItem>
-            <Typography>게시글</Typography>
+          <HeaderItem>
+            <CountItem isClicked={currentTab === "게시글"}>12</CountItem>
+            <CountText isClicked={currentTab === "게시글"}>게시글</CountText>
           </HeaderItem>
         </Pressable>
-        <Divider orientation="Vertical" height={"15px"} />
+        <DividerBox>
+          <Divider orientation="Vertical" height={"15px"} />
+        </DividerBox>
         <Pressable onPress={() => setTab("저장글")}>
-          <HeaderItem isClicked={false}>
-            <CountItem>42</CountItem>
-            <Typography>저장글</Typography>
+          <HeaderItem>
+            <CountItem isClicked={currentTab === "저장글"}>42</CountItem>
+            <CountText isClicked={currentTab === "저장글"}>저장글</CountText>
           </HeaderItem>
         </Pressable>
-        <Divider orientation="Vertical" height={"15px"} />
+        <DividerBox>
+          <Divider orientation="Vertical" height={"15px"} />
+        </DividerBox>
         <Pressable onPress={() => setTab("팔로워")}>
-          <HeaderItem isClicked={false}>
-            <CountItem>27</CountItem>
-            <Typography>팔로워</Typography>
+          <HeaderItem>
+            <CountItem isClicked={currentTab === "팔로워"}>27</CountItem>
+            <CountText isClicked={currentTab === "팔로워"}>팔로워</CountText>
           </HeaderItem>
         </Pressable>
-        <Divider orientation="Vertical" height={"15px"} />
+        <DividerBox>
+          <Divider orientation="Vertical" height={"15px"} />
+        </DividerBox>
         <Pressable onPress={() => setTab("팔로잉")}>
-          <HeaderItem isClicked={false}>
-            <CountItem>27</CountItem>
-            <Typography>팔로잉</Typography>
+          <HeaderItem>
+            <CountItem isClicked={currentTab === "팔로잉"}>27</CountItem>
+            <CountText isClicked={currentTab === "팔로잉"}>팔로잉</CountText>
           </HeaderItem>
         </Pressable>
       </ContentHeader>
       <ContentSection>
         <Divider />
         <ContentBody>
+          <Image
+            width={161}
+            height={212}
+            source={{ uri: "https://picsum.photos/161/212" }}
+          />
+          <Image
+            width={161}
+            height={212}
+            source={{ uri: "https://picsum.photos/161/212" }}
+          />
           <Image
             width={161}
             height={212}
@@ -142,26 +160,31 @@ const Layout = styled(StatusBarLayout).attrs({
 const IconSection = styled(FlexBox)`
   align-items: center;
   justify-content: flex-end;
-  border: 1px solid blue;
+  margin-right: 12px;
+  border: 1px solid red;
   height: 48px;
-  flex: 1;
+`;
+
+const ProfileTextBox = styled.View`
+  overflow: hidden;
 `;
 
 const ProfileSection = styled(FlexBox)`
-  border: 1px solid red;
+  padding-right: 24px;
 `;
 
 const GreyTypo = styled(Typography)`
   color: ${({ theme }) => theme.colors.grey[99]};
+  width: 223px;
+  /* padding-right: 72px; */
 `;
 
-const ContentSection = styled.ScrollView`
-  border: 1px solid green;
-`;
+const ContentSection = styled.ScrollView``;
 
 const ContentHeader = styled(FlexBox)`
-  width: 100%;
   justify-content: space-around;
+  padding-bottom: 8px;
+  width: 100%;
 `;
 
 const ContentBody = styled(FlexBox)`
@@ -169,10 +192,21 @@ const ContentBody = styled(FlexBox)`
   flex-wrap: wrap;
 `;
 
-const HeaderItem = styled(View)<{ isClicked?: boolean }>`
+const DividerBox = styled.View`
+  justify-content: flex-end;
+`;
+
+const HeaderItem = styled(View)`
+  margin-top: 28px;
   align-items: center;
-  color: ${({ isClicked, theme }) =>
+`;
+
+const CountItem = styled.Text<{ isClicked?: boolean }>`
+  color: ${({ isClicked }) =>
     isClicked ? theme.colors.grey.black : theme.colors.grey.AA};
 `;
 
-const CountItem = styled.Text``;
+const CountText = styled.Text<{ isClicked?: boolean }>`
+  color: ${({ isClicked }) =>
+    isClicked ? theme.colors.grey.black : theme.colors.grey.AA};
+`;
