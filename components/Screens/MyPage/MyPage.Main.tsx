@@ -21,6 +21,7 @@ import Divider from "~components/Shared/Divider";
 import StatusBarLayout from "~components/Layout/StatusBarLayout";
 import theme from "themes";
 
+type Tabs = "게시글" | "저장글" | "팔로워" | "팔로잉";
 const MyPageScreen = ({
   navigation,
 }: RootTabScreenProps<typeof MYPAGE_SCREEN_NAME.MAIN>) => {
@@ -28,9 +29,7 @@ const MyPageScreen = ({
     (viewModel) => viewModel.tab.MyPage
   );
 
-  const [currentTab, setTab] = useState<
-    "게시글" | "저장글" | "팔로워" | "팔로잉"
-  >();
+  const [currentTab, setTab] = useState<Tabs>("게시글");
 
   useEffect(() => {
     async function loadPosts() {
@@ -39,13 +38,13 @@ const MyPageScreen = ({
     loadPosts();
   }, []);
 
-  if (vm.isLoading) {
-    return <Loadable />;
-  }
+  // if (vm.isLoading) {
+  //   return <Loadable />;
+  // }
 
-  if (vm.isError) {
-    return <ErrorMsg />;
-  }
+  // if (vm.isError) {
+  //   return <ErrorMsg />;
+  // }
 
   return (
     <Layout paddingLeft={24} paddingRight={24}>
@@ -54,7 +53,9 @@ const MyPageScreen = ({
           <MapLogo />
         </Pressable>
         <Interval width="14px" />
-        <SettingLogo />
+        <SettingLogoBox>
+          <SettingLogo />
+        </SettingLogoBox>
       </IconSection>
 
       <ProfileSection>
@@ -82,7 +83,8 @@ const MyPageScreen = ({
           </HeaderItem>
         </Pressable>
         <DividerBox>
-          <Divider orientation="Vertical" height={"15px"} />
+          <Divider orientation="Vertical" />
+          {/* <Divider orientation="Vertical" height={"15px"} /> */}
         </DividerBox>
         <Pressable onPress={() => setTab("저장글")}>
           <HeaderItem>
@@ -91,7 +93,8 @@ const MyPageScreen = ({
           </HeaderItem>
         </Pressable>
         <DividerBox>
-          <Divider orientation="Vertical" height={"15px"} />
+          <Divider orientation="Vertical" />
+          {/* <Divider orientation="Vertical" height={"15px"} /> */}
         </DividerBox>
         <Pressable onPress={() => setTab("팔로워")}>
           <HeaderItem>
@@ -100,7 +103,8 @@ const MyPageScreen = ({
           </HeaderItem>
         </Pressable>
         <DividerBox>
-          <Divider orientation="Vertical" height={"15px"} />
+          <Divider orientation="Vertical" />
+          {/* <Divider orientation="Vertical" height={"15px"} /> */}
         </DividerBox>
         <Pressable onPress={() => setTab("팔로잉")}>
           <HeaderItem>
@@ -161,7 +165,6 @@ const IconSection = styled(FlexBox)`
   align-items: center;
   justify-content: flex-end;
   margin-right: 12px;
-  border: 1px solid red;
   height: 48px;
 `;
 
@@ -183,6 +186,7 @@ const ContentSection = styled.ScrollView``;
 
 const ContentHeader = styled(FlexBox)`
   justify-content: space-around;
+  align-items: flex-end;
   padding-bottom: 8px;
   width: 100%;
 `;
@@ -192,8 +196,13 @@ const ContentBody = styled(FlexBox)`
   flex-wrap: wrap;
 `;
 
-const DividerBox = styled.View`
+const DividerBox = styled(FlexBox)`
   justify-content: flex-end;
+  height: 15px;
+`;
+
+const SettingLogoBox = styled.View`
+  padding-top: 7px;
 `;
 
 const HeaderItem = styled(View)`

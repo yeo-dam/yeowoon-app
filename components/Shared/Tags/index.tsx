@@ -101,5 +101,5 @@ const StyledFlexBox = styled(FlexBox)`
 const InputBox = styled(FlexBox)<{ isEmpty?: boolean }>`
   /* flex: 1; */
   margin-right: 4px;
-  border: 1px solid green;
+  /* border: 1px solid green; */
 `;

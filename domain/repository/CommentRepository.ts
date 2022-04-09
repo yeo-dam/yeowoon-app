@@ -25,34 +25,30 @@ export default class CommentRepositoryImpl
     super(args);
   }
 
-  async find(dto: { query: FindDto }): Promise<[PagerModel, CommentModel[]]> {
-    const postlistEntities = await this._remote._fetcher<
-      ListEntity<CommentEntity>
-    >("/comments");
+  async find(dto: {
+    parameter: { postId: string };
+    query: FindDto;
+  }): Promise<CommentModel[]> {
+    try {
+      const { comments: commentEntities } = await this._remote._fetcher<{
+        comments: CommentEntity[];
+      }>(`/comment/list/${dto.parameter.postId}`);
 
-    const commentInstances = postlistEntities.items.map((post) =>
-      plainToClass<CommentModel, CommentEntity>(CommentModel, { ...post })
-    );
+      const commentInstances = commentEntities.map((comment) =>
+        plainToClass<CommentModel, CommentEntity>(CommentModel, { ...comment })
+      );
 
-    const pagerInstance = plainToClass(PagerModel, {
-      count: postlistEntities.count,
-      total: postlistEntities.total,
-      limit: postlistEntities.limit,
-      offset: postlistEntities.offset,
-    });
-
-    commentInstances.forEach(async (item) => {
-      const postError = await validate(item);
-      if (postError.length > 0) {
-        throw postError;
-      }
-    });
-
-    const pagerErrors = await validate(pagerInstance);
-    if (pagerErrors.length > 0) {
-      throw pagerErrors;
+      commentInstances.forEach(async (item) => {
+        if (item) {
+          const postError = await validate(item);
+          if (postError.length > 0) {
+            throw postError;
+          }
+        }
+      });
+      return commentInstances;
+    } catch (error) {
+      throw error;
     }
-
-    return [pagerInstance, commentInstances];
   }
 }

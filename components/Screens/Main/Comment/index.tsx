@@ -1,54 +1,64 @@
 import * as React from "react";
-import { useEffect } from "react";
 
-import ContentLayout from "components/Layout/ContentLayout";
-import ErrorMsg from "components/Shared/ErrorMsg";
-import Loadable from "components/Shared/Loadable";
+import ContentLayout from "~components/Layout/ContentLayout";
 import CommentViewModel from "./Comment.vm";
 import { observer } from "mobx-react";
-import Typography from "components/Shared/Typography";
+import Typography from "~components/Shared/Typography";
 import { RootTabScreenProps } from "types";
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import styled from "styled-components/native";
-import Flex from "components/Shared/FlexBox";
-import Avatar from "components/Shared/Avatar";
-import DropDownMenu from "components/Shared/DropDownMenu";
-import Divider from "components/Shared/Divider";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import Interval from "components/Shared/Interval";
+import Flex from "~components/Shared/FlexBox";
+import Avatar from "~components/Shared/Avatar";
+import DropDownMenu from "~components/Shared/DropDownMenu";
+import Divider from "~components/Shared/Divider";
+import Interval from "~components/Shared/Interval";
 import timeForToday from "helper/Formatter/CalculateDayBefore";
 import { MAIN_SCREEN_NAME } from "constants/SCREEN_NAME";
 import { getRootViewModel } from "~components/Screens/VmManager";
+import { useEffect } from "react";
+import KeyboardAvoding from "~components/Layout/KeyboardLayout";
+import FlexBox from "components/Shared/FlexBox";
+import Button from "~components/Shared/Button";
+import theme from "themes";
+import Input from "~components/Shared/Input";
+import CreateCommentDto from "~domain/dto/CreateCommentDto";
+import Form from "~components/Shared/Form";
 
 const MyPageScreen = ({
   navigation,
+  route,
 }: RootTabScreenProps<typeof MAIN_SCREEN_NAME.COMMENT>) => {
   const vm = getRootViewModel<CommentViewModel>(
     (viewModel) => viewModel.tab.Comment
   );
 
-  if (vm.isLoading) {
-    return <Loadable />;
-  }
+  // if (vm.isLoading) {
+  //   return <Loadable />;
+  // }
 
-  if (vm.isError) {
-    return <ErrorMsg />;
-  }
+  // if (vm.isError) {
+  //   return <ErrorMsg />;
+  // }
+
+  useEffect(() => {
+    async function loadComments() {
+      if (route.params) {
+        const postId = (route.params as any)?.postId;
+        await vm.load(postId, { pageNum: 0 });
+      }
+    }
+    loadComments();
+  }, []);
 
   return (
-    <CommentLayout
-      justifyContent="flex-start"
-      alignItems="flex-start"
-      hasHeader
-    >
+    <KeyboardAvoding justifyContent="flex-start" alignItems="flex-start">
       <CommentBox>
         {vm.comments.map((item) => {
           return (
             <View key={item.id}>
               <Flex>
                 <LeftContentBox>
-                  {/* TODO : Avatar 이미지가 nullable인가? */}
-                  <Avatar imageSource={item.user.userImage?.url || ""} />
+                  <Avatar imageSource={item.user.userImage?.url} />
                 </LeftContentBox>
                 <Interval width="8px" />
                 <RightContentBox>
@@ -73,11 +83,9 @@ const MyPageScreen = ({
                     <Divider orientation="Vertical" />
                     <Interval width="6px" />
                     {/* TODO : 기능 연결 필요*/}
-                    <TouchableWithoutFeedback
-                      onPress={() => console.log("답글쓰기")}
-                    >
+                    <Pressable onPress={() => console.log("답글쓰기")}>
                       <GreyTypo>답글쓰기</GreyTypo>
-                    </TouchableWithoutFeedback>
+                    </Pressable>
                   </LikeContentBox>
                 </RightContentBox>
               </Flex>
@@ -89,7 +97,19 @@ const MyPageScreen = ({
         })}
       </CommentBox>
       {/* TODO : 댓글 생성 UI 구성 필요 */}
-    </CommentLayout>
+      <CreateComment>
+        <Form schema={CreateCommentDto}>
+          <InnerWrapper>
+            <Input name="comment" />
+            <StyledButton
+              label={"등록하기"}
+              color={theme.colors.primary.main}
+              onPress={() => console.log("hello")}
+            />
+          </InnerWrapper>
+        </Form>
+      </CreateComment>
+    </KeyboardAvoding>
   );
 };
 
@@ -122,4 +142,18 @@ const LikeContentBox = styled(Flex)``;
 
 const Comment = styled(View)`
   padding-right: 36px;
+`;
+
+const CreateComment = styled(FlexBox)`
+  flex: 1;
+  border: 1px solid red;
+`;
+
+const StyledButton = styled(Button)`
+  border-radius: 6px;
+`;
+
+const InnerWrapper = styled(FlexBox)`
+  align-items: flex-end;
+  width: 100%;
 `;

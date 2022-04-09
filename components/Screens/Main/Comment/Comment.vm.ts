@@ -64,10 +64,17 @@ export default class CommentViewModel extends BaseViewModel {
   }
 
   @action
-  load = flow(function* (this: CommentViewModel, query: FindDto) {
+  load = flow(function* (
+    this: CommentViewModel,
+    postId: string,
+    query: FindDto
+  ) {
     try {
       this._isLoading.set(true);
       const [pagerInstance, commentInstances] = yield this._commentRepo.find({
+        parameter: {
+          postId,
+        },
         query,
       });
       commentInstances.forEach((item: CommentModel) => {

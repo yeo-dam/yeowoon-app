@@ -29,7 +29,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { useEffect } from "react";
 import { runInAction } from "mobx";
-import KeyboardAvoiding from "~components/Shared/KeyboardAvoiding";
+import KeyboardAvoiding from "~components/Layout/KeyboardLayout";
 import MaskInput, { Masks } from "react-native-mask-input";
 
 const {
@@ -146,13 +146,12 @@ const CreatePost = ({
             <InnerWrapper>{renderForm()}</InnerWrapper>
           </Wrapper>
         </FormWrapper>
-        <MaskInput
+        {/* <MaskInput
           value={creditCard}
           onChangeText={setCreditCard}
           mask={Masks.DATE_YYYYMMDD}
-        />
-
-        {/* <DateFlexBox>
+        /> */}
+        <DateFlexBox>
           <DateInput
             maxLength={8}
             height="20px"
@@ -161,7 +160,7 @@ const CreatePost = ({
             keyboardType="number-pad"
             inputAccessoryViewID={CREATE_SCREEN_NAME.POST}
           />
-        </DateFlexBox> */}
+        </DateFlexBox>
       </FormProvider>
     </KeyboardAvoiding>
   );
@@ -199,7 +198,6 @@ const DescriptionBox = styled(View)`
   width: ${windowWidth * 0.85 + "px"};
   height: ${windowHeight * 0.48 + "px"};
   background-color: ${({ theme }) => theme.colors.grey.black};
-  border: 1px solid red;
 `;
 
 const DescriptionInnerBox = styled.View`

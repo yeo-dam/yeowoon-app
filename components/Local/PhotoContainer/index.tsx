@@ -100,5 +100,4 @@ const ProfileIconBox = styled.View`
   display: flex;
   width: 24px;
   height: 24px;
-  border: 1px solid red;
 `;

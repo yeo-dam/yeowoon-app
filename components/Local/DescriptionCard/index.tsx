@@ -2,8 +2,6 @@ import React from "react";
 import styled from "styled-components/native";
 import { Pressable, View } from "react-native";
 import Typography from "components/Shared/Typography";
-import { FollowerNum } from "helper/Formatter/FollowerNumFormatter";
-import PlaceTypeFormatter from "helper/Formatter/PlaceTypeFormatter";
 import FlexBox from "components/Shared/FlexBox";
 import Divider from "components/Shared/Divider";
 import { Props as PhotoCardProps } from "../PhotoCard";
@@ -29,12 +27,10 @@ const Component = ({ item, setIsFront, navigation }: Props) => {
           <ContentBox>
             <Pressable onPress={handlePress}>
               <View>
-                <WhiteTitleTypo>{item.title}</WhiteTitleTypo>
+                <WhiteTitleTypo>{item.place.placeName}</WhiteTitleTypo>
                 <Interval height="8px" />
                 <GreyFlexBox>
-                  <GreyBlackTypo>
-                    {PlaceTypeFormatter(item.place.placeType)}
-                  </GreyBlackTypo>
+                  <GreyBlackTypo>{item.place.placeType}</GreyBlackTypo>
                   <Interval width="4px" />
                   <Divider orientation="Vertical" />
                   <Interval width="4px" />
@@ -59,7 +55,11 @@ const Component = ({ item, setIsFront, navigation }: Props) => {
             <GreyTypo>{item.likeCount} 명</GreyTypo>
             <Interval height="6px" />
             <Pressable
-              onPress={() => navigation.navigate(MAIN_SCREEN_NAME.COMMENT)}
+              onPress={() =>
+                navigation.navigate(MAIN_SCREEN_NAME.COMMENT, {
+                  postId: item.postId,
+                })
+              }
             >
               {/* FIXME : 댓글을 표현하는 순서가 변경되어야 할 것임. */}
               <GreyTypo>

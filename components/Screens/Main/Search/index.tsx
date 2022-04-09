@@ -6,7 +6,7 @@ import ErrorMsg from "components/Shared/ErrorMsg";
 import Loadable from "components/Shared/Loadable";
 import { observer } from "mobx-react";
 import Typography from "components/Shared/Typography";
-import { InputAccessoryView, View } from "react-native";
+import { InputAccessoryView, View, Text } from "react-native";
 import { CREATE_SCREEN_NAME, MAIN_SCREEN_NAME } from "constants/SCREEN_NAME";
 import Form from "components/Shared/Form";
 import Input from "components/Shared/Input";
@@ -23,6 +23,7 @@ import Layout from "constants/Layout";
 import { getRootViewModel } from "~components/Screens/VmManager";
 import { RootTabScreenProps } from "types";
 import SearchViewModel from "./Search.vm";
+import KeyboardAvoiding from "~components/Layout/KeyboardLayout";
 
 const {
   window: { width: windowWidth, height: windowHeight },
@@ -46,7 +47,7 @@ const SearchScreen = ({
   // TODO : 추후 BottomBar를 숨겨줘야 합니다.
 
   return (
-    <ContentLayoutWrapper title="Tab Three" justifyContent="flex-end">
+    <KeyboardAvoiding>
       <ContentBox>
         {/* {vm.searchedList &&
           vm.searchedList.map((item) => {
@@ -76,7 +77,7 @@ const SearchScreen = ({
           />
         )} */}
       </ButtonBox>
-    </ContentLayoutWrapper>
+    </KeyboardAvoiding>
   );
 };
 

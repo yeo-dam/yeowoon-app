@@ -23,6 +23,7 @@ import { runInAction } from "mobx";
 import Layout from "constants/Layout";
 import { getRootViewModel } from "~components/Screens/VmManager";
 import { RootTabScreenProps } from "types";
+import KeyboardAvoding from "~components/Layout/KeyboardLayout";
 
 const {
   window: { width: windowWidth, height: windowHeight },
@@ -36,7 +37,11 @@ const MyPageScreen = ({
   );
 
   const handlePress = (placeId: string) => {
-    runInAction(() => vm.selectPlace(placeId));
+    runInAction(() => {
+      vm.selectPlace(placeId);
+      vm.formReset(true);
+    });
+    // runInAction(() => );
     navigation.navigate("CreatePost");
   };
 
@@ -46,7 +51,7 @@ const MyPageScreen = ({
   // TODO : 추후 BottomBar를 숨겨줘야 합니다.
 
   return (
-    <ContentLayoutWrapper title="Tab Three" justifyContent="flex-end">
+    <KeyboardAvoding justifyContent="flex-end">
       <ContentBox>
         {vm.searchedList &&
           vm.searchedList.map((item) => {
@@ -76,7 +81,7 @@ const MyPageScreen = ({
           />
         )}
       </ButtonBox>
-    </ContentLayoutWrapper>
+    </KeyboardAvoding>
   );
 };
 
