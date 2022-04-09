@@ -29,6 +29,7 @@ export type RootTabParamList = {
   CreateMain: undefined;
   CreatePost: undefined;
   CreateStory: undefined;
+  CreateSearch: undefined;
   ImageUpload: undefined;
   MyPageMain: undefined;
   MyPageLikes: undefined;

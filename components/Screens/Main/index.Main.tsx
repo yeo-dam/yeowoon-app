@@ -24,14 +24,14 @@ const MainScreen = ({
 }: RootTabScreenProps<typeof MAIN_SCREEN_NAME.HOME>) => {
   const vm = getRootViewModel<MainViewModel>((viewModel) => viewModel.tab.Main);
 
-  async function loadPosts(limit?: number, offset?: number) {
+  async function loadPosts(pageNum: number) {
     await vm.load({
-      pageNum: 0,
+      pageNum,
     });
   }
 
   useEffect(() => {
-    loadPosts();
+    loadPosts(0);
   }, []);
 
   const renderList = () => {
@@ -44,7 +44,7 @@ const MainScreen = ({
           ListHeaderComponent={
             <>
               <NavSection>
-                <Nav />
+                <Nav navigation={navigation} />
               </NavSection>
               {/* TODO : MainImage 및 Text 반영되도록 변경 필요 */}
               <Carousel

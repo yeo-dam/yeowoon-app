@@ -14,15 +14,19 @@ type Props = {
 const Component: FC<Props> = ({
   name,
   imageSource,
-  width = 58,
-  height = 58,
+  width = 24,
+  height = 24,
 }) => {
   return (
     <Wrapper>
       <StyledImage
         width={width}
         height={height}
-        source={{ uri: imageSource }}
+        source={
+          imageSource
+            ? { uri: imageSource }
+            : require("~assets/Icons/Login/NoProfile.png")
+        }
       />
       <UserName>{name}</UserName>
     </Wrapper>
@@ -33,6 +37,7 @@ export default Component;
 
 const Wrapper = styled.View`
   flex-direction: row;
+  align-items: center;
 `;
 
 const StyledImage = styled(Image)<{ width?: number; height?: number }>`

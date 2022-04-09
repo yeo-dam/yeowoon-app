@@ -1,25 +1,27 @@
 import React, { FC } from "react";
 import styled from "styled-components/native";
-import TouchableIcon from "components/Shared/TouchableIcon";
 import FlexBox from "../FlexBox";
 import SearchLogo from "~assets/Icons/Search.svg";
 import NotificationLogo from "~assets/Icons/Notification.svg";
+import { Pressable } from "react-native";
+import { RootTabScreenProps } from "types";
+import { MAIN_SCREEN_NAME } from "constants/SCREEN_NAME";
 
-type Props = {};
+type Props = Omit<RootTabScreenProps<typeof MAIN_SCREEN_NAME.HOME>, "route">;
 
-const Component: FC<Props> = () => {
+const Component: FC<Props> = ({ navigation }) => {
   return (
     <Wrapper>
       <InnerWrapper>
         <SearchBox>
-          <TouchableIcon onPress={() => console.log("Touched")}>
+          <Pressable onPress={() => navigation.navigate("Search")}>
             <SearchLogo />
-          </TouchableIcon>
+          </Pressable>
         </SearchBox>
         <NotiBox>
-          <TouchableIcon onPress={() => console.log("Touched")}>
+          <Pressable onPress={() => navigation.navigate("SettingNotification")}>
             <NotificationLogo />
-          </TouchableIcon>
+          </Pressable>
         </NotiBox>
       </InnerWrapper>
     </Wrapper>

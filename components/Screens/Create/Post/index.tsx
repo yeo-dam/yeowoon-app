@@ -30,6 +30,7 @@ import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { useEffect } from "react";
 import { runInAction } from "mobx";
 import KeyboardAvoiding from "~components/Shared/KeyboardAvoiding";
+import MaskInput, { Masks } from "react-native-mask-input";
 
 const {
   window: { width: windowWidth, height: windowHeight },
@@ -39,6 +40,8 @@ const CreatePost = ({
   navigation,
 }: RootTabScreenProps<typeof CREATE_SCREEN_NAME.POST>) => {
   const resolver = classValidatorResolver(CreatePostDto);
+  const [creditCard, setCreditCard] = React.useState("");
+
   const form = useForm<CreatePostDto>({
     resolver,
     defaultValues: {
@@ -130,6 +133,11 @@ const CreatePost = ({
     }
   };
 
+  console.log(
+    `TCL ~ [index.tsx] ~ line ~ 133 ~ form.watch('inputDateTime')`,
+    form.watch("inputDateTime")
+  );
+
   return (
     <KeyboardAvoiding>
       <FormProvider {...form}>
@@ -138,7 +146,13 @@ const CreatePost = ({
             <InnerWrapper>{renderForm()}</InnerWrapper>
           </Wrapper>
         </FormWrapper>
-        <DateFlexBox>
+        <MaskInput
+          value={creditCard}
+          onChangeText={setCreditCard}
+          mask={Masks.DATE_YYYYMMDD}
+        />
+
+        {/* <DateFlexBox>
           <DateInput
             maxLength={8}
             height="20px"
@@ -147,7 +161,7 @@ const CreatePost = ({
             keyboardType="number-pad"
             inputAccessoryViewID={CREATE_SCREEN_NAME.POST}
           />
-        </DateFlexBox>
+        </DateFlexBox> */}
       </FormProvider>
     </KeyboardAvoiding>
   );
@@ -157,31 +171,27 @@ export default observer(CreatePost);
 
 const Wrapper = styled.View`
   margin: 0 auto;
-  background-color: white;
 `;
 
 const InnerWrapper = styled.View`
-  padding: 32px 16px 104px 16px;
+  padding-top: 32px;
+  align-items: center;
+  width: ${windowWidth * 0.936 + "px"};
+  height: ${windowHeight * 0.647 + "px"};
+  background-color: white;
 `;
 
 const FormWrapper = styled(Flex)`
   flex: 1;
+  /* border: 1px solid green; */
 `;
 
-const DateInput = styled(Input)`
-  border: 1px solid blue;
-`;
-
-const TitleBox = styled(Flex)`
-  justify-content: center;
-  width: 100%;
-  padding: 0px 0px 16px 0px;
-`;
+const DateInput = styled(Input)``;
 
 const DateFlexBox = styled(Flex)`
-  justify-content: flex-end;
-  padding-bottom: 70px;
-  border: 1px solid red;
+  position: absolute;
+  right: 30px;
+  bottom: 110px;
 `;
 
 const DescriptionBox = styled(View)`

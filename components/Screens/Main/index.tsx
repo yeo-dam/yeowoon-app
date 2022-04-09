@@ -12,11 +12,13 @@ import { useEffect } from "react";
 import { MAIN_SCREEN_NAME } from "constants/SCREEN_NAME";
 import { getRootViewModel } from "../VmManager";
 import BackLogo from "~assets/Icons/Back.svg";
+import Search from "./Search";
 
 export type BnbMainNavigator = {
   [MAIN_SCREEN_NAME.HOME]: undefined;
   [MAIN_SCREEN_NAME.COMMENT]: undefined;
   [MAIN_SCREEN_NAME.MAP]: undefined;
+  [MAIN_SCREEN_NAME.SEARCH]: undefined;
 };
 
 const MainScreen = ({ navigation }: any) => {
@@ -64,6 +66,7 @@ const MainScreen = ({ navigation }: any) => {
         component={Comment}
       />
       <Stack.Screen name={MAIN_SCREEN_NAME.MAP} component={Map} />
+      <Stack.Screen name={MAIN_SCREEN_NAME.SEARCH} component={Search} />
     </Stack.Navigator>
   );
 };

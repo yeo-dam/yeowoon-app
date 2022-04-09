@@ -1,31 +1,29 @@
-import PagerModel from "~domain/model/Shared/PagerModel";
-import PostModel from "~domain/model/Shared/PostModel/model";
-import PostRepositoryImpl from "domain/repository/PostRepository";
 import { action, computed, flow, observable } from "mobx";
 import FindDto from "~domain/dto/FindPostDto";
+import CommentModel from "~domain/model/Shared/CommentModel";
+import PagerModel from "~domain/model/Shared/PagerModel";
+import CommentRepositoryImpl from "~domain/repository/CommentRepository";
 import MeRepositoryImpl from "~domain/repository/MeRepository";
 import { ConstructorParameter } from "~domain/repository/Repository";
-import BaseViewModel from "../BaseViewModel";
-import PostListModel from "~domain/model/Local/PostListModel";
+import BaseViewModel from "../../BaseViewModel";
 
-export default class MainViewModel extends BaseViewModel {
-  private static _Instance: MainViewModel;
-  private readonly _postRepo: PostRepositoryImpl;
+export default class SearchViewModel extends BaseViewModel {
+  private static _Instance: SearchViewModel;
+  private readonly _commentRepo: CommentRepositoryImpl;
   private readonly _meRepo: MeRepositoryImpl;
 
   static GetInstance(args: ConstructorParameter) {
-    if (!MainViewModel._Instance) {
-      MainViewModel._Instance = new MainViewModel(args);
+    if (!SearchViewModel._Instance) {
+      SearchViewModel._Instance = new SearchViewModel(args);
     }
-
-    return MainViewModel._Instance;
+    return SearchViewModel._Instance;
   }
   private constructor(args: ConstructorParameter) {
     super(args);
     if (args.accessToken) {
       this.setAccessToken(args.accessToken);
     }
-    this._postRepo = PostRepositoryImpl.GetInstace({
+    this._commentRepo = CommentRepositoryImpl.GetInstace({
       accessToken: args.accessToken,
     });
     this._meRepo = MeRepositoryImpl.GetInstace({
@@ -43,7 +41,7 @@ export default class MainViewModel extends BaseViewModel {
   private _pager = observable.box<PagerModel>(undefined);
 
   @observable
-  private _posts = observable.map<string, PostListModel>(undefined);
+  private _comments = observable.map<string, CommentModel>(undefined);
 
   @computed
   public get isLoading() {
@@ -56,8 +54,8 @@ export default class MainViewModel extends BaseViewModel {
   }
 
   @computed
-  public get posts() {
-    return [...this._posts.values()];
+  public get comments() {
+    return [...this._comments.values()];
   }
 
   @computed
@@ -66,13 +64,16 @@ export default class MainViewModel extends BaseViewModel {
   }
 
   @action
-  load = flow(function* (this: MainViewModel, query: FindDto) {
+  load = flow(function* (this: SearchViewModel, query: FindDto) {
     try {
       this._isLoading.set(true);
-      const postInstances = yield this._postRepo.find({ query });
-      postInstances.forEach((item: PostListModel) => {
-        this._posts.set(item.postId, item);
+      const [pagerInstance, commentInstances] = yield this._commentRepo.find({
+        query,
       });
+      commentInstances.forEach((item: CommentModel) => {
+        this._comments.set(item.id, item);
+      });
+      this._pager.set(pagerInstance);
     } catch (error) {
       console.error(error);
       this._isError.set(true);
@@ -83,63 +84,67 @@ export default class MainViewModel extends BaseViewModel {
   });
 
   @action
-  addWishlist = flow(function* (this: MainViewModel) {
+  addComment = flow(function* (this: SearchViewModel) {
     try {
-      yield this._meRepo.addWishlist();
-    } catch (error) {
-      console.error(error);
-      this._isError.set(true);
-    }
-  });
-
-  @action
-  addLikes = flow(function* (
-    this: MainViewModel,
-    postId: string,
-    userId: string
-  ) {
-    try {
-      yield this._meRepo.addLikes({
-        parameter: {
-          postId,
-          userId,
-        },
-      });
+      this._isLoading.set(true);
+      yield this._meRepo.addComment();
     } catch (error) {
       console.error(error);
       this._isError.set(true);
     } finally {
+      this._isLoading.set(false);
     }
   });
 
   @action
-  deleteLikes = flow(function* (this: MainViewModel) {
+  addNestedComment = flow(function* (this: SearchViewModel) {
     try {
-      yield this._meRepo.deleteLikes();
+      this._isLoading.set(true);
+      yield this._meRepo.addNestedComment();
     } catch (error) {
       console.error(error);
       this._isError.set(true);
     } finally {
+      this._isLoading.set(false);
     }
   });
 
   @action
-  downloadImage = flow(function* (this: MainViewModel) {
+  updateComment = flow(function* (this: SearchViewModel) {
     try {
+      this._isLoading.set(true);
+      yield this._meRepo.updateComment();
     } catch (error) {
       console.error(error);
       this._isError.set(true);
     } finally {
+      this._isLoading.set(false);
     }
   });
 
   @action
-  share = flow(function* (this: MainViewModel) {
+  deleteComment = flow(function* (this: SearchViewModel) {
     try {
+      this._isLoading.set(true);
+      yield this._meRepo.deleteComment();
     } catch (error) {
       console.error(error);
       this._isError.set(true);
     } finally {
+      this._isLoading.set(false);
+    }
+  });
+
+  @action
+  reportComment = flow(function* (this: SearchViewModel) {
+    try {
+      this._isLoading.set(true);
+      yield this._meRepo.reportComment();
+    } catch (error) {
+      console.error(error);
+      this._isError.set(true);
+    } finally {
+      this._isLoading.set(false);
     }
   });
 }

@@ -35,34 +35,38 @@ export default class MeRepositoryImpl
 
   /** User <--> Place (One to Many) **/
   async findPlaces(): Promise<[PagerModel, PlaceModel[]]> {
-    const placeEntities = await this._remote._fetcher<ListEntity<PlaceEntity>>(
-      "/places"
-    );
+    try {
+      const placeEntities = await this._remote._fetcher<
+        ListEntity<PlaceEntity>
+      >("/places");
 
-    const placeInstances = placeEntities.items.map((place) =>
-      plainToClass<PlaceModel, PlaceEntity>(PlaceModel, { ...place })
-    );
+      const placeInstances = placeEntities.items.map((place) =>
+        plainToClass<PlaceModel, PlaceEntity>(PlaceModel, { ...place })
+      );
 
-    const pagerInstance = plainToClass(PagerModel, {
-      count: placeEntities.count,
-      total: placeEntities.total,
-      limit: placeEntities.limit,
-      offset: placeEntities.offset,
-    });
+      const pagerInstance = plainToClass(PagerModel, {
+        count: placeEntities.count,
+        total: placeEntities.total,
+        limit: placeEntities.limit,
+        offset: placeEntities.offset,
+      });
 
-    placeInstances.forEach(async (item) => {
-      const postError = await validate(item);
-      if (postError.length > 0) {
-        throw postError;
+      placeInstances.forEach(async (item) => {
+        const postError = await validate(item);
+        if (postError.length > 0) {
+          throw postError;
+        }
+      });
+
+      const pagerErrors = await validate(pagerInstance);
+      if (pagerErrors.length > 0) {
+        throw pagerErrors;
       }
-    });
 
-    const pagerErrors = await validate(pagerInstance);
-    if (pagerErrors.length > 0) {
-      throw pagerErrors;
+      return [pagerInstance, placeInstances];
+    } catch (error) {
+      throw error;
     }
-
-    return [pagerInstance, placeInstances];
   }
   // 장소를 클릭했을 때 부를 것
   async findPlaceById() {}
@@ -73,7 +77,24 @@ export default class MeRepositoryImpl
   async deleteNotificationById() {}
 
   /** User <--> Likes <--> Post (Many to Many) **/
-  async addLikes() {}
+  async addLikes(dto: {
+    parameter: {
+      postId: string;
+      userId: string;
+    };
+  }) {
+    try {
+      // TODO : return type 지정 필요
+      await this._remote._fetcher<any>(
+        `/like/post/${dto.parameter.postId}/${dto.parameter.userId}`,
+        {
+          method: "POST",
+        }
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
 
   async deleteLikes() {}
 

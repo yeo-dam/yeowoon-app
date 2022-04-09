@@ -24,9 +24,9 @@ const Component: FC<Props> = ({ vm, item, navigation }) => {
     return (
       <OverlayBox>
         <Animated.Image
-          source={require("~assets/images/heart.png")}
+          source={require("~assets/images/Big_Heart.png")}
           style={{
-            width: 100,
+            width: 95,
             height: 100,
             tintColor: "#fff",
             opacity: animatedValue,
@@ -53,6 +53,7 @@ const Component: FC<Props> = ({ vm, item, navigation }) => {
           <PhotoContainer item={item}>
             <DoubleTap
               delay={1500}
+              requestToggleLike={() => console.log("좋아요")}
               animatedValue={animatedValue}
               setIsFront={setIsFront}
             >

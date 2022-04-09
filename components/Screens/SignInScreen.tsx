@@ -25,10 +25,9 @@ export default function SignInScreen({
   setToken: (data: string) => void;
 }) {
   return (
-    <ImageBackground
+    <StyledImageBackground
       source={require("~assets/images/main.png")}
       resizeMode="cover"
-      style={{ flex: 1, width: windowWidth, height: windowHeight + 10 }}
     >
       <InnerWrapper>
         <TitleSection>
@@ -38,9 +37,16 @@ export default function SignInScreen({
           <GoogleLogin setToken={setToken} />
         </LoginUISection>
       </InnerWrapper>
-    </ImageBackground>
+    </StyledImageBackground>
   );
 }
+
+const StyledImageBackground = styled.ImageBackground`
+  flex: 1;
+  left: -5px;
+  width: ${windowWidth + 10 + "px"};
+  height: ${windowHeight + 10 + "px"};
+`;
 
 const InnerWrapper = styled.View`
   flex: 1;
