@@ -21,6 +21,10 @@ export default class Model {
   @IsNotEmpty()
   iat: Date;
 
+  @IsNotEmpty()
+  @IsString()
+  id: string;
+
   @IsEnum(ProviderType)
   @IsNotEmpty()
   provider: ProviderType;

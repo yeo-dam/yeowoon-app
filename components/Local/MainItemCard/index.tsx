@@ -1,13 +1,14 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components/native";
-import PhotoCard from "components/Local/PhotoCard";
-import DescriptionCard from "components/Local/DescriptionCard";
-import PhotoContainer from "components/Local/PhotoContainer";
+import PhotoCard from "~components/Local/PhotoCard";
+import DescriptionCard from "~components/Local/DescriptionCard";
+import PhotoContainer from "~components/Local/PhotoContainer";
 import { Animated, View } from "react-native";
-import DoubleTap from "components/Shared/DoubleTap";
-import MainViewModel from "components/Screens/Main/Main.vm";
-import Loadable from "components/Shared/Loadable";
+import DoubleTap from "~components/Shared/DoubleTap";
+import MainViewModel from "~components/Screens/Main/Main.vm";
+import Loadable from "~components/Shared/Loadable";
 import PostListModel from "~domain/model/Local/PostListModel";
+import { getRootViewModel } from "~components/Screens/VmManager";
 
 type Props = {
   vm: MainViewModel;
@@ -17,8 +18,13 @@ type Props = {
 
 const Component: FC<Props> = ({ vm, item, navigation }) => {
   const [isFront, setIsFront] = useState<boolean>(true);
+  const userInfo = getRootViewModel((vm) => vm.auth.user);
 
   let animatedValue = new Animated.Value(0);
+
+  const handleLike = async () => {
+    await vm.toggleLikes(item.postId, userInfo.id);
+  };
 
   const renderOverlay = () => {
     return (
@@ -53,7 +59,7 @@ const Component: FC<Props> = ({ vm, item, navigation }) => {
           <PhotoContainer item={item}>
             <DoubleTap
               delay={1500}
-              requestToggleLike={() => console.log("좋아요")}
+              requestToggleLike={handleLike}
               animatedValue={animatedValue}
               setIsFront={setIsFront}
             >

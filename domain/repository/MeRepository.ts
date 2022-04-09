@@ -77,7 +77,7 @@ export default class MeRepositoryImpl
   async deleteNotificationById() {}
 
   /** User <--> Likes <--> Post (Many to Many) **/
-  async addLikes(dto: {
+  async toggleLikes(dto: {
     parameter: {
       postId: string;
       userId: string;
