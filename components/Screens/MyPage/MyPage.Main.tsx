@@ -1,8 +1,6 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 
-import ErrorMsg from "~components/Shared/ErrorMsg";
-import Loadable from "~components/Shared/Loadable";
 import MyPageViewModel from "./MyPage.vm";
 import { observer } from "mobx-react";
 import Typography from "~components/Shared/Typography";
@@ -28,14 +26,18 @@ const MyPageScreen = ({
   const vm = getRootViewModel<MyPageViewModel>(
     (viewModel) => viewModel.tab.MyPage
   );
+  const { id: userId } = getRootViewModel((vm) => vm.auth.user);
+
+  const userDetail = vm.userDetail;
 
   const [currentTab, setTab] = useState<Tabs>("게시글");
 
   useEffect(() => {
-    async function loadPosts() {
-      await vm.load();
+    async function load() {
+      await vm.loadProfile(userId);
+      // await vm.loadPosts(userId, 0);
     }
-    loadPosts();
+    load();
   }, []);
 
   // if (vm.isLoading) {
@@ -60,25 +62,25 @@ const MyPageScreen = ({
 
       <ProfileSection>
         <Avatar
-          name=""
           width={58}
           height={58}
-          imageSource={"https://picsum.photos/58/58"}
+          imageSource={userDetail?.user.userImage?.url}
         />
         <ProfileTextBox>
-          <Typography variant="subhead-medium">userName</Typography>
+          <Typography variant="subhead-medium">
+            {userDetail?.user.userName}
+          </Typography>
           <GreyTypo numberOfLines={2} ellipsizeMode="tail">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam
-            dolorum iste praesentium aspernatur reprehenderit quas quis deleniti
-            nemo, qui eligendi! Officia sapiente praesentium ut adipisci
-            ducimus. Optio fugit et iusto!
+            {userDetail?.user.introduction || "등록된 소개가 없습니다."}
           </GreyTypo>
         </ProfileTextBox>
       </ProfileSection>
       <ContentHeader>
         <Pressable onPress={() => setTab("게시글")}>
           <HeaderItem>
-            <CountItem isClicked={currentTab === "게시글"}>12</CountItem>
+            <CountItem isClicked={currentTab === "게시글"}>
+              {userDetail?.postCount || 0}
+            </CountItem>
             <CountText isClicked={currentTab === "게시글"}>게시글</CountText>
           </HeaderItem>
         </Pressable>
@@ -88,7 +90,9 @@ const MyPageScreen = ({
         </DividerBox>
         <Pressable onPress={() => setTab("저장글")}>
           <HeaderItem>
-            <CountItem isClicked={currentTab === "저장글"}>42</CountItem>
+            <CountItem isClicked={currentTab === "저장글"}>
+              {userDetail?.bookmarkCount || 0}
+            </CountItem>
             <CountText isClicked={currentTab === "저장글"}>저장글</CountText>
           </HeaderItem>
         </Pressable>
@@ -98,7 +102,9 @@ const MyPageScreen = ({
         </DividerBox>
         <Pressable onPress={() => setTab("팔로워")}>
           <HeaderItem>
-            <CountItem isClicked={currentTab === "팔로워"}>27</CountItem>
+            <CountItem isClicked={currentTab === "팔로워"}>
+              {userDetail?.followerCount || 0}
+            </CountItem>
             <CountText isClicked={currentTab === "팔로워"}>팔로워</CountText>
           </HeaderItem>
         </Pressable>
@@ -108,7 +114,9 @@ const MyPageScreen = ({
         </DividerBox>
         <Pressable onPress={() => setTab("팔로잉")}>
           <HeaderItem>
-            <CountItem isClicked={currentTab === "팔로잉"}>27</CountItem>
+            <CountItem isClicked={currentTab === "팔로잉"}>
+              {userDetail?.followingCount || 0}
+            </CountItem>
             <CountText isClicked={currentTab === "팔로잉"}>팔로잉</CountText>
           </HeaderItem>
         </Pressable>

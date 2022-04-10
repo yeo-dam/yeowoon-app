@@ -18,12 +18,12 @@ type Props = {
 
 const Component: FC<Props> = ({ vm, item, navigation }) => {
   const [isFront, setIsFront] = useState<boolean>(true);
-  const userInfo = getRootViewModel((vm) => vm.auth.user);
+  const { id: userId } = getRootViewModel((vm) => vm.auth.user);
 
   let animatedValue = new Animated.Value(0);
 
   const handleLike = async () => {
-    await vm.toggleLikes(item.postId, userInfo.id);
+    await vm.addLikes(item.postId, userId);
   };
 
   const renderOverlay = () => {
@@ -74,6 +74,7 @@ const Component: FC<Props> = ({ vm, item, navigation }) => {
             <DescriptionCard
               item={postItem}
               navigation={router}
+              handleDeleteLike={() => vm.deleteLikes(item.postId, userId)}
               setIsFront={setIsFront}
             />
           </PhotoContainer>

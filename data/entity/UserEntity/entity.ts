@@ -10,4 +10,5 @@ export default interface Entity {
   createdAt: Date;
   providerType?: ProviderType;
   userImage?: ImageFileEntity;
+  introduction?: string;
 }

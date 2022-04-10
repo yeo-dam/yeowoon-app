@@ -93,13 +93,13 @@ export default class MainViewModel extends BaseViewModel {
   });
 
   @action
-  toggleLikes = flow(function* (
+  addLikes = flow(function* (
     this: MainViewModel,
     postId: string,
     userId: string
   ) {
     try {
-      yield this._meRepo.toggleLikes({
+      yield this._meRepo.addLikes({
         parameter: {
           postId,
           userId,
@@ -108,18 +108,24 @@ export default class MainViewModel extends BaseViewModel {
     } catch (error) {
       console.error(error);
       this._isError.set(true);
-    } finally {
     }
   });
 
   @action
-  deleteLikes = flow(function* (this: MainViewModel) {
+  deleteLikes = flow(function* (
+    this: MainViewModel,
+    postId: string,
+    userId: string
+  ) {
     try {
-      yield this._meRepo.deleteLikes();
+      yield this._meRepo.deleteLikes({
+        parameter: {
+          postId,
+          userId,
+        },
+      });
     } catch (error) {
-      console.error(error);
-      this._isError.set(true);
-    } finally {
+      throw error;
     }
   });
 

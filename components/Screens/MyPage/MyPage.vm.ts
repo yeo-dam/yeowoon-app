@@ -5,6 +5,7 @@ import MeRepositoryImpl from "~domain/repository/MeRepository";
 import { ConstructorParameter } from "~domain/repository/Repository";
 import BaseViewModel from "../BaseViewModel";
 import UserModel from "~domain/model/Shared/UserModel/model";
+import UserDetailModel from "~domain/model/Local/UserDetailModel";
 
 export default class ThisViewModel extends BaseViewModel {
   private static _Instance: ThisViewModel;
@@ -36,14 +37,14 @@ export default class ThisViewModel extends BaseViewModel {
   private _pager = observable.box<PagerModel>(undefined);
 
   @observable
-  private _user = observable.box<UserModel>(undefined);
+  private _userDetail = observable.box<UserDetailModel>(undefined);
 
   @observable
   private _wishlist = observable.map<string, WishlistModel>(undefined);
 
   @computed
-  public get user() {
-    return this._user.get();
+  public get userDetail() {
+    return this._userDetail.get();
   }
 
   @computed
@@ -67,14 +68,44 @@ export default class ThisViewModel extends BaseViewModel {
   }
 
   @action
-  load = flow(function* (this: ThisViewModel) {
+  loadPosts = flow(function* (
+    this: ThisViewModel,
+    userId: string,
+    pageNum: number
+  ) {
     try {
       this._isLoading.set(true);
-      // const [pager, wishlistInstances] = yield this._meRepo.findWishlist();
-      // wishlistInstances.forEach((item: WishlistModel) => {
-      //   this._wishlist.set(item.id, item);
-      // });
-      // this._pager.set(pager);
+      const userMePosts = yield this._meRepo.findPosts({
+        parameter: {
+          userId,
+        },
+        querystring: {
+          pageNum,
+        },
+      });
+      userMePosts.forEach((item: WishlistModel) => {
+        this._wishlist.set(item.id, item);
+      });
+    } catch (error) {
+      console.error(error);
+      this._isError.set(true);
+      throw error;
+    } finally {
+      this._isLoading.set(false);
+    }
+  });
+
+  @action
+  loadProfile = flow(function* (this: ThisViewModel, userId: string) {
+    try {
+      this._isLoading.set(true);
+      const userMeInfo = yield this._meRepo.findProfileById({
+        parameter: {
+          userId,
+        },
+      });
+
+      this._userDetail.set(userMeInfo);
     } catch (error) {
       console.error(error);
       this._isError.set(true);

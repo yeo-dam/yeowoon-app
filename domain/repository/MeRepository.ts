@@ -1,9 +1,12 @@
 import { validate } from "class-validator";
 import { plainToClass } from "unsafe-class-transformer";
-import ListEntity from "~data/entity/ListEntity";
 import PlaceEntity from "~data/entity/PlaceEntity";
-import PagerModel from "~domain/model/Shared/PagerModel";
-import PlaceModel from "~domain/model/Shared/PlaceModel/model";
+import UserEntity from "~data/entity/UserEntity";
+import PostListModel from "~domain/model/Local/PostListModel";
+import UserDetailModel, {
+  UserDetailJson,
+} from "~domain/model/Local/UserDetailModel";
+import UserModel from "~domain/model/Shared/UserModel";
 import BaseRepository, { ConstructorParameter } from "./Repository";
 
 interface MeRepository {}
@@ -33,23 +36,56 @@ export default class MeRepositoryImpl
   // TODO : Map에 데이터 추가
   // TODO : 복수의 이미지 추가
 
-  /** User <--> Place (One to Many) **/
-  async findPlaces(): Promise<[PagerModel, PlaceModel[]]> {
+  async findProfileById(dto: {
+    parameter: {
+      userId: string;
+    };
+  }): Promise<UserDetailModel> {
     try {
-      const placeEntities = await this._remote._fetcher<
-        ListEntity<PlaceEntity>
-      >("/places");
-
-      const placeInstances = placeEntities.items.map((place) =>
-        plainToClass<PlaceModel, PlaceEntity>(PlaceModel, { ...place })
+      const userDetail = await this._remote._fetcher<UserDetailJson>(
+        `/profile/view/${dto.parameter.userId}`
       );
 
-      const pagerInstance = plainToClass(PagerModel, {
-        count: placeEntities.count,
-        total: placeEntities.total,
-        limit: placeEntities.limit,
-        offset: placeEntities.offset,
+      // FIXME : 타입에러 잡기
+      const userInstance = plainToClass<UserDetailModel, UserEntity>(
+        UserDetailModel,
+        userDetail
+      );
+
+      // FIXME: validation Error 잡기
+      // const validateError = await validate(userInstance);
+
+      // if (validateError) {
+      //   throw validateError;
+      // }
+
+      return userInstance;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /** User <--> Place (One to Many) **/
+  async findPosts(dto: {
+    parameter: {
+      userId: string;
+    };
+    querystring: {
+      pageNum: number;
+    };
+  }): Promise<PostListModel[]> {
+    try {
+      const { posts: placeEntities } = await this._remote._fetcher<{
+        posts: PlaceEntity[];
+      }>(`/user/me/post/list/${dto.parameter.userId}`, {
+        querystring: {
+          page: dto.querystring.pageNum,
+        },
       });
+
+      const placeInstances = placeEntities.map((place: PlaceEntity) =>
+        plainToClass<PostListModel, PlaceEntity>(PostListModel, { ...place })
+      );
 
       placeInstances.forEach(async (item) => {
         const postError = await validate(item);
@@ -58,12 +94,7 @@ export default class MeRepositoryImpl
         }
       });
 
-      const pagerErrors = await validate(pagerInstance);
-      if (pagerErrors.length > 0) {
-        throw pagerErrors;
-      }
-
-      return [pagerInstance, placeInstances];
+      return placeInstances;
     } catch (error) {
       throw error;
     }
@@ -77,18 +108,17 @@ export default class MeRepositoryImpl
   async deleteNotificationById() {}
 
   /** User <--> Likes <--> Post (Many to Many) **/
-  async toggleLikes(dto: {
+  async addLikes(dto: {
     parameter: {
       postId: string;
       userId: string;
     };
   }) {
     try {
-      // TODO : return type 지정 필요
       await this._remote._fetcher<any>(
         `/like/post/${dto.parameter.postId}/${dto.parameter.userId}`,
         {
-          method: "POST",
+          method: "PUT",
         }
       );
     } catch (error) {
@@ -96,7 +126,23 @@ export default class MeRepositoryImpl
     }
   }
 
-  async deleteLikes() {}
+  async deleteLikes(dto: {
+    parameter: {
+      postId: string;
+      userId: string;
+    };
+  }) {
+    try {
+      await this._remote._fetcher<any>(
+        `/like/post/${dto.parameter.postId}/${dto.parameter.userId}`,
+        {
+          method: "DELETE",
+        }
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
 
   // TODO: 어떤 테이블이 와야할지 모르겠음.
   async addWishlist() {}

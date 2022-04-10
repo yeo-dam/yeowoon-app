@@ -8,18 +8,28 @@ import { Props as PhotoCardProps } from "../PhotoCard";
 import Interval from "components/Shared/Interval";
 import { MAIN_SCREEN_NAME } from "constants/SCREEN_NAME";
 import Layout from "constants/Layout";
+import HeartIcon from "~assets/Icons/Main/Heart.svg";
+import CommentIcon from "~assets/Icons/Main/Comment.svg";
+import theme from "themes";
 
 export type Props = {
   navigation: any;
+  handleDeleteLike: () => void;
 } & PhotoCardProps;
 
 const {
   window: { width: windowWidth, height: windowHeight },
 } = Layout;
 
-const Component = ({ item, setIsFront, navigation }: Props) => {
+const Component = ({
+  item,
+  setIsFront,
+  navigation,
+  handleDeleteLike,
+}: Props) => {
   const handlePress = () => navigation.push(MAIN_SCREEN_NAME.MAP);
 
+  console.log(`TCL ~ [index.tsx] ~ line ~ 25 ~ item.like`, item.like);
   return (
     <Pressable onPress={() => setIsFront(true)}>
       <PhotoFrame>
@@ -52,7 +62,13 @@ const Component = ({ item, setIsFront, navigation }: Props) => {
           </ContentBox>
           <Divider />
           <CommentBox>
-            <GreyTypo>{item.likeCount} 명</GreyTypo>
+            <HeartSection>
+              {/* TODO : 활성화 / 비활성화 시, Icon 색상 구분 필요  */}
+              <IconBox onPress={handleDeleteLike}>
+                <HeartIcon />
+              </IconBox>
+              <GreyTypo>{item.likeCount} 명</GreyTypo>
+            </HeartSection>
             <Interval height="6px" />
             <Pressable
               onPress={() =>
@@ -61,6 +77,7 @@ const Component = ({ item, setIsFront, navigation }: Props) => {
                 })
               }
             >
+              <CommentIcon />
               {/* FIXME : 댓글을 표현하는 순서가 변경되어야 할 것임. */}
               <GreyTypo>
                 {item.comments &&
@@ -126,5 +143,13 @@ const WhiteTypo = styled(Typography)`
 const WhiteTitleTypo = styled(WhiteTypo).attrs({
   variant: "subhead-medium",
 })``;
+
+const HeartSection = styled(FlexBox)`
+  align-items: center;
+`;
+
+const IconBox = styled.Pressable`
+  margin-right: 4px;
+`;
 
 export default Component;
