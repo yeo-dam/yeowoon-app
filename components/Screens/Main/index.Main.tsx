@@ -32,11 +32,27 @@ const MainScreen = ({
     loadPosts(0);
   }, []);
 
+  const addLikes = async (postId: string, userId: string) => {
+    await vm.addLikes(postId, userId);
+  };
+
+  const deleteLikes = async (postId: string, userId: string) => {
+    await vm.deleteLikes(postId, userId);
+  };
+
   const renderCard = (item: PostListModel) => {
     if (vm.posts && vm.posts.length === 0) {
       return <NoData />;
     } else {
-      return <MainItemCard vm={vm} item={item} navigation={navigation} />;
+      return (
+        <MainItemCard
+          item={item}
+          isLoading={vm.isLoading}
+          addLikes={addLikes}
+          deleteLikes={deleteLikes}
+          navigation={navigation}
+        />
+      );
     }
   };
 

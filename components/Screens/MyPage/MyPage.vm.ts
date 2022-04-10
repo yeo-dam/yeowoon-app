@@ -6,6 +6,7 @@ import { ConstructorParameter } from "~domain/repository/Repository";
 import BaseViewModel from "../BaseViewModel";
 import UserModel from "~domain/model/Shared/UserModel/model";
 import UserDetailModel from "~domain/model/Local/UserDetailModel";
+import PostListModel from "~domain/model/Local/PostListModel";
 
 export default class ThisViewModel extends BaseViewModel {
   private static _Instance: ThisViewModel;
@@ -40,11 +41,19 @@ export default class ThisViewModel extends BaseViewModel {
   private _userDetail = observable.box<UserDetailModel>(undefined);
 
   @observable
+  private _posts = observable.map<string, PostListModel>(undefined);
+
+  @observable
   private _wishlist = observable.map<string, WishlistModel>(undefined);
 
   @computed
   public get userDetail() {
     return this._userDetail.get();
+  }
+
+  @computed
+  public get posts() {
+    return [...this._posts.values()];
   }
 
   @computed
@@ -83,8 +92,8 @@ export default class ThisViewModel extends BaseViewModel {
           pageNum,
         },
       });
-      userMePosts.forEach((item: WishlistModel) => {
-        this._wishlist.set(item.id, item);
+      userMePosts.forEach((item: PostListModel) => {
+        this._posts.set(item.postId, item);
       });
     } catch (error) {
       console.error(error);

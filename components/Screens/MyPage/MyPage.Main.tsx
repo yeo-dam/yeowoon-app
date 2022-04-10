@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import MyPageViewModel from "./MyPage.vm";
 import { observer } from "mobx-react";
 import Typography from "~components/Shared/Typography";
-import { Pressable, View } from "react-native";
+import { FlatList, Pressable, View } from "react-native";
 import { MYPAGE_SCREEN_NAME } from "constants/SCREEN_NAME";
 import { RootTabScreenProps } from "types";
 import { getRootViewModel } from "../VmManager";
@@ -18,6 +18,9 @@ import Image from "~components/Shared/Image";
 import Divider from "~components/Shared/Divider";
 import StatusBarLayout from "~components/Layout/StatusBarLayout";
 import theme from "themes";
+import PostListModel from "~domain/model/Local/PostListModel";
+import NoData from "~components/Shared/NoData";
+import ProfileCard from "~components/Local/ProfileCard";
 
 type Tabs = "게시글" | "저장글" | "팔로워" | "팔로잉";
 const MyPageScreen = ({
@@ -35,18 +38,24 @@ const MyPageScreen = ({
   useEffect(() => {
     async function load() {
       await vm.loadProfile(userId);
-      // await vm.loadPosts(userId, 0);
+      await vm.loadPosts(userId, 0);
     }
     load();
   }, []);
 
-  // if (vm.isLoading) {
-  //   return <Loadable />;
-  // }
-
-  // if (vm.isError) {
-  //   return <ErrorMsg />;
-  // }
+  const renderCard = (item: PostListModel) => {
+    if (vm.posts && vm.posts.length === 0) {
+      return <NoData />;
+    } else {
+      return (
+        <ProfileCard
+          isLoading={vm.isLoading}
+          item={item}
+          navigation={navigation}
+        />
+      );
+    }
+  };
 
   return (
     <Layout paddingLeft={24} paddingRight={24}>
@@ -124,7 +133,17 @@ const MyPageScreen = ({
       <ContentSection>
         <Divider />
         <ContentBody>
-          <Image
+          <FlatList<PostListModel>
+            numColumns={2}
+            data={vm.posts}
+            renderItem={({ item }) => renderCard(item)}
+          />
+          {/* <Image
+            width={161}
+            height={212}
+            source={{ uri: "https://picsum.photos/161/212" }}
+          /> */}
+          {/* <Image
             width={161}
             height={212}
             source={{ uri: "https://picsum.photos/161/212" }}
@@ -148,12 +167,7 @@ const MyPageScreen = ({
             width={161}
             height={212}
             source={{ uri: "https://picsum.photos/161/212" }}
-          />
-          <Image
-            width={161}
-            height={212}
-            source={{ uri: "https://picsum.photos/161/212" }}
-          />
+          /> */}
         </ContentBody>
       </ContentSection>
     </Layout>

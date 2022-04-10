@@ -5,7 +5,7 @@ import CommentViewModel from "./Comment.vm";
 import { observer } from "mobx-react";
 import Typography from "~components/Shared/Typography";
 import { RootTabScreenProps } from "types";
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, InputAccessoryView } from "react-native";
 import styled from "styled-components/native";
 import Flex from "~components/Shared/FlexBox";
 import Avatar from "~components/Shared/Avatar";
@@ -15,7 +15,7 @@ import Interval from "~components/Shared/Interval";
 import timeForToday from "helper/Formatter/CalculateDayBefore";
 import { MAIN_SCREEN_NAME } from "constants/SCREEN_NAME";
 import { getRootViewModel } from "~components/Screens/VmManager";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import KeyboardAvoding from "~components/Layout/KeyboardLayout";
 import FlexBox from "components/Shared/FlexBox";
 import Button from "~components/Shared/Button";
@@ -23,6 +23,7 @@ import theme from "themes";
 import Input from "~components/Shared/Input";
 import CreateCommentDto from "~domain/dto/CreateCommentDto";
 import Form from "~components/Shared/Form";
+import SubmitButton from "~components/Shared/SubmitButton";
 
 const MyPageScreen = ({
   navigation,
@@ -31,6 +32,7 @@ const MyPageScreen = ({
   const vm = getRootViewModel<CommentViewModel>(
     (viewModel) => viewModel.tab.Comment
   );
+  const [isClicked, setIsClicked] = useState(false);
 
   // if (vm.isLoading) {
   //   return <Loadable />;
@@ -50,12 +52,25 @@ const MyPageScreen = ({
     loadComments();
   }, []);
 
+  const handleSubmit = async ({ comment }: CreateCommentDto) => {
+    if (!isClicked) {
+      setIsClicked(false);
+    }
+
+    console.log("isClicked >>>> ", isClicked);
+
+    if (route.params) {
+      const postId = (route.params as any)?.postId;
+      await vm.addComment(postId, comment);
+    }
+  };
+
   return (
     <KeyboardAvoding justifyContent="flex-start" alignItems="flex-start">
       <CommentBox>
         {vm.comments.map((item) => {
           return (
-            <View key={item.id}>
+            <View key={item.commentId}>
               <Flex>
                 <LeftContentBox>
                   <Avatar imageSource={item.user.userImage?.url} />
@@ -66,7 +81,7 @@ const MyPageScreen = ({
                     <Flex>
                       <Text>{item.user.userName}</Text>
                       <Interval width="8px" />
-                      <GreyTypo>{timeForToday(item.createDateTime)}</GreyTypo>
+                      <GreyTypo>{timeForToday(item.createdDateTime)}</GreyTypo>
                     </Flex>
                     <View>
                       <DropDownMenu />
@@ -78,7 +93,7 @@ const MyPageScreen = ({
                   </CommentContentBox>
                   {/* TODO : 서버에서 값을 뿌려줘야 함 */}
                   <LikeContentBox>
-                    <GreyTypo>좋아요 --개</GreyTypo>
+                    <GreyTypo>좋아요 {item.likeCount}개</GreyTypo>
                     <Interval width="6px" />
                     <Divider orientation="Vertical" />
                     <Interval width="6px" />
@@ -97,18 +112,35 @@ const MyPageScreen = ({
         })}
       </CommentBox>
       {/* TODO : 댓글 생성 UI 구성 필요 */}
-      <CreateComment>
-        <Form schema={CreateCommentDto}>
-          <InnerWrapper>
-            <Input name="comment" />
-            <StyledButton
-              label={"등록하기"}
-              color={theme.colors.primary.main}
-              onPress={() => console.log("hello")}
-            />
-          </InnerWrapper>
-        </Form>
-      </CreateComment>
+      <Form schema={CreateCommentDto}>
+        <InnerWrapper>
+          {/* <Pressable onPress={() => console.log('hihi')}> */}
+          <Input
+            hidden={isClicked ? true : false}
+            name="comment"
+            height="40px"
+            FullWidth
+            inputAccessoryViewID={MAIN_SCREEN_NAME.COMMENT}
+          />
+          {/* </Pressable> */}
+          <InputAccessoryView nativeID={MAIN_SCREEN_NAME.COMMENT}>
+            <FlexBox>
+              <Input
+                name="comment"
+                height="40px"
+                FullWidth
+                inputAccessoryViewID={MAIN_SCREEN_NAME.COMMENT}
+              />
+              <SubmitButton
+                width="100px"
+                label={"등록하기"}
+                color={theme.colors.primary.main}
+                onSubmit={handleSubmit}
+              />
+            </FlexBox>
+          </InputAccessoryView>
+        </InnerWrapper>
+      </Form>
     </KeyboardAvoding>
   );
 };
@@ -124,7 +156,10 @@ const GreyTypo = styled(Typography)`
   color: ${({ theme }) => theme.colors.grey[99]};
 `;
 
-const CommentBox = styled.ScrollView``;
+const CommentBox = styled.ScrollView`
+  width: 100%;
+  flex: 1;
+`;
 
 const LeftContentBox = styled.View``;
 
@@ -144,16 +179,14 @@ const Comment = styled(View)`
   padding-right: 36px;
 `;
 
-const CreateComment = styled(FlexBox)`
-  flex: 1;
-  border: 1px solid red;
-`;
+const CreateComment = styled(FlexBox)``;
 
 const StyledButton = styled(Button)`
   border-radius: 6px;
 `;
 
 const InnerWrapper = styled(FlexBox)`
+  justify-content: space-around;
   align-items: flex-end;
   width: 100%;
 `;

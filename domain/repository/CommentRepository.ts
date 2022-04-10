@@ -46,6 +46,12 @@ export default class CommentRepositoryImpl
           }
         }
       });
+
+      console.log(
+        `TCL ~ [CommentRepository.ts] ~ line ~ 50 ~ commentInstances`,
+        commentInstances
+      );
+
       return commentInstances;
     } catch (error) {
       throw error;

@@ -71,19 +71,17 @@ export default class CommentViewModel extends BaseViewModel {
   ) {
     try {
       this._isLoading.set(true);
-      const [pagerInstance, commentInstances] = yield this._commentRepo.find({
+      const commentInstances = yield this._commentRepo.find({
         parameter: {
           postId,
         },
         query,
       });
       commentInstances.forEach((item: CommentModel) => {
-        this._comments.set(item.id, item);
+        this._comments.set(item.commentId, item);
       });
-      this._pager.set(pagerInstance);
     } catch (error) {
       console.error(error);
-      this._isError.set(true);
       throw error;
     } finally {
       this._isLoading.set(false);
@@ -91,10 +89,20 @@ export default class CommentViewModel extends BaseViewModel {
   });
 
   @action
-  addComment = flow(function* (this: CommentViewModel) {
+  addComment = flow(function* (
+    this: CommentViewModel,
+    postId: string,
+    content: string
+  ) {
     try {
       this._isLoading.set(true);
-      yield this._meRepo.addComment();
+      const res = yield this._meRepo.addComment({
+        body: {
+          postId,
+          content,
+        },
+      });
+      this._comments.set(res.id, res);
     } catch (error) {
       console.error(error);
       this._isError.set(true);

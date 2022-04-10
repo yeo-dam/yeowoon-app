@@ -77,7 +77,7 @@ export default class MeRepositoryImpl
     try {
       const { posts: placeEntities } = await this._remote._fetcher<{
         posts: PlaceEntity[];
-      }>(`/user/me/post/list/${dto.parameter.userId}`, {
+      }>(`/post/user/${dto.parameter.userId}`, {
         querystring: {
           page: dto.querystring.pageNum,
         },
@@ -151,7 +151,23 @@ export default class MeRepositoryImpl
 
   /** User <--> Comments <--> Post (Many to Many) **/
   // 댓글 달기
-  async addComment() {}
+  async addComment(dto: {
+    body: {
+      postId: string;
+      content: string;
+    };
+  }) {
+    try {
+      const res = await this._remote._fetcher("/comment/new", {
+        method: "PUT",
+        body: JSON.stringify(dto.body),
+      });
+      console.log(`TCL ~ [MeRepository.ts] ~ line ~ 165 ~ res`, res);
+      return res;
+    } catch (error) {
+      throw error;
+    }
+  }
 
   // 댓글 수정하기
   async updateComment() {}

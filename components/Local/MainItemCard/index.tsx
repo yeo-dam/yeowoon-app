@@ -11,19 +11,35 @@ import PostListModel from "~domain/model/Local/PostListModel";
 import { getRootViewModel } from "~components/Screens/VmManager";
 
 type Props = {
-  vm: MainViewModel;
   item: PostListModel;
+  isLoading: boolean;
+  addLikes?: (postId: string, userId: string) => void;
+  deleteLikes?: (postId: string, userId: string) => void;
   navigation: any;
 };
 
-const Component: FC<Props> = ({ vm, item, navigation }) => {
+const Component: FC<Props> = ({
+  item,
+  isLoading,
+  navigation,
+  addLikes,
+  deleteLikes,
+}) => {
   const [isFront, setIsFront] = useState<boolean>(true);
   const { id: userId } = getRootViewModel((vm) => vm.auth.user);
 
   let animatedValue = new Animated.Value(0);
 
-  const handleLike = async () => {
-    await vm.addLikes(item.postId, userId);
+  const handleLike = () => {
+    if (addLikes) {
+      addLikes(item.postId, userId);
+    }
+  };
+
+  const handleDislike = () => {
+    if (deleteLikes) {
+      deleteLikes(item.postId, userId);
+    }
   };
 
   const renderOverlay = () => {
@@ -51,7 +67,7 @@ const Component: FC<Props> = ({ vm, item, navigation }) => {
   };
 
   const renderCard = (postItem: PostListModel, router: any) => {
-    if (vm.isLoading) {
+    if (isLoading) {
       return <Loadable />;
     } else {
       if (isFront) {
@@ -74,7 +90,7 @@ const Component: FC<Props> = ({ vm, item, navigation }) => {
             <DescriptionCard
               item={postItem}
               navigation={router}
-              handleDeleteLike={() => vm.deleteLikes(item.postId, userId)}
+              handleDeleteLike={handleDislike}
               setIsFront={setIsFront}
             />
           </PhotoContainer>

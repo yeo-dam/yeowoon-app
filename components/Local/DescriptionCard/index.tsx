@@ -14,7 +14,7 @@ import theme from "themes";
 
 export type Props = {
   navigation: any;
-  handleDeleteLike: () => void;
+  handleDeleteLike?: () => void;
 } & PhotoCardProps;
 
 const {
@@ -70,7 +70,7 @@ const Component = ({
               <GreyTypo>{item.likeCount} 명</GreyTypo>
             </HeartSection>
             <Interval height="6px" />
-            <Pressable
+            <CommentPressable
               onPress={() =>
                 navigation.navigate(MAIN_SCREEN_NAME.COMMENT, {
                   postId: item.postId,
@@ -85,7 +85,7 @@ const Component = ({
                     (item.comments[0].user.userName, item.comments[0].content)
                   }`}
               </GreyTypo>
-            </Pressable>
+            </CommentPressable>
           </CommentBox>
         </PhotoBox>
       </PhotoFrame>
@@ -117,6 +117,12 @@ const ContentBox = styled.View`
 
 const CommentBox = styled.View`
   padding: 16px;
+`;
+
+const CommentPressable = styled.Pressable`
+  position: relative;
+  left: -3px;
+  align-items: flex-start;
 `;
 
 const TagTypo = styled(Typography).attrs({ variant: "caption-regular" })`

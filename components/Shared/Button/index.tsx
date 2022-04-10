@@ -1,17 +1,35 @@
 import React, { FC } from "react";
-import { TouchableOpacity, TouchableOpacityProps } from "react-native";
+import { Button, TouchableOpacity, TouchableOpacityProps } from "react-native";
 import styled from "styled-components/native";
 import Typography from "components/Shared/Typography";
 
 export type Props = {
   label: string;
+  width?: string;
+  height?: string;
   color?: string;
   onPress?: (data?: any) => void;
 } & TouchableOpacityProps;
 
-const Component: FC<Props> = ({ label, onPress, color, ...rest }) => {
+const Component: FC<Props> = ({
+  label,
+  onPress,
+  color,
+  width,
+  height,
+  ...rest
+}) => {
+  console.log(`TCL ~ [index.tsx] ~ line ~ 22 ~ width`, width);
+
   return (
-    <StyledButton label="" onPress={onPress} color={color} {...rest}>
+    <StyledButton
+      label=""
+      width={width}
+      height={height}
+      onPress={onPress}
+      color={color}
+      {...rest}
+    >
       <StyledText>{label}</StyledText>
     </StyledButton>
   );
@@ -20,7 +38,8 @@ const Component: FC<Props> = ({ label, onPress, color, ...rest }) => {
 export default Component;
 
 const StyledButton = styled(TouchableOpacity)<Props>`
-  width: 100%;
+  /* width: ${({ width }) => (width ? width : "100%")}; */
+  width: 100px;
   align-items: center;
   justify-content: center;
   height: 50px;

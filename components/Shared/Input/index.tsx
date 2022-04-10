@@ -85,6 +85,7 @@ const StyledTextInput = styled(TextInput)<Props>`
   width: ${({ width }) => (width ? width : "100%")};
   height: ${({ height }) => (height ? height : "100%")};
   font-size: ${({ fontSize }) => (fontSize ? fontSize : "14px")};
+  border: 1px solid green;
 `;
 
 const ErrMsg = styled(Typography)`
