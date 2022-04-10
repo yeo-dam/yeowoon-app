@@ -7,19 +7,14 @@ import Divider from "components/Shared/Divider";
 import { Props as PhotoCardProps } from "../PhotoCard";
 import Interval from "components/Shared/Interval";
 import { MAIN_SCREEN_NAME } from "constants/SCREEN_NAME";
-import Layout from "constants/Layout";
+import { windowWidth } from "constants/Layout";
 import HeartIcon from "~assets/Icons/Main/Heart.svg";
 import CommentIcon from "~assets/Icons/Main/Comment.svg";
-import theme from "themes";
 
 export type Props = {
   navigation: any;
   handleDeleteLike?: () => void;
 } & PhotoCardProps;
-
-const {
-  window: { width: windowWidth, height: windowHeight },
-} = Layout;
 
 const Component = ({
   item,
@@ -95,7 +90,7 @@ const Component = ({
 
 const PhotoFrame = styled(View)`
   background-color: ${({ theme }) => theme.colors.background.paper};
-  height: ${windowHeight * 0.647 + "px"};
+  height: ${windowWidth * 0.936 * 1.4986 + "px"};
   padding: 30px 16px 16px 16px;
 `;
 
@@ -103,7 +98,7 @@ const PhotoBox = styled(View)<{ isFront?: boolean }>`
   display: flex;
   justify-content: flex-end;
   width: ${windowWidth * 0.85 + "px"};
-  height: ${windowHeight * 0.48 + "px"};
+  height: ${windowWidth * 0.85 * 1.2225 + "px"};
   background-color: ${({ theme }) => theme.colors.grey.black};
 `;
 

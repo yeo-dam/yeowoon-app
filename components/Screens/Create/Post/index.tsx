@@ -23,7 +23,7 @@ import PlaceType from "~domain/enum/PlaceType";
 import { CREATE_SCREEN_NAME } from "constants/SCREEN_NAME";
 import DescriptionForm from "components/Local/DescriptionForm";
 import ImageForm from "components/Local/ImageForm";
-import Layout from "constants/Layout";
+import { windowWidth } from "constants/Layout";
 import { getRootViewModel } from "~components/Screens/VmManager";
 import { FormProvider, useForm } from "react-hook-form";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
@@ -31,10 +31,6 @@ import { useEffect } from "react";
 import { runInAction } from "mobx";
 import KeyboardAvoiding from "~components/Layout/KeyboardLayout";
 import MaskInput, { Masks } from "react-native-mask-input";
-
-const {
-  window: { width: windowWidth, height: windowHeight },
-} = Layout;
 
 const CreatePost = ({
   navigation,
@@ -176,7 +172,7 @@ const InnerWrapper = styled.View`
   padding-top: 32px;
   align-items: center;
   width: ${windowWidth * 0.936 + "px"};
-  height: ${windowHeight * 0.647 + "px"};
+  height: ${windowWidth * 0.936 * 1.4986 + "px"};
   background-color: white;
 `;
 
@@ -196,7 +192,7 @@ const DateFlexBox = styled(Flex)`
 const DescriptionBox = styled(View)`
   justify-content: center;
   width: ${windowWidth * 0.85 + "px"};
-  height: ${windowHeight * 0.48 + "px"};
+  height: ${windowWidth * 0.85 * 1.2225 + "px"};
   background-color: ${({ theme }) => theme.colors.grey.black};
 `;
 

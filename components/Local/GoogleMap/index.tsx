@@ -8,7 +8,7 @@ import MapView, {
 import styled from "styled-components/native";
 import { observer } from "mobx-react";
 import MapViewModel from "components/Screens/MyPage/Map/Map.vm";
-import Layout from "constants/Layout";
+import { windowWidth, windowHeight } from "constants/Layout";
 
 type Props = {
   vm: MapViewModel;
@@ -69,8 +69,8 @@ const Wrapper = styled.View`
 `;
 
 const StyledMapView = styled(MapView)`
-  width: ${Layout.window.width + "px"};
-  height: ${Layout.window.height + "px"};
+  width: ${windowWidth + "px"};
+  height: ${windowHeight + "px"};
 `;
 
 export default observer(GoogleMap);
