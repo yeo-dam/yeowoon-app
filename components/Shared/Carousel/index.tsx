@@ -3,7 +3,7 @@ import Carousel from "react-native-snap-carousel";
 import styled from "styled-components/native";
 
 import Item, { CarouselItem } from "./item";
-import Layout from "constants/Layout";
+import { windowWidth, windowHeight } from "constants/Layout";
 import FlexBox from "../FlexBox";
 
 export type Props = {
@@ -25,9 +25,6 @@ const Component = ({
 }: PropsWithChildren<Props>) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const carouselRef = useRef(null);
-  const {
-    window: { width: windowWidth, height: windowHeight },
-  } = Layout;
 
   const onPressHandler = (_url: string) => {
     console.log("carousel clicked", _url);

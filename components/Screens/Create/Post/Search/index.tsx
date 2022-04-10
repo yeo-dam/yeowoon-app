@@ -20,14 +20,10 @@ import FlexBox from "components/Shared/FlexBox";
 import Divider from "components/Shared/Divider";
 import Interval from "components/Shared/Interval";
 import { runInAction } from "mobx";
-import Layout from "constants/Layout";
+import { windowWidth } from "constants/Layout";
 import { getRootViewModel } from "~components/Screens/VmManager";
 import { RootTabScreenProps } from "types";
 import KeyboardAvoding from "~components/Layout/KeyboardLayout";
-
-const {
-  window: { width: windowWidth, height: windowHeight },
-} = Layout;
 
 const MyPageScreen = ({
   navigation,

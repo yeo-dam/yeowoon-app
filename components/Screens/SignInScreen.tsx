@@ -1,5 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
-import Layout from "constants/Layout";
+import { windowWidth, windowHeight } from "constants/Layout";
 import * as React from "react";
 import {
   Button,
@@ -14,10 +13,6 @@ import GoogleLogin from "~components/Shared/GoogleLogin";
 import Typography from "~components/Shared/Typography";
 
 const SplashImagePath = "~assets/images/main.png";
-
-const {
-  window: { width: windowWidth, height: windowHeight },
-} = Layout;
 
 export default function SignInScreen({
   setToken,

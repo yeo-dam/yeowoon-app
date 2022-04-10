@@ -1,19 +1,15 @@
 import React from "react";
-import { Pressable, TouchableWithoutFeedback } from "react-native";
+import { Pressable } from "react-native";
 import styled from "styled-components/native";
 import Image from "components/Shared/Image";
 import Typography from "components/Shared/Typography";
 import PostListModel from "~domain/model/Local/PostListModel";
-import Layout from "constants/Layout";
+import { windowWidth } from "constants/Layout";
 
 export type Props = {
   item: PostListModel;
   setIsFront: (data: boolean) => void;
 };
-
-const {
-  window: { width: windowWidth, height: windowHeight },
-} = Layout;
 
 const PhotoCard = ({ item, setIsFront }: Props) => {
   return (
@@ -39,13 +35,13 @@ const PhotoFrame = styled.View`
   background-color: #fff;
   padding: 30px 16px 16px 16px;
   width: ${windowWidth * 0.936 + "px"};
-  height: ${windowHeight * 0.647 + "px"};
+  height: ${windowWidth * 0.936 * 1.4986 + "px"};
 `;
 
 const PhotoContent = styled.View`
   margin: 0 auto 106px auto;
   width: ${windowWidth * 0.85 + "px"};
-  height: ${windowHeight * 0.48 + "px"};
+  height: ${windowWidth * 0.85 * 1.2225 + "px"};
 `;
 
 const MainImage = styled(Image)`
