@@ -1,9 +1,12 @@
 import { validate } from "class-validator";
 import { plainToClass } from "unsafe-class-transformer";
-import ListEntity from "~data/entity/ListEntity";
 import PlaceEntity from "~data/entity/PlaceEntity";
-import PagerModel from "~domain/model/Shared/PagerModel";
-import PlaceModel from "~domain/model/Shared/PlaceModel/model";
+import UserEntity from "~data/entity/UserEntity";
+import PostListModel from "~domain/model/Local/PostListModel";
+import UserDetailModel, {
+  UserDetailJson,
+} from "~domain/model/Local/UserDetailModel";
+import UserModel from "~domain/model/Shared/UserModel";
 import BaseRepository, { ConstructorParameter } from "./Repository";
 
 interface MeRepository {}
@@ -33,36 +36,68 @@ export default class MeRepositoryImpl
   // TODO : Map에 데이터 추가
   // TODO : 복수의 이미지 추가
 
-  /** User <--> Place (One to Many) **/
-  async findPlaces(): Promise<[PagerModel, PlaceModel[]]> {
-    const placeEntities = await this._remote._fetcher<ListEntity<PlaceEntity>>(
-      "/places"
-    );
+  async findProfileById(dto: {
+    parameter: {
+      userId: string;
+    };
+  }): Promise<UserDetailModel> {
+    try {
+      const userDetail = await this._remote._fetcher<UserDetailJson>(
+        `/profile/view/${dto.parameter.userId}`
+      );
 
-    const placeInstances = placeEntities.items.map((place) =>
-      plainToClass<PlaceModel, PlaceEntity>(PlaceModel, { ...place })
-    );
+      // FIXME : 타입에러 잡기
+      const userInstance = plainToClass<UserDetailModel, UserEntity>(
+        UserDetailModel,
+        userDetail
+      );
 
-    const pagerInstance = plainToClass(PagerModel, {
-      count: placeEntities.count,
-      total: placeEntities.total,
-      limit: placeEntities.limit,
-      offset: placeEntities.offset,
-    });
+      // FIXME: validation Error 잡기
+      // const validateError = await validate(userInstance);
 
-    placeInstances.forEach(async (item) => {
-      const postError = await validate(item);
-      if (postError.length > 0) {
-        throw postError;
-      }
-    });
+      // if (validateError) {
+      //   throw validateError;
+      // }
 
-    const pagerErrors = await validate(pagerInstance);
-    if (pagerErrors.length > 0) {
-      throw pagerErrors;
+      return userInstance;
+    } catch (error) {
+      throw error;
     }
+  }
 
-    return [pagerInstance, placeInstances];
+  /** User <--> Place (One to Many) **/
+  async findPosts(dto: {
+    parameter: {
+      userId: string;
+    };
+    querystring: {
+      pageNum: number;
+    };
+  }): Promise<PostListModel[]> {
+    try {
+      const { posts: placeEntities } = await this._remote._fetcher<{
+        posts: PlaceEntity[];
+      }>(`/post/user/${dto.parameter.userId}`, {
+        querystring: {
+          page: dto.querystring.pageNum,
+        },
+      });
+
+      const placeInstances = placeEntities.map((place: PlaceEntity) =>
+        plainToClass<PostListModel, PlaceEntity>(PostListModel, { ...place })
+      );
+
+      placeInstances.forEach(async (item) => {
+        const postError = await validate(item);
+        if (postError.length > 0) {
+          throw postError;
+        }
+      });
+
+      return placeInstances;
+    } catch (error) {
+      throw error;
+    }
   }
   // 장소를 클릭했을 때 부를 것
   async findPlaceById() {}
@@ -73,9 +108,41 @@ export default class MeRepositoryImpl
   async deleteNotificationById() {}
 
   /** User <--> Likes <--> Post (Many to Many) **/
-  async addLikes() {}
+  async addLikes(dto: {
+    parameter: {
+      postId: string;
+      userId: string;
+    };
+  }) {
+    try {
+      await this._remote._fetcher<any>(
+        `/like/post/${dto.parameter.postId}/${dto.parameter.userId}`,
+        {
+          method: "PUT",
+        }
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
 
-  async deleteLikes() {}
+  async deleteLikes(dto: {
+    parameter: {
+      postId: string;
+      userId: string;
+    };
+  }) {
+    try {
+      await this._remote._fetcher<any>(
+        `/like/post/${dto.parameter.postId}/${dto.parameter.userId}`,
+        {
+          method: "DELETE",
+        }
+      );
+    } catch (error) {
+      throw error;
+    }
+  }
 
   // TODO: 어떤 테이블이 와야할지 모르겠음.
   async addWishlist() {}
@@ -84,7 +151,23 @@ export default class MeRepositoryImpl
 
   /** User <--> Comments <--> Post (Many to Many) **/
   // 댓글 달기
-  async addComment() {}
+  async addComment(dto: {
+    body: {
+      postId: string;
+      content: string;
+    };
+  }) {
+    try {
+      const res = await this._remote._fetcher("/comment/new", {
+        method: "PUT",
+        body: JSON.stringify(dto.body),
+      });
+      console.log(`TCL ~ [MeRepository.ts] ~ line ~ 165 ~ res`, res);
+      return res;
+    } catch (error) {
+      throw error;
+    }
+  }
 
   // 댓글 수정하기
   async updateComment() {}

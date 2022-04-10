@@ -1,12 +1,10 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 
-import ErrorMsg from "~components/Shared/ErrorMsg";
-import Loadable from "~components/Shared/Loadable";
 import MyPageViewModel from "./MyPage.vm";
 import { observer } from "mobx-react";
 import Typography from "~components/Shared/Typography";
-import { Pressable, View } from "react-native";
+import { FlatList, Pressable, View } from "react-native";
 import { MYPAGE_SCREEN_NAME } from "constants/SCREEN_NAME";
 import { RootTabScreenProps } from "types";
 import { getRootViewModel } from "../VmManager";
@@ -20,32 +18,44 @@ import Image from "~components/Shared/Image";
 import Divider from "~components/Shared/Divider";
 import StatusBarLayout from "~components/Layout/StatusBarLayout";
 import theme from "themes";
+import PostListModel from "~domain/model/Local/PostListModel";
+import NoData from "~components/Shared/NoData";
+import ProfileCard from "~components/Local/ProfileCard";
 
+type Tabs = "게시글" | "저장글" | "팔로워" | "팔로잉";
 const MyPageScreen = ({
   navigation,
 }: RootTabScreenProps<typeof MYPAGE_SCREEN_NAME.MAIN>) => {
   const vm = getRootViewModel<MyPageViewModel>(
     (viewModel) => viewModel.tab.MyPage
   );
+  const { id: userId } = getRootViewModel((vm) => vm.auth.user);
 
-  const [currentTab, setTab] = useState<
-    "게시글" | "저장글" | "팔로워" | "팔로잉"
-  >();
+  const userDetail = vm.userDetail;
+
+  const [currentTab, setTab] = useState<Tabs>("게시글");
 
   useEffect(() => {
-    async function loadPosts() {
-      await vm.load();
+    async function load() {
+      await vm.loadProfile(userId);
+      await vm.loadPosts(userId, 0);
     }
-    loadPosts();
+    load();
   }, []);
 
-  if (vm.isLoading) {
-    return <Loadable />;
-  }
-
-  if (vm.isError) {
-    return <ErrorMsg />;
-  }
+  const renderCard = (item: PostListModel) => {
+    if (vm.posts && vm.posts.length === 0) {
+      return <NoData />;
+    } else {
+      return (
+        <ProfileCard
+          isLoading={vm.isLoading}
+          item={item}
+          navigation={navigation}
+        />
+      );
+    }
+  };
 
   return (
     <Layout paddingLeft={24} paddingRight={24}>
@@ -54,57 +64,68 @@ const MyPageScreen = ({
           <MapLogo />
         </Pressable>
         <Interval width="14px" />
-        <SettingLogo />
+        <SettingLogoBox>
+          <SettingLogo />
+        </SettingLogoBox>
       </IconSection>
 
       <ProfileSection>
         <Avatar
-          name=""
           width={58}
           height={58}
-          imageSource={"https://picsum.photos/58/58"}
+          imageSource={userDetail?.user.userImage?.url}
         />
         <ProfileTextBox>
-          <Typography variant="subhead-medium">userName</Typography>
+          <Typography variant="subhead-medium">
+            {userDetail?.user.userName}
+          </Typography>
           <GreyTypo numberOfLines={2} ellipsizeMode="tail">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam
-            dolorum iste praesentium aspernatur reprehenderit quas quis deleniti
-            nemo, qui eligendi! Officia sapiente praesentium ut adipisci
-            ducimus. Optio fugit et iusto!
+            {userDetail?.user.introduction || "등록된 소개가 없습니다."}
           </GreyTypo>
         </ProfileTextBox>
       </ProfileSection>
       <ContentHeader>
         <Pressable onPress={() => setTab("게시글")}>
           <HeaderItem>
-            <CountItem isClicked={currentTab === "게시글"}>12</CountItem>
+            <CountItem isClicked={currentTab === "게시글"}>
+              {userDetail?.postCount || 0}
+            </CountItem>
             <CountText isClicked={currentTab === "게시글"}>게시글</CountText>
           </HeaderItem>
         </Pressable>
         <DividerBox>
-          <Divider orientation="Vertical" height={"15px"} />
+          <Divider orientation="Vertical" />
+          {/* <Divider orientation="Vertical" height={"15px"} /> */}
         </DividerBox>
         <Pressable onPress={() => setTab("저장글")}>
           <HeaderItem>
-            <CountItem isClicked={currentTab === "저장글"}>42</CountItem>
+            <CountItem isClicked={currentTab === "저장글"}>
+              {userDetail?.bookmarkCount || 0}
+            </CountItem>
             <CountText isClicked={currentTab === "저장글"}>저장글</CountText>
           </HeaderItem>
         </Pressable>
         <DividerBox>
-          <Divider orientation="Vertical" height={"15px"} />
+          <Divider orientation="Vertical" />
+          {/* <Divider orientation="Vertical" height={"15px"} /> */}
         </DividerBox>
         <Pressable onPress={() => setTab("팔로워")}>
           <HeaderItem>
-            <CountItem isClicked={currentTab === "팔로워"}>27</CountItem>
+            <CountItem isClicked={currentTab === "팔로워"}>
+              {userDetail?.followerCount || 0}
+            </CountItem>
             <CountText isClicked={currentTab === "팔로워"}>팔로워</CountText>
           </HeaderItem>
         </Pressable>
         <DividerBox>
-          <Divider orientation="Vertical" height={"15px"} />
+          <Divider orientation="Vertical" />
+          {/* <Divider orientation="Vertical" height={"15px"} /> */}
         </DividerBox>
         <Pressable onPress={() => setTab("팔로잉")}>
           <HeaderItem>
-            <CountItem isClicked={currentTab === "팔로잉"}>27</CountItem>
+            <CountItem isClicked={currentTab === "팔로잉"}>
+              {userDetail?.followingCount || 0}
+            </CountItem>
             <CountText isClicked={currentTab === "팔로잉"}>팔로잉</CountText>
           </HeaderItem>
         </Pressable>
@@ -112,7 +133,17 @@ const MyPageScreen = ({
       <ContentSection>
         <Divider />
         <ContentBody>
-          <Image
+          <FlatList<PostListModel>
+            numColumns={2}
+            data={vm.posts}
+            renderItem={({ item }) => renderCard(item)}
+          />
+          {/* <Image
+            width={161}
+            height={212}
+            source={{ uri: "https://picsum.photos/161/212" }}
+          /> */}
+          {/* <Image
             width={161}
             height={212}
             source={{ uri: "https://picsum.photos/161/212" }}
@@ -136,12 +167,7 @@ const MyPageScreen = ({
             width={161}
             height={212}
             source={{ uri: "https://picsum.photos/161/212" }}
-          />
-          <Image
-            width={161}
-            height={212}
-            source={{ uri: "https://picsum.photos/161/212" }}
-          />
+          /> */}
         </ContentBody>
       </ContentSection>
     </Layout>
@@ -161,7 +187,6 @@ const IconSection = styled(FlexBox)`
   align-items: center;
   justify-content: flex-end;
   margin-right: 12px;
-  border: 1px solid red;
   height: 48px;
 `;
 
@@ -183,6 +208,7 @@ const ContentSection = styled.ScrollView``;
 
 const ContentHeader = styled(FlexBox)`
   justify-content: space-around;
+  align-items: flex-end;
   padding-bottom: 8px;
   width: 100%;
 `;
@@ -192,8 +218,13 @@ const ContentBody = styled(FlexBox)`
   flex-wrap: wrap;
 `;
 
-const DividerBox = styled.View`
+const DividerBox = styled(FlexBox)`
   justify-content: flex-end;
+  height: 15px;
+`;
+
+const SettingLogoBox = styled.View`
+  padding-top: 7px;
 `;
 
 const HeaderItem = styled(View)`

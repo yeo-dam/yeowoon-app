@@ -2,26 +2,29 @@ import React from "react";
 import styled from "styled-components/native";
 import { Pressable, View } from "react-native";
 import Typography from "components/Shared/Typography";
-import { FollowerNum } from "helper/Formatter/FollowerNumFormatter";
-import PlaceTypeFormatter from "helper/Formatter/PlaceTypeFormatter";
 import FlexBox from "components/Shared/FlexBox";
 import Divider from "components/Shared/Divider";
 import { Props as PhotoCardProps } from "../PhotoCard";
 import Interval from "components/Shared/Interval";
 import { MAIN_SCREEN_NAME } from "constants/SCREEN_NAME";
-import Layout from "constants/Layout";
+import { windowWidth } from "constants/Layout";
+import HeartIcon from "~assets/Icons/Main/Heart.svg";
+import CommentIcon from "~assets/Icons/Main/Comment.svg";
 
 export type Props = {
   navigation: any;
+  handleDeleteLike?: () => void;
 } & PhotoCardProps;
 
-const {
-  window: { width: windowWidth, height: windowHeight },
-} = Layout;
-
-const Component = ({ item, setIsFront, navigation }: Props) => {
+const Component = ({
+  item,
+  setIsFront,
+  navigation,
+  handleDeleteLike,
+}: Props) => {
   const handlePress = () => navigation.push(MAIN_SCREEN_NAME.MAP);
 
+  console.log(`TCL ~ [index.tsx] ~ line ~ 25 ~ item.like`, item.like);
   return (
     <Pressable onPress={() => setIsFront(true)}>
       <PhotoFrame>
@@ -29,12 +32,10 @@ const Component = ({ item, setIsFront, navigation }: Props) => {
           <ContentBox>
             <Pressable onPress={handlePress}>
               <View>
-                <WhiteTitleTypo>{item.title}</WhiteTitleTypo>
+                <WhiteTitleTypo>{item.place.placeName}</WhiteTitleTypo>
                 <Interval height="8px" />
                 <GreyFlexBox>
-                  <GreyBlackTypo>
-                    {PlaceTypeFormatter(item.place.placeType)}
-                  </GreyBlackTypo>
+                  <GreyBlackTypo>{item.place.placeType}</GreyBlackTypo>
                   <Interval width="4px" />
                   <Divider orientation="Vertical" />
                   <Interval width="4px" />
@@ -56,11 +57,22 @@ const Component = ({ item, setIsFront, navigation }: Props) => {
           </ContentBox>
           <Divider />
           <CommentBox>
-            <GreyTypo>{item.likeCount} 명</GreyTypo>
+            <HeartSection>
+              {/* TODO : 활성화 / 비활성화 시, Icon 색상 구분 필요  */}
+              <IconBox onPress={handleDeleteLike}>
+                <HeartIcon />
+              </IconBox>
+              <GreyTypo>{item.likeCount} 명</GreyTypo>
+            </HeartSection>
             <Interval height="6px" />
-            <Pressable
-              onPress={() => navigation.navigate(MAIN_SCREEN_NAME.COMMENT)}
+            <CommentPressable
+              onPress={() =>
+                navigation.navigate(MAIN_SCREEN_NAME.COMMENT, {
+                  postId: item.postId,
+                })
+              }
             >
+              <CommentIcon />
               {/* FIXME : 댓글을 표현하는 순서가 변경되어야 할 것임. */}
               <GreyTypo>
                 {item.comments &&
@@ -68,7 +80,7 @@ const Component = ({ item, setIsFront, navigation }: Props) => {
                     (item.comments[0].user.userName, item.comments[0].content)
                   }`}
               </GreyTypo>
-            </Pressable>
+            </CommentPressable>
           </CommentBox>
         </PhotoBox>
       </PhotoFrame>
@@ -78,7 +90,7 @@ const Component = ({ item, setIsFront, navigation }: Props) => {
 
 const PhotoFrame = styled(View)`
   background-color: ${({ theme }) => theme.colors.background.paper};
-  height: ${windowHeight * 0.647 + "px"};
+  height: ${windowWidth * 0.936 * 1.4986 + "px"};
   padding: 30px 16px 16px 16px;
 `;
 
@@ -86,7 +98,7 @@ const PhotoBox = styled(View)<{ isFront?: boolean }>`
   display: flex;
   justify-content: flex-end;
   width: ${windowWidth * 0.85 + "px"};
-  height: ${windowHeight * 0.48 + "px"};
+  height: ${windowWidth * 0.85 * 1.2225 + "px"};
   background-color: ${({ theme }) => theme.colors.grey.black};
 `;
 
@@ -100,6 +112,12 @@ const ContentBox = styled.View`
 
 const CommentBox = styled.View`
   padding: 16px;
+`;
+
+const CommentPressable = styled.Pressable`
+  position: relative;
+  left: -3px;
+  align-items: flex-start;
 `;
 
 const TagTypo = styled(Typography).attrs({ variant: "caption-regular" })`
@@ -126,5 +144,13 @@ const WhiteTypo = styled(Typography)`
 const WhiteTitleTypo = styled(WhiteTypo).attrs({
   variant: "subhead-medium",
 })``;
+
+const HeartSection = styled(FlexBox)`
+  align-items: center;
+`;
+
+const IconBox = styled.Pressable`
+  margin-right: 4px;
+`;
 
 export default Component;

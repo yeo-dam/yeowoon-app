@@ -3,8 +3,6 @@ import { FlatList, View } from "react-native";
 import { useEffect } from "react";
 import ContentLayout from "~components/Layout/ContentLayout";
 import NoData from "~components/Shared/NoData";
-import ErrorMsg from "~components/Shared/ErrorMsg";
-import Loadable from "~components/Shared/Loadable";
 import MainViewModel from "./Main.vm";
 import { observer } from "mobx-react";
 import Carousel from "~components/Shared/Carousel";
@@ -24,56 +22,73 @@ const MainScreen = ({
 }: RootTabScreenProps<typeof MAIN_SCREEN_NAME.HOME>) => {
   const vm = getRootViewModel<MainViewModel>((viewModel) => viewModel.tab.Main);
 
-  async function loadPosts(limit?: number, offset?: number) {
+  async function loadPosts(pageNum: number) {
     await vm.load({
-      pageNum: 0,
+      pageNum,
     });
   }
 
   useEffect(() => {
-    loadPosts();
+    loadPosts(0);
   }, []);
 
-  const renderList = () => {
+  const addLikes = async (postId: string, userId: string) => {
+    await vm.addLikes(postId, userId);
+  };
+
+  const deleteLikes = async (postId: string, userId: string) => {
+    await vm.deleteLikes(postId, userId);
+  };
+
+  const renderCard = (item: PostListModel) => {
     if (vm.posts && vm.posts.length === 0) {
       return <NoData />;
     } else {
       return (
-        <FlatList<PostListModel>
-          data={vm.posts}
-          ListHeaderComponent={
-            <>
-              <NavSection>
-                <Nav />
-              </NavSection>
-              {/* TODO : MainImage 및 Text 반영되도록 변경 필요 */}
-              <Carousel
-                aspectRatio={375 / 346}
-                pages={[
-                  { id: "1", url: "https://picsum.photos/375/346" },
-                  { id: "2", url: "https://picsum.photos/375/346" },
-                ]}
-                isTextImg={false}
-              />
-            </>
-          }
-          renderItem={({ item }) => (
-            <MainItemCard vm={vm} item={item} navigation={navigation} />
-          )}
-          keyExtractor={(item) => item.postId}
-          // onEndReached={handleLoadMore}
-          onEndReachedThreshold={0.3}
-          // onRefresh={handleRefresh}
-        ></FlatList>
+        <MainItemCard
+          item={item}
+          isLoading={vm.isLoading}
+          addLikes={addLikes}
+          deleteLikes={deleteLikes}
+          navigation={navigation}
+        />
       );
     }
   };
 
-  // const handleLoadMore = () => {
-  //   const limitNum = vm.pager.limit;
-  //   const pagerNum = vm.pager.offset + vm.pager.limit;
-  //   loadPosts(limitNum, pagerNum);
-  // };
+  const renderList = () => {
+    return (
+      <FlatList<PostListModel>
+        data={vm.posts}
+        ListHeaderComponent={
+          <>
+            <NavSection>
+              <Nav navigation={navigation} />
+            </NavSection>
+            {/* TODO : MainImage 및 Text 반영되도록 변경 필요 */}
+            <Carousel
+              aspectRatio={375 / 346}
+              pages={[
+                { id: "1", url: "https://picsum.photos/375/346" },
+                { id: "2", url: "https://picsum.photos/375/346" },
+              ]}
+              isTextImg={false}
+            />
+          </>
+        }
+        renderItem={({ item }) => renderCard(item)}
+        keyExtractor={(item) => item.postId}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.3}
+        // onRefresh={handleRefresh}
+      ></FlatList>
+    );
+    // }
+  };
+
+  const handleLoadMore = () => {
+    loadPosts(1);
+  };
 
   const handleRefresh = () => {
     console.log("이 지점에서부터 refresh 합니다.");

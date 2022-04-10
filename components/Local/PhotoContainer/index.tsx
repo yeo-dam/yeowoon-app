@@ -14,7 +14,8 @@ import DownloadLogo from "~assets/Icons/Popup/Download.svg";
 import { Image, View } from "react-native";
 import PostListModel from "~domain/model/Local/PostListModel";
 
-const NoImageProfile = "~assets/Icons/no-profile.png";
+import NoImage from "../../../assets/Icons/Login/NoProfile.png";
+const NoImageProfile = "../../../assets/Icons/Login/NoProfile.png";
 import NoProfile from "~assets/Icons/no-image-profile.svg";
 
 type Props = {
@@ -31,7 +32,6 @@ const Component: FC<Props> = ({ item, children }) => {
           name={item.user.userName}
           imageSource={item.user.userImage?.url}
         />
-        <Image source={{ uri: "~assets/images/No_image.png" }} />
         <IconSection>
           <IconBox>
             <WishlistLogo />
@@ -82,7 +82,9 @@ const PhotoHeader = styled(FlexBox)`
   margin-bottom: 12px;
 `;
 
-const IconSection = styled(FlexBox)``;
+const IconSection = styled(FlexBox)`
+  align-items: center;
+`;
 
 const IconBox = styled.View`
   margin-right: 14px;
@@ -98,5 +100,4 @@ const ProfileIconBox = styled.View`
   display: flex;
   width: 24px;
   height: 24px;
-  border: 1px solid red;
 `;

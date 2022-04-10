@@ -1,34 +1,29 @@
 import React from "react";
-import { TouchableWithoutFeedback } from "react-native";
+import { Pressable } from "react-native";
 import styled from "styled-components/native";
 import Image from "components/Shared/Image";
 import Typography from "components/Shared/Typography";
 import PostListModel from "~domain/model/Local/PostListModel";
-import Layout from "constants/Layout";
+import { windowWidth } from "constants/Layout";
 
 export type Props = {
   item: PostListModel;
   setIsFront: (data: boolean) => void;
 };
 
-const {
-  window: { width: windowWidth, height: windowHeight },
-} = Layout;
-
 const PhotoCard = ({ item, setIsFront }: Props) => {
   return (
     <PhotoFrame>
       <PhotoContent>
-        <TouchableWithoutFeedback onPress={() => setIsFront(false)}>
-          {/* TODO : 캐로젤로 변경해줄 필요가 있음 */}
+        <Pressable onPress={() => setIsFront(false)}>
           <MainImage source={{ uri: item.imageLocations[0] }} />
-        </TouchableWithoutFeedback>
-        <PhotoDate>
-          <PhotoDateTypo type="Number" variant="digit">
-            {item.date}
-          </PhotoDateTypo>
-        </PhotoDate>
+        </Pressable>
       </PhotoContent>
+      <PhotoDate>
+        <PhotoDateTypo type="Number" variant="digit">
+          {item.date}
+        </PhotoDateTypo>
+      </PhotoDate>
     </PhotoFrame>
   );
 };
@@ -36,16 +31,17 @@ const PhotoCard = ({ item, setIsFront }: Props) => {
 export default PhotoCard;
 
 const PhotoFrame = styled.View`
+  position: relative;
   background-color: #fff;
   padding: 30px 16px 16px 16px;
   width: ${windowWidth * 0.936 + "px"};
-  height: ${windowHeight * 0.647 + "px"};
+  height: ${windowWidth * 0.936 * 1.4986 + "px"};
 `;
 
 const PhotoContent = styled.View`
   margin: 0 auto 106px auto;
   width: ${windowWidth * 0.85 + "px"};
-  height: ${windowHeight * 0.48 + "px"};
+  height: ${windowWidth * 0.85 * 1.2225 + "px"};
 `;
 
 const MainImage = styled(Image)`
@@ -54,8 +50,10 @@ const MainImage = styled(Image)`
 `;
 
 const PhotoDate = styled.View`
+  position: absolute;
   margin-left: auto;
-  margin-top: 73px;
+  right: ${windowWidth * 0.038 + "px"};
+  bottom: 20px;
 `;
 
 const PhotoDateTypo = styled(Typography)`

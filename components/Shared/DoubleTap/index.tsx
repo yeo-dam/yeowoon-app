@@ -5,6 +5,7 @@ import styled from "styled-components/native";
 type Props = {
   delay: number;
   setIsFront: (data: boolean) => void;
+  requestToggleLike: () => void;
   animatedValue: Animated.Value | Animated.ValueXY;
 };
 
@@ -12,6 +13,7 @@ const Component: FC<Props> = ({
   delay = 1000,
   setIsFront,
   animatedValue,
+  requestToggleLike,
   children,
 }) => {
   const renderedTime = Date.now();
@@ -20,6 +22,7 @@ const Component: FC<Props> = ({
       Animated.spring(animatedValue, { toValue: 1, useNativeDriver: true }),
       Animated.spring(animatedValue, { toValue: 0, useNativeDriver: true }),
     ]).start();
+    requestToggleLike();
   };
 
   let lastTapTime: any = null;

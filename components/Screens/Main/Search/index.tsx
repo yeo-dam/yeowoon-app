@@ -6,9 +6,8 @@ import ErrorMsg from "components/Shared/ErrorMsg";
 import Loadable from "components/Shared/Loadable";
 import { observer } from "mobx-react";
 import Typography from "components/Shared/Typography";
-import { InputAccessoryView, View } from "react-native";
-import { CREATE_SCREEN_NAME } from "constants/SCREEN_NAME";
-import CreatePostViewModel from "../CreatePost.vm";
+import { InputAccessoryView, View, Text } from "react-native";
+import { CREATE_SCREEN_NAME, MAIN_SCREEN_NAME } from "constants/SCREEN_NAME";
 import Form from "components/Shared/Form";
 import Input from "components/Shared/Input";
 import SearchDto from "~domain/dto/SearchDto";
@@ -23,22 +22,19 @@ import { runInAction } from "mobx";
 import { windowWidth } from "constants/Layout";
 import { getRootViewModel } from "~components/Screens/VmManager";
 import { RootTabScreenProps } from "types";
-import KeyboardAvoding from "~components/Layout/KeyboardLayout";
+import SearchViewModel from "./Search.vm";
+import KeyboardAvoiding from "~components/Layout/KeyboardLayout";
 
-const MyPageScreen = ({
+const SearchScreen = ({
   navigation,
-}: RootTabScreenProps<typeof CREATE_SCREEN_NAME.SEARCH>) => {
-  const vm = getRootViewModel<CreatePostViewModel>(
-    (viewModel) => viewModel.tab.Post
+}: RootTabScreenProps<typeof MAIN_SCREEN_NAME.SEARCH>) => {
+  const vm = getRootViewModel<SearchViewModel>(
+    (viewModel) => viewModel.tab.Search
   );
 
   const handlePress = (placeId: string) => {
-    runInAction(() => {
-      vm.selectPlace(placeId);
-      vm.formReset(true);
-    });
-    // runInAction(() => );
-    navigation.navigate("CreatePost");
+    // runInAction(() => vm.selectPlace(placeId));
+    // navigation.navigate("CreatePost");
   };
 
   const onSubmit = (data: any) =>
@@ -47,9 +43,9 @@ const MyPageScreen = ({
   // TODO : 추후 BottomBar를 숨겨줘야 합니다.
 
   return (
-    <KeyboardAvoding justifyContent="flex-end">
+    <KeyboardAvoiding>
       <ContentBox>
-        {vm.searchedList &&
+        {/* {vm.searchedList &&
           vm.searchedList.map((item) => {
             return (
               <Content
@@ -66,22 +62,22 @@ const MyPageScreen = ({
                 <Divider orientation="Horizontal" />
               </Content>
             );
-          })}
+          })} */}
       </ContentBox>
       <ButtonBox>
-        {vm.searchedWord && (
+        {/* {vm.searchedWord && (
           <StyledButton
             label={`${`"${vm.searchedWord}" 등록하기`}`}
             color={theme.colors.primary.main}
             onPress={onSubmit}
           />
-        )}
+        )} */}
       </ButtonBox>
-    </KeyboardAvoding>
+    </KeyboardAvoiding>
   );
 };
 
-export default observer(MyPageScreen);
+export default observer(SearchScreen);
 
 const ContentLayoutWrapper = styled(ContentLayout)`
   padding: 16px 24px 0px 24px;

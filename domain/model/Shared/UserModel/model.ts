@@ -3,7 +3,6 @@ import {
   IsDate,
   IsEnum,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsString,
 } from "class-validator";
@@ -21,6 +20,10 @@ export default class UserModel implements UserEntity {
   @IsString()
   @IsNotEmpty()
   userName: string;
+
+  @IsString()
+  @IsOptional()
+  introduction?: string;
 
   @IsString()
   @IsNotEmpty()

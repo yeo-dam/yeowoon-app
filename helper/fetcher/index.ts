@@ -67,7 +67,7 @@ const Fetcher = async <T>(
 
   console.log("Input >>>>> ", requestUrl);
   console.log("headers >>>>> ", mergedOpt.headers);
-  console.trace("query string >>>>> ", options?.querystring);
+  console.log("queryString >>>>> ", options?.querystring);
 
   const response = await fetch(requestUrl, mergedOpt);
   const responseJson = await response.json();

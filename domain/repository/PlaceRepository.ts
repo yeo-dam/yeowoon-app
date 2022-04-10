@@ -1,4 +1,9 @@
+import { plainToClass } from "class-transformer";
+import { validate } from "class-validator";
 import PlaceSearchDto from "~domain/dto/PlaceSearchDto";
+import PlaceListModel, {
+  PlaceListJson,
+} from "~domain/model/Local/PlaceListModel";
 import BaseRepository, { ConstructorParameter } from "./Repository";
 
 interface PlaceRepository {}
@@ -19,24 +24,27 @@ export default class PlaceRepositoryImpl
     super(args);
   }
 
-  async findPlace(dto: { query: PlaceSearchDto }) {
+  async findPlace(dto: { query: PlaceSearchDto }): Promise<PlaceListModel[]> {
     try {
-      // response가 정의되어야 해당하는 리스트들을 뿌려줄 수 있음
-      const res = await this._remote._fetcher(
+      const placeList = await this._remote._fetcher<PlaceListJson[]>(
         `/place/search?keyword=${dto.query.keyword}`,
         {
           method: "GET",
         }
       );
-      return res;
-      // FIXME : querystring으로 값이 왜 안가는지 확인해 볼 것.
-      // await this._remote._fetcher("/place/search", {
-      //   method: "GET",
-      //   querystring: {
-      //     ...dto.query
-      //   },
-      // });
-      // this._list.set(id, res)
+
+      const placeInstances = placeList.map((place: PlaceListJson) =>
+        plainToClass<PlaceListModel, PlaceListJson>(PlaceListModel, place)
+      );
+
+      placeInstances.forEach(async (item: PlaceListModel) => {
+        const postError = await validate(item);
+        if (postError.length > 0) {
+          throw postError;
+        }
+      });
+
+      return placeInstances;
     } catch (error) {
       throw error;
     }

@@ -1,12 +1,22 @@
 import { Type } from "unsafe-class-transformer";
-import { IsDate, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import {
+  IsBoolean,
+  IsDate,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+} from "class-validator";
 import CommentEntity from "~data/entity/CommentEntity";
 import UserModel from "../UserModel/model";
 
 class CommentModel implements CommentEntity {
   @IsString()
   @IsNotEmpty()
-  id: string;
+  commentId: string;
+
+  @IsDate()
+  @IsNotEmpty()
+  createdDateTime: Date;
 
   @IsString()
   @IsNotEmpty()
@@ -16,13 +26,17 @@ class CommentModel implements CommentEntity {
   @IsNotEmpty()
   user: UserModel;
 
-  @IsDate()
-  @IsNotEmpty()
-  createDateTime: Date;
-
   @IsNumber()
   @IsNotEmpty()
   likeCount: number;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  isGroup: boolean;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  isWriter: boolean;
 }
 
 export default CommentModel;

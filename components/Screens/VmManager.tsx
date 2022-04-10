@@ -2,8 +2,9 @@ import React, { PropsWithChildren, useContext } from "react";
 import AuthViewModel, { AuthTokenType } from "./AuthViewModel";
 import CommentViewModel from "./Main/Comment/Comment.vm";
 import MainViewModel from "./Main/Main.vm";
+import SearchViewModel from "./Main/Search/Search.vm";
 import MyPageViewModel from "./MyPage/MyPage.vm";
-import SearchViewModel from "./Create/Post/Search/Search.vm";
+import CreateSearchViewModel from "./Create/Post/Search/Search.vm";
 import LikeViewModel from "./MyPage/Likes/Likes.vm";
 import MapViewModel from "./MyPage/Map/Map.vm";
 import SettingViewModel from "./MyPage/Setting/Setting.vm";
@@ -22,6 +23,7 @@ const createViewModel = ({
     tab: {
       Main: MainViewModel.GetInstance({ accessToken }),
       Search: SearchViewModel.GetInstance({ accessToken }),
+      CreateSearch: CreateSearchViewModel.GetInstance({ accessToken }),
       Comment: CommentViewModel.GetInstance({ accessToken }),
       Post: PostViewModel.GetInstance({ accessToken }),
       MyPage: MyPageViewModel.GetInstance({ accessToken }),

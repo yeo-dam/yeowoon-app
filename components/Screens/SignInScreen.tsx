@@ -1,5 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
-import Layout from "constants/Layout";
+import { windowWidth, windowHeight } from "constants/Layout";
 import * as React from "react";
 import {
   Button,
@@ -15,20 +14,15 @@ import Typography from "~components/Shared/Typography";
 
 const SplashImagePath = "~assets/images/main.png";
 
-const {
-  window: { width: windowWidth, height: windowHeight },
-} = Layout;
-
 export default function SignInScreen({
   setToken,
 }: {
   setToken: (data: string) => void;
 }) {
   return (
-    <ImageBackground
+    <StyledImageBackground
       source={require("~assets/images/main.png")}
       resizeMode="cover"
-      style={{ flex: 1, width: windowWidth, height: windowHeight + 10 }}
     >
       <InnerWrapper>
         <TitleSection>
@@ -38,9 +32,16 @@ export default function SignInScreen({
           <GoogleLogin setToken={setToken} />
         </LoginUISection>
       </InnerWrapper>
-    </ImageBackground>
+    </StyledImageBackground>
   );
 }
+
+const StyledImageBackground = styled.ImageBackground`
+  flex: 1;
+  left: -5px;
+  width: ${windowWidth + 10 + "px"};
+  height: ${windowHeight + 10 + "px"};
+`;
 
 const InnerWrapper = styled.View`
   flex: 1;

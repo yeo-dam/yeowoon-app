@@ -1,9 +1,12 @@
 import UserEntity from "../UserEntity";
 
 export default interface Entity {
-  id: string;
+  commentId: string;
   content: string;
   user: UserEntity;
-  createDateTime: Date;
   likeCount: number;
+  group?: number;
+  createdDateTime: Date;
+  isGroup: boolean;
+  isWriter: boolean;
 }

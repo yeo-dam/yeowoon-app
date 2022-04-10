@@ -26,11 +26,13 @@ export default class PostRepositoryImpl extends BaseRepository {
   /** 전체 Post 목록 불러오기 (필요 없을 수 있음) **/
   async find(dto: { query: FindDto }): Promise<PostListModel[]> {
     const { posts } = await this._remote._fetcher<{ posts: PostEntity[] }>(
-      `/post/list?page=${dto.query.pageNum}`
+      `/post/list`,
+      {
+        querystring: {
+          page: dto.query.pageNum,
+        },
+      }
     );
-
-    console.log(`TCL ~ [PostRepository.ts] ~ line ~ 32 ~ posts`, posts);
-    console.log(`TCL ~ [PostRepository.ts] ~ line ~ 32 ~ posts`, posts);
 
     const postInstances = posts.map((post: PostEntity) =>
       plainToClass<PostListModel, PostEntity>(PostListModel, post)

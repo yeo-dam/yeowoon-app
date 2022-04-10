@@ -7,7 +7,6 @@ type Props = {
   title?: string;
   justifyContent?: "flex-start" | "flex-end" | "center" | "space-between";
   alignItems?: "flex-start" | "flex-end" | "center" | "space-between";
-  hasHeader?: boolean;
   paddingLeft?: number;
   paddingRight?: number;
 };

@@ -34,7 +34,7 @@ const Component: FC<Props> = ({ vm, navigation, onSubmit }: Props) => {
   return (
     <DescriptionInnerBox>
       {/* 장소 이름 */}
-      <Pressable onPress={() => navigation.navigate("Search")}>
+      <Pressable onPress={() => navigation.navigate(CREATE_SCREEN_NAME.SEARCH)}>
         <GreyTypo variant="subhead-medium">
           {vm.selectedPlace
             ? vm.selectedPlace.placeName
@@ -48,7 +48,9 @@ const Component: FC<Props> = ({ vm, navigation, onSubmit }: Props) => {
         <Divider orientation="Vertical" />
         <Interval width="4px" />
         {/* 장소 주소 */}
-        <Pressable onPress={() => navigation.navigate("Search")}>
+        <Pressable
+          onPress={() => navigation.navigate(CREATE_SCREEN_NAME.SEARCH)}
+        >
           <GreyTypo variant="caption-light">
             {vm.selectedPlace ? vm.selectedPlace.address : "위치를 입력하세요"}
           </GreyTypo>

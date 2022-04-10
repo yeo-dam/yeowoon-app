@@ -23,6 +23,7 @@ import CloseLogo from "~assets/Icons/Close.svg";
 import BackPushLogo from "~assets/Icons/Back.svg";
 import SearchLogo from "~assets/Icons/SearchIcon.svg";
 import { getRootViewModel } from "../VmManager";
+import SearchForm from "~components/Local/SearchForm";
 
 export type BnbCreateNavigator = {
   [CREATE_SCREEN_NAME.POST]: undefined;
@@ -36,7 +37,6 @@ const CreateScreen = ({ navigation }: any) => {
   const vm = getRootViewModel<CreatePostViewModel>(
     (viewModel) => viewModel.tab.Post
   );
-  const [inputTextValue, setInputTextValue] = useState(undefined);
 
   const handleClick = useCallback(
     (bool: boolean) => {
@@ -45,16 +45,19 @@ const CreateScreen = ({ navigation }: any) => {
     [vm.isFront]
   );
 
-  const handleChange = (e: any) => {
-    setInputTextValue(e);
-  };
+  console.log(
+    `TCL ~ [index.tsx] ~ line ~ 48 ~ vm.resetTrigger`,
+    vm.resetTrigger
+  );
+  // useEffect(() => {
+  // }, [vm.resetTrigger])
 
-  const onSubmit = async () => {
+  const onSubmit = async (inputTextValue: string) => {
     const findDto: PlaceSearchDto = {
-      keyword: inputTextValue as unknown as string,
+      keyword: inputTextValue,
     };
 
-    runInAction(() => vm.setSearchWord(inputTextValue as unknown as string));
+    runInAction(() => vm.setSearchWord(inputTextValue));
 
     await vm.findPlaces({
       query: findDto,
@@ -121,38 +124,12 @@ const CreateScreen = ({ navigation }: any) => {
           headerTitle: "",
           headerLeft: () => {
             return (
-              <>
-                <Pressable
-                  onPress={() => navigation.navigate(CREATE_SCREEN_NAME.POST)}
-                >
-                  <BackPushLogo />
-                </Pressable>
-                <Interval width="10px" />
-                <Form schema={FindPostDto}>
-                  <SearchBox>
-                    <IconBox>
-                      <SearchLogo />
-                    </IconBox>
-                    <View>
-                      <Input
-                        name="placeName"
-                        placeholderTextColor="#999999"
-                        value={inputTextValue}
-                        onChangeText={handleChange}
-                        placeholder="장소 이름 검색"
-                        inputAccessoryViewID={CREATE_SCREEN_NAME.SEARCH}
-                      />
-                    </View>
-                  </SearchBox>
-                  <InputAccessoryView nativeID={CREATE_SCREEN_NAME.SEARCH}>
-                    <Button
-                      label="검색하기"
-                      onPress={onSubmit}
-                      color={theme.colors.grey.AA}
-                    />
-                  </InputAccessoryView>
-                </Form>
-              </>
+              <SearchForm
+                handleNavigate={() =>
+                  navigation.navigate(CREATE_SCREEN_NAME.POST)
+                }
+                onSubmit={onSubmit}
+              />
             );
           },
         }}

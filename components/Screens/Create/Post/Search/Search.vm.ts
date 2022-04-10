@@ -2,14 +2,14 @@ import { action, computed, flow, observable } from "mobx";
 import { ConstructorParameter } from "~domain/repository/Repository";
 import BaseViewModel from "../../../BaseViewModel";
 
-export default class SearchViewModel extends BaseViewModel {
-  private static _Instance: SearchViewModel;
+export default class CreateSearchViewModel extends BaseViewModel {
+  private static _Instance: CreateSearchViewModel;
 
   static GetInstance(args: ConstructorParameter) {
-    if (!SearchViewModel._Instance) {
-      SearchViewModel._Instance = new SearchViewModel(args);
+    if (!CreateSearchViewModel._Instance) {
+      CreateSearchViewModel._Instance = new CreateSearchViewModel(args);
     }
-    return SearchViewModel._Instance;
+    return CreateSearchViewModel._Instance;
   }
   private constructor(args: ConstructorParameter) {
     super(args);
@@ -35,7 +35,7 @@ export default class SearchViewModel extends BaseViewModel {
   }
 
   @action
-  load = flow(function* (this: SearchViewModel) {
+  load = flow(function* (this: CreateSearchViewModel) {
     this._isLoading.set(true);
     this._isLoading.set(false);
   });

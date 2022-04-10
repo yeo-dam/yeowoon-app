@@ -2,10 +2,12 @@ export const MAIN_SCREEN_NAME: {
   HOME: "Main";
   COMMENT: "Comment";
   MAP: "Map";
+  SEARCH: "Search";
 } = {
   HOME: "Main",
   COMMENT: "Comment",
   MAP: "Map",
+  SEARCH: "Search",
 };
 
 export const BNB_SCREEN_NAME: {
@@ -52,10 +54,10 @@ export const CREATE_SCREEN_NAME: {
   POST: "CreatePost";
   STORY: "CreateStory";
   UPLOAD: "ImageUpload";
-  SEARCH: "Search";
+  SEARCH: "CreateSearch";
 } = {
   POST: "CreatePost",
   STORY: "CreateStory",
   UPLOAD: "ImageUpload",
-  SEARCH: "Search",
+  SEARCH: "CreateSearch",
 };

@@ -61,7 +61,7 @@ export default class CreatePostViewModel extends BaseViewModel {
   private _searchedList = observable.map<string, PlaceList>(undefined);
 
   @observable
-  private _searchedWord = observable.box<string>(undefined);
+  private _searchedWord = observable.box<string | undefined>(undefined);
 
   @observable
   private _selectedPlace = observable.box<PlaceList | undefined>(undefined);
@@ -151,6 +151,8 @@ export default class CreatePostViewModel extends BaseViewModel {
     const place = this._searchedList.get(id);
     if (place) {
       this._selectedPlace.set(place);
+      this._searchedList.clear();
+      this._searchedWord.set(undefined);
     }
   }
 

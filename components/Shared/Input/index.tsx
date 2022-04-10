@@ -2,7 +2,7 @@ import { renderErrMsg } from "helper/Formatter/ErrorMessage";
 import React, { FC } from "react";
 import { Controller, get, useFormContext } from "react-hook-form";
 import { TextInput, TextInputProps } from "react-native";
-import styled from "styled-components/native";
+import styled, { css } from "styled-components/native";
 import Typography from "../Typography";
 
 export type Props = {
@@ -15,6 +15,7 @@ export type Props = {
   disabled?: boolean;
   width?: string;
   height?: string;
+  FullWidth?: boolean;
 } & TextInputProps;
 
 const Component: FC<Props> = ({
@@ -27,18 +28,20 @@ const Component: FC<Props> = ({
   fontSize,
   color,
   disabled = false,
+  FullWidth,
   placeholderTextColor,
   ...rest
 }) => {
   const { control, formState } = useFormContext();
   const error = get(formState.errors, name);
-
+  console.log(`TCL ~ [index.tsx] ~ line ~ 37 ~ height`, height);
+  console.log(`TCL ~ [index.tsx] ~ line ~ 38 ~ FullWidth`, FullWidth);
   return (
     <Controller
       name={name}
       control={control}
       render={({ field: { onChange, value } }) => (
-        <InputWrapper hidden={hidden}>
+        <InputWrapper hidden={hidden} FullWidth={FullWidth}>
           <StyledTextInput
             name={name}
             onChangeText={(e) => {
@@ -63,10 +66,18 @@ const Component: FC<Props> = ({
 
 export default Component;
 
-const InputWrapper = styled.View<{ hidden: boolean }>`
+const InputWrapper = styled.View<{
+  hidden: boolean;
+  FullWidth?: boolean;
+}>`
   display: ${({ hidden }) => (hidden ? "none" : "flex")};
   align-items: flex-start;
   justify-content: flex-start;
+  ${({ FullWidth }) =>
+    FullWidth &&
+    css`
+      width: 90%;
+    `}
 `;
 
 const StyledTextInput = styled(TextInput)<Props>`
@@ -74,6 +85,7 @@ const StyledTextInput = styled(TextInput)<Props>`
   width: ${({ width }) => (width ? width : "100%")};
   height: ${({ height }) => (height ? height : "100%")};
   font-size: ${({ fontSize }) => (fontSize ? fontSize : "14px")};
+  /* border: 1px solid green; */
 `;
 
 const ErrMsg = styled(Typography)`
