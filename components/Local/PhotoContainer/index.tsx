@@ -4,19 +4,11 @@ import FlexBox from "~components/Shared/FlexBox";
 import Avatar from "~components/Shared/Avatar";
 import DropDownMenu from "~components/Shared/DropDownMenu";
 import DropDownContainer from "~components/Shared/DropDownContainer";
-import Flex from "~components/Shared/FlexBox";
-import Interval from "~components/Shared/Interval";
 import Typography from "~components/Shared/Typography";
 import WishlistLogo from "~assets/Icons/wishlist.svg";
-import ShareLogo from "~assets/Icons/Popup/Share.svg";
-import ReportLogo from "~assets/Icons/Popup/Report.svg";
-import DownloadLogo from "~assets/Icons/Popup/Download.svg";
-import { Image, View } from "react-native";
 import PostListModel from "~domain/model/Local/PostListModel";
 
-import NoImage from "../../../assets/Icons/Login/NoProfile.png";
-const NoImageProfile = "../../../assets/Icons/Login/NoProfile.png";
-import NoProfile from "~assets/Icons/no-image-profile.svg";
+import Popup from "~components/Shared/Popup";
 
 type Props = {
   item: PostListModel;
@@ -39,27 +31,7 @@ const Component: FC<Props> = ({ item, children }) => {
           <DropDownContainer
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
-            content={
-              <View>
-                <Flex>
-                  <ShareLogo />
-                  <Interval width="24px" />
-                  <DropDownTypo>공유</DropDownTypo>
-                </Flex>
-                <Interval height="24px" />
-                <Flex>
-                  <DownloadLogo />
-                  <Interval width="24px" />
-                  <DropDownTypo>이미지 저장</DropDownTypo>
-                </Flex>
-                <Interval height="24px" />
-                <Flex>
-                  <ReportLogo />
-                  <Interval width="24px" />
-                  <DropDownTypo>신고</DropDownTypo>
-                </Flex>
-              </View>
-            }
+            content={<Popup />}
           >
             <DropDownMenu />
           </DropDownContainer>

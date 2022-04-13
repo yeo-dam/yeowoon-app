@@ -12,17 +12,17 @@ import {
   StyleSheet,
   Keyboard,
 } from "react-native";
-import Input from "components/Shared/Input";
-import FormLayout from "components/Layout/FormLayout";
-import Form from "components/Shared/Form";
+import Input from "~components/Shared/Input";
+import FormLayout from "~components/Layout/FormLayout";
+import Form from "~components/Shared/Form";
 import CreatePostDto from "~domain/dto/CreatePostDto";
 import CreatePostViewModel from "./CreatePost.vm";
-import Interval from "components/Shared/Interval";
-import Flex from "components/Shared/FlexBox";
+import Interval from "~components/Shared/Interval";
+import Flex from "~components/Shared/FlexBox";
 import PlaceType from "~domain/enum/PlaceType";
 import { CREATE_SCREEN_NAME } from "constants/SCREEN_NAME";
-import DescriptionForm from "components/Local/DescriptionForm";
-import ImageForm from "components/Local/ImageForm";
+import DescriptionForm from "~components/Local/DescriptionForm";
+import ImageForm from "~components/Local/ImageForm";
 import { windowWidth } from "constants/Layout";
 import { getRootViewModel } from "~components/Screens/VmManager";
 import { FormProvider, useForm } from "react-hook-form";
@@ -138,9 +138,9 @@ const CreatePost = ({
     <KeyboardAvoiding>
       <FormProvider {...form}>
         <FormWrapper>
-          <Wrapper>
-            <InnerWrapper>{renderForm()}</InnerWrapper>
-          </Wrapper>
+          {/* <Wrapper> */}
+          <InnerWrapper>{renderForm()}</InnerWrapper>
+          {/* </Wrapper> */}
         </FormWrapper>
         {/* <MaskInput
           value={creditCard}
@@ -186,7 +186,8 @@ const DateInput = styled(Input)``;
 const DateFlexBox = styled(Flex)`
   position: absolute;
   right: 30px;
-  bottom: 110px;
+  bottom: 14px;
+  border: 1px solid red;
 `;
 
 const DescriptionBox = styled(View)`

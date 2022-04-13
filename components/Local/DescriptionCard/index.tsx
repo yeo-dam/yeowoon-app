@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components/native";
 import { Pressable, View } from "react-native";
-import Typography from "components/Shared/Typography";
-import FlexBox from "components/Shared/FlexBox";
-import Divider from "components/Shared/Divider";
+import Typography from "~components/Shared/Typography";
+import FlexBox from "~components/Shared/FlexBox";
+import Divider from "~components/Shared/Divider";
 import { Props as PhotoCardProps } from "../PhotoCard";
-import Interval from "components/Shared/Interval";
+import Interval from "~components/Shared/Interval";
 import { MAIN_SCREEN_NAME } from "constants/SCREEN_NAME";
 import { windowWidth } from "constants/Layout";
 import HeartIcon from "~assets/Icons/Main/Heart.svg";

@@ -1,16 +1,16 @@
 import * as React from "react";
-import Image from "components/Shared/Image";
+import Image from "~components/Shared/Image";
 import { observer } from "mobx-react";
 import Typography from "components/Shared/Typography";
 import styled from "styled-components/native";
 import { RootTabScreenProps } from "types";
 import { ActivityIndicator, View } from "react-native";
-import FormLayout from "components/Layout/FormLayout";
+import FormLayout from "~components/Layout/FormLayout";
 import CreatePostViewModel from "../CreatePost.vm";
 import { CREATE_SCREEN_NAME } from "constants/SCREEN_NAME";
-import ImageBrowser from "components/Shared/ImageBrowser";
+import ImageBrowser from "~components/Shared/ImageBrowser";
 import { Asset } from "expo-media-library";
-import FlexBox from "components/Shared/FlexBox";
+import FlexBox from "~components/Shared/FlexBox";
 import { getRootViewModel } from "~components/Screens/VmManager";
 
 const Component = ({

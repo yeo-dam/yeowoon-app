@@ -1,8 +1,8 @@
 import React from "react";
 import { Pressable } from "react-native";
 import styled from "styled-components/native";
-import Image from "components/Shared/Image";
-import Typography from "components/Shared/Typography";
+import Image from "~components/Shared/Image";
+import Typography from "~components/Shared/Typography";
 import PostListModel from "~domain/model/Local/PostListModel";
 import { windowWidth } from "constants/Layout";
 

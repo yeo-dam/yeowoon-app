@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Button, TouchableOpacity, TouchableOpacityProps } from "react-native";
 import styled from "styled-components/native";
-import Typography from "components/Shared/Typography";
+import Typography from "~components/Shared/Typography";
 
 export type Props = {
   label: string;

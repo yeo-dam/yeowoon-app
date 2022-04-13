@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useState } from "react";
-import { Alert, Modal, Pressable, View } from "react-native";
+import { Alert, Modal, Pressable, ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styled from "styled-components/native";
 
@@ -15,7 +15,7 @@ const Component: React.FC<PropsWithChildren<Props>> = ({
   modalVisible,
   setModalVisible,
 }) => {
-  // if(modalVisible){
+  // if (modalVisible) {
   //   return null;
   // }
   // FIXME : modal 바깥쪽 클릭했을 때, 모달창이 닫혀야 하는 문제
@@ -30,14 +30,18 @@ const Component: React.FC<PropsWithChildren<Props>> = ({
           setModalVisible(false);
         }}
       >
-        <ModalSafeAreaView />
-        <ModalBackground />
-        <DropDownBox>
-          <PressableBox onPress={() => setModalVisible(false)}>
+        <ModalContainer onPress={() => setModalVisible(false)}>
+          {/* <ModalSafeAreaView /> */}
+          {/* <ScrollView> */}
+          <ModalBackground />
+          {/* </ScrollView> */}
+        </ModalContainer>
+        {/* <PressableBox onPress={() => setModalVisible(false)}> */}
+        {/* <DropDownBox>
             {content}
-          </PressableBox>
-          <BottomSafeAreaView />
-        </DropDownBox>
+            <BottomSafeAreaView />
+          </DropDownBox> */}
+        {/* </PressableBox> */}
       </Modal>
       <PressableBox onPress={() => setModalVisible(true)}>
         {children}
@@ -52,6 +56,7 @@ const ModalSafeAreaView = styled(SafeAreaView)`
   flex: 1;
   background-color: ${({ theme }) => theme.colors.grey.black};
   opacity: 0.7;
+  border: 1px solid red;
 `;
 
 const BottomSafeAreaView = styled(SafeAreaView)`
@@ -60,13 +65,22 @@ const BottomSafeAreaView = styled(SafeAreaView)`
 `;
 
 const ModalBackground = styled(View)`
-  flex: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
   justify-content: flex-end;
   align-items: center;
   background-color: ${({ theme }) => theme.colors.grey.black};
   opacity: 0.7;
+  flex: 1;
+  width: 100%;
+  height: 100%;
 `;
 
+const ModalContainer = styled.Pressable`
+  flex: 1;
+  height: 100%;
+`;
 const PressableBox = styled.Pressable`
   width: 100%;
 `;

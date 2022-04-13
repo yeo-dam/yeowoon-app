@@ -17,7 +17,7 @@ import { MAIN_SCREEN_NAME } from "constants/SCREEN_NAME";
 import { getRootViewModel } from "~components/Screens/VmManager";
 import { useEffect, useState } from "react";
 import KeyboardAvoding from "~components/Layout/KeyboardLayout";
-import FlexBox from "components/Shared/FlexBox";
+import FlexBox from "~components/Shared/FlexBox";
 import Button from "~components/Shared/Button";
 import theme from "themes";
 import Input from "~components/Shared/Input";

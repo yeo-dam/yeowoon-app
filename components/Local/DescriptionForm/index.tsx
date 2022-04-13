@@ -1,21 +1,21 @@
 import React, { FC } from "react";
 import styled from "styled-components/native";
 import { InputAccessoryView, Pressable } from "react-native";
-import Input from "components/Shared/Input";
+import Input from "~components/Shared/Input";
 import theme from "themes";
 import { CREATE_SCREEN_NAME } from "constants/SCREEN_NAME";
-import FlexBox from "components/Shared/FlexBox";
+import FlexBox from "~components/Shared/FlexBox";
 import PlaceTypeSelector from "../PlaceTypeSelector";
-import Interval from "components/Shared/Interval";
-import Divider from "components/Shared/Divider";
-import Tags from "components/Shared/Tags";
-import SubmitButton from "components/Shared/SubmitButton";
+import Interval from "~components/Shared/Interval";
+import Divider from "~components/Shared/Divider";
+import Tags from "~components/Shared/Tags";
+import SubmitButton from "~components/Shared/SubmitButton";
 import { RootTabScreenProps } from "types";
 import CreatePostDto from "~domain/dto/CreatePostDto";
 import { useFormContext } from "react-hook-form";
-import Typography from "components/Shared/Typography";
+import Typography from "~components/Shared/Typography";
 import { observer } from "mobx-react";
-import CreatePostViewModel from "components/Screens/Create/Post/CreatePost.vm";
+import CreatePostViewModel from "~components/Screens/Create/Post/CreatePost.vm";
 
 type NavigationType = Pick<
   RootTabScreenProps<typeof CREATE_SCREEN_NAME.POST>,

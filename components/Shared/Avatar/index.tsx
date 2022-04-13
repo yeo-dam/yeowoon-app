@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import styled from "styled-components/native";
 import { View } from "react-native";
-import Image from "components/Shared/Image";
+import Image from "~components/Shared/Image";
 import Typography from "../Typography";
 
 type Props = {

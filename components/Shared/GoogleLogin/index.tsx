@@ -94,20 +94,8 @@ export default function Component({
     sendAccessToken();
   }, [response]);
 
-  function showUserInfo() {
-    if (vm.user) {
-      return (
-        <UserBox>
-          <Text>Welcome {vm.user.username}</Text>
-          <Text>Email {vm.user.email}</Text>
-        </UserBox>
-      );
-    }
-  }
-
   return (
     <Wrapper>
-      {showUserInfo()}
       <IconBox onPress={() => promptAsync({ showInRecents: true })}>
         <LogoBox>
           <GoogleLogo />

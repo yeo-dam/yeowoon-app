@@ -2,12 +2,12 @@ import React, { FC, useState } from "react";
 import styled from "styled-components/native";
 import { View, Pressable } from "react-native";
 import { get, useFormContext } from "react-hook-form";
-import Typography from "components/Shared/Typography";
-import Interval from "components/Shared/Interval";
-import DropDownContainer from "components/Shared/DropDownContainer";
-import Divider from "components/Shared/Divider";
+import Typography from "~components/Shared/Typography";
+import Interval from "~components/Shared/Interval";
+import DropDownContainer from "~components/Shared/DropDownContainer";
+import Divider from "~components/Shared/Divider";
 import PlaceType from "~domain/enum/PlaceType";
-import Flex from "components/Shared/FlexBox";
+import Flex from "~components/Shared/FlexBox";
 import { renderErrMsg } from "helper/Formatter/ErrorMessage";
 
 type Props = {};
