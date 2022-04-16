@@ -75,7 +75,11 @@ export default class PostRepositoryImpl extends BaseRepository {
     }
   }
 
-  async findPostById() {}
+  async findPostById() {
+    try {
+      throw new Error("method not implemented");
+    } catch (error) {}
+  }
 
   async updatePost() {}
 

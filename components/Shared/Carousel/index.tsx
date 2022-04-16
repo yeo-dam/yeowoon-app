@@ -5,6 +5,9 @@ import styled from "styled-components/native";
 import Item, { CarouselItem } from "./item";
 import { windowWidth, windowHeight } from "constants/Layout";
 import FlexBox from "../FlexBox";
+import { RootTabScreenProps } from "types";
+import { MAIN_SCREEN_NAME } from "constants/SCREEN_NAME";
+import Navigation from "navigation";
 
 export type Props = {
   pages: { id: string; url: string }[] | { url: string }[];
@@ -12,7 +15,8 @@ export type Props = {
   noImage?: boolean;
   slideWidth?: number;
   slideHeight?: number;
-} & Pick<CarouselItem, "aspectRatio">;
+} & Pick<CarouselItem, "aspectRatio"> &
+  Omit<RootTabScreenProps<typeof MAIN_SCREEN_NAME.HOME>, "route">;
 
 const Component = ({
   pages,
@@ -21,13 +25,17 @@ const Component = ({
   aspectRatio,
   slideWidth,
   slideHeight,
+  navigation,
   children,
 }: PropsWithChildren<Props>) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const carouselRef = useRef(null);
 
-  const onPressHandler = (_url: string) => {
-    console.log("carousel clicked", _url);
+  const onPressHandler = (id: string, url?: string) => {
+    // 디테일 페이지 조회를 위한 ID
+    navigation.navigate(MAIN_SCREEN_NAME.DETAIL, {
+      id: id,
+    });
   };
 
   const renderItemForIos = ({ item }: any) => {
@@ -112,7 +120,7 @@ const IndicatorWrapper = styled(FlexBox)<{ isTextImg: boolean }>`
   width: 48px;
   height: 22px;
   bottom: 12px;
-  left: 12px;
+  left: 32px;
   border-radius: 12px;
   justify-content: center;
   align-items: center;

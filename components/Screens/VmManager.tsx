@@ -15,6 +15,7 @@ import NotificationViewModel from "./MyPage/Setting/Notification/Notification.vm
 import PolicyViewModel from "./MyPage/Setting/Policy/Policy.vm";
 import UserViewModel from "./MyPage/Users/UserList.vm";
 import PostViewModel from "./Create/Post/CreatePost.vm";
+import DetailViewModel from "./Main/Detail/Detail.vm";
 
 const createViewModel = ({
   accessToken,
@@ -23,6 +24,7 @@ const createViewModel = ({
     tab: {
       Main: MainViewModel.GetInstance({ accessToken }),
       Search: SearchViewModel.GetInstance({ accessToken }),
+      Detail: DetailViewModel.GetInstance({ accessToken }),
       CreateSearch: CreateSearchViewModel.GetInstance({ accessToken }),
       Comment: CommentViewModel.GetInstance({ accessToken }),
       Post: PostViewModel.GetInstance({ accessToken }),

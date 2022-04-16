@@ -25,6 +25,7 @@ export type RootTabParamList = {
   Main: undefined;
   Search: undefined;
   Comment: undefined;
+  Detail: { id: string };
   Map: undefined;
   CreateMain: undefined;
   CreatePost: undefined;

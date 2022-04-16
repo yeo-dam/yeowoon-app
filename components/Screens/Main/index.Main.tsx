@@ -14,6 +14,7 @@ import Nav from "~components/Shared/Nav";
 import { RootTabScreenProps } from "types";
 import { getRootViewModel } from "../VmManager";
 import PostListModel from "~domain/model/Local/PostListModel";
+import Typography from "~components/Shared/Typography";
 
 const SafeAreaHeightForIos = getStatusBarHeight();
 
@@ -61,12 +62,18 @@ const MainScreen = ({
       <FlatList<PostListModel>
         data={vm.posts}
         ListHeaderComponent={
-          <>
+          <Wrapper>
             <NavSection>
               <Nav navigation={navigation} />
             </NavSection>
             {/* TODO : MainImage 및 Text 반영되도록 변경 필요 */}
+            <TypoSection>
+              <Title>감성 가득, </Title>
+              <Title>겨울을 품은 </Title>
+              <Title>일본 대표 5곳 </Title>
+            </TypoSection>
             <Carousel
+              navigation={navigation}
               aspectRatio={375 / 346}
               pages={[
                 { id: "1", url: "https://picsum.photos/375/346" },
@@ -74,7 +81,7 @@ const MainScreen = ({
               ]}
               isTextImg={false}
             />
-          </>
+          </Wrapper>
         }
         renderItem={({ item }) => renderCard(item)}
         keyExtractor={(item) => item.postId}
@@ -103,9 +110,26 @@ const MainScreen = ({
 
 export default observer(MainScreen);
 
+const Wrapper = styled.View`
+  position: relative;
+`;
+
 const NavSection = styled.View`
   position: absolute;
   top: ${SafeAreaHeightForIos + "px"};
   right: 0;
   z-index: 1;
+`;
+
+const TypoSection = styled.View`
+  position: absolute;
+  left: 32;
+  bottom: 53;
+  z-index: 1;
+`;
+
+const Title = styled(Typography).attrs({
+  variant: "headline-bold",
+})`
+  color: ${({ theme }) => theme.colors.background.paper};
 `;

@@ -1,11 +1,13 @@
 export const MAIN_SCREEN_NAME: {
   HOME: "Main";
   COMMENT: "Comment";
+  DETAIL: "Detail";
   MAP: "Map";
   SEARCH: "Search";
 } = {
   HOME: "Main",
   COMMENT: "Comment",
+  DETAIL: "Detail",
   MAP: "Map",
   SEARCH: "Search",
 };

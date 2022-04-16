@@ -18,10 +18,12 @@ import SearchForm from "~components/Local/SearchForm";
 import PlaceSearchDto from "~domain/dto/PlaceSearchDto";
 import { RootTabScreenProps } from "types";
 import { runInAction } from "mobx";
+import Detail from "./Detail";
 
 export type MainNavigator = {
   [MAIN_SCREEN_NAME.HOME]: undefined;
   [MAIN_SCREEN_NAME.COMMENT]: undefined;
+  [MAIN_SCREEN_NAME.DETAIL]: undefined;
   [MAIN_SCREEN_NAME.MAP]: undefined;
   [MAIN_SCREEN_NAME.SEARCH]: undefined;
 };
@@ -61,6 +63,10 @@ const MainScreen = ({
       initialRouteName={MAIN_SCREEN_NAME.HOME}
     >
       <Stack.Screen name={MAIN_SCREEN_NAME.HOME} component={Main} />
+      <Stack.Screen
+        name={MAIN_SCREEN_NAME.DETAIL}
+        component={Detail}
+      />
       <Stack.Screen
         name={MAIN_SCREEN_NAME.SEARCH}
         component={Search}
