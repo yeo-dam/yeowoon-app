@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import styled from "styled-components/native";
 import { View, Pressable } from "react-native";
 import { get, useFormContext } from "react-hook-form";
@@ -9,6 +9,7 @@ import Divider from "~components/Shared/Divider";
 import PlaceType from "~domain/enum/PlaceType";
 import Flex from "~components/Shared/FlexBox";
 import { renderErrMsg } from "helper/Formatter/ErrorMessage";
+import { useModalContext } from "navigation/modalContext";
 
 type Props = {};
 
@@ -18,15 +19,16 @@ const Component: FC<Props> = () => {
 
   const error = get(formState.errors, INPUT_NAME);
   const watchedType = watch(INPUT_NAME);
-  const [modalVisible, setModalVisible] = useState(false);
+  const { isModalOpen, openModal, closeModal } = useModalContext();
   const onSelect = (data: PlaceType) => {
     setValue(INPUT_NAME, data);
-    setModalVisible(false);
+    closeModal();
   };
   return (
     <DropDownContainer
-      modalVisible={modalVisible}
-      setModalVisible={setModalVisible}
+      modalVisible={isModalOpen}
+      openModal={openModal}
+      closeModal={closeModal}
       content={
         <View>
           <TitleBox>

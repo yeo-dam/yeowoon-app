@@ -26,5 +26,4 @@ const StyledButton = styled(Button)<{ width?: string }>`
   width: ${({ width }) => (width ? width : "100%")};
   flex: 1;
   background-color: grey;
-  border: 1px solid red;
 `;

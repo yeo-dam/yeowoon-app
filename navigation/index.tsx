@@ -34,8 +34,7 @@ import CreateLogo from "~assets/Icons/Navigation/Create/Create.svg";
 import ClickedSettingLogo from "~assets/Icons/Navigation/Setting/Setting_clicked.svg";
 import SettingLogo from "~assets/Icons/Navigation/Setting/Setting.svg";
 import { getRootViewModel } from "~components/Screens/VmManager";
-import { useContext } from "react";
-import { ModalContext } from "./modalContext";
+import { useModalContext } from "./modalContext";
 
 export default function Navigation({
   colorScheme,
@@ -44,7 +43,7 @@ export default function Navigation({
   colorScheme: ColorSchemeName;
   setToken: (data: string) => void;
 }) {
-  const { isModalOpen, openModal, closeModal } = useContext(ModalContext);
+  const { isModalOpen, openModal, closeModal } = useModalContext();
 
   return (
     // FIXME : Linking Config 수정하기

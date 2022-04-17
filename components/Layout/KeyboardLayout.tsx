@@ -1,4 +1,5 @@
-import React, { FC } from "react";
+import { BottomTabBarHeightContext } from "@react-navigation/bottom-tabs";
+import React, { FC, useContext } from "react";
 import { View, StyleSheet, Platform, Keyboard, Pressable } from "react-native";
 import styled from "styled-components/native";
 
@@ -12,14 +13,18 @@ const KeyboardAvoding: FC<Props> = ({
   justifyContent = "center",
   children,
 }) => {
+  const bottomBarHeight = useContext(BottomTabBarHeightContext);
+
   return (
     <Wrapper
       alignItems={alignItems}
       justifyContent={justifyContent}
+      keyboardVerticalOffset={bottomBarHeight}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
+      enabled
     >
       <Pressable onPress={Keyboard.dismiss}>
-        <View style={styles.inner}>{children}</View>
+        <InnerWrapper>{children}</InnerWrapper>
       </Pressable>
     </Wrapper>
   );
@@ -31,12 +36,8 @@ const Wrapper = styled.KeyboardAvoidingView<Props>`
   justify-content: ${({ justifyContent }) => justifyContent};
 `;
 
-const styles = StyleSheet.create({
-  inner: {
-    padding: 24,
-    flex: 1,
-    justifyContent: "space-around",
-  },
-});
+const InnerWrapper = styled.View`
+  flex: 1;
+`;
 
 export default KeyboardAvoding;

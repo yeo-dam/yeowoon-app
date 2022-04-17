@@ -17,9 +17,11 @@ export const ModalContext = createContext<{
   closeModal: () => {},
 });
 
-export const getModalContext = () => {
+export const useModalContext = () => {
   const value = useContext(ModalContext);
-  if (!value) return;
+
+  if (!value)
+    throw new Error("useModalContext must be used within a ModalProvider");
 
   return value;
 };

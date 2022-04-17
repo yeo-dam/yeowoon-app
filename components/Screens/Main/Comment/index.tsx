@@ -34,14 +34,6 @@ const MyPageScreen = ({
   );
   const [isClicked, setIsClicked] = useState(false);
 
-  // if (vm.isLoading) {
-  //   return <Loadable />;
-  // }
-
-  // if (vm.isError) {
-  //   return <ErrorMsg />;
-  // }
-
   useEffect(() => {
     async function loadComments() {
       if (route.params) {
@@ -97,7 +89,7 @@ const MyPageScreen = ({
                     <Interval width="6px" />
                     <Divider orientation="Vertical" />
                     <Interval width="6px" />
-                    {/* TODO : 기능 연결 필요*/}
+                    {/* TODO : 기능 연결 필요 */}
                     <Pressable onPress={() => console.log("답글쓰기")}>
                       <GreyTypo>답글쓰기</GreyTypo>
                     </Pressable>
@@ -111,7 +103,6 @@ const MyPageScreen = ({
           );
         })}
       </CommentBox>
-      {/* TODO : 댓글 생성 UI 구성 필요 */}
       <Form schema={CreateCommentDto}>
         <InnerWrapper>
           {/* <Pressable onPress={() => console.log('hihi')}> */}
@@ -119,18 +110,14 @@ const MyPageScreen = ({
             hidden={isClicked ? true : false}
             name="comment"
             height="40px"
+            placeholder="댓글을 남겨보세요"
             FullWidth
+            placeholderTextColor={theme.colors.grey.AA}
             inputAccessoryViewID={MAIN_SCREEN_NAME.COMMENT}
           />
           {/* </Pressable> */}
           <InputAccessoryView nativeID={MAIN_SCREEN_NAME.COMMENT}>
             <FlexBox>
-              <Input
-                name="comment"
-                height="40px"
-                FullWidth
-                inputAccessoryViewID={MAIN_SCREEN_NAME.COMMENT}
-              />
               <SubmitButton
                 width="100px"
                 label={"등록하기"}
@@ -188,5 +175,4 @@ const StyledButton = styled(Button)`
 const InnerWrapper = styled(FlexBox)`
   justify-content: space-around;
   align-items: flex-end;
-  width: 100%;
 `;

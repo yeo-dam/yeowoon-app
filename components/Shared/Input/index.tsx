@@ -34,8 +34,7 @@ const Component: FC<Props> = ({
 }) => {
   const { control, formState } = useFormContext();
   const error = get(formState.errors, name);
-  console.log(`TCL ~ [index.tsx] ~ line ~ 37 ~ height`, height);
-  console.log(`TCL ~ [index.tsx] ~ line ~ 38 ~ FullWidth`, FullWidth);
+
   return (
     <Controller
       name={name}

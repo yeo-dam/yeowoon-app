@@ -4,22 +4,11 @@ import { observer } from "mobx-react";
 import Typography from "components/Shared/Typography";
 import styled from "styled-components/native";
 import { RootTabScreenProps } from "types";
-import {
-  KeyboardAvoidingView,
-  Platform,
-  TextInput,
-  View,
-  StyleSheet,
-  Keyboard,
-} from "react-native";
+import { View } from "react-native";
 import Input from "~components/Shared/Input";
-import FormLayout from "~components/Layout/FormLayout";
-import Form from "~components/Shared/Form";
 import CreatePostDto from "~domain/dto/CreatePostDto";
 import CreatePostViewModel from "./CreatePost.vm";
-import Interval from "~components/Shared/Interval";
 import Flex from "~components/Shared/FlexBox";
-import PlaceType from "~domain/enum/PlaceType";
 import { CREATE_SCREEN_NAME } from "constants/SCREEN_NAME";
 import DescriptionForm from "~components/Local/DescriptionForm";
 import ImageForm from "~components/Local/ImageForm";
@@ -27,16 +16,13 @@ import { windowWidth } from "constants/Layout";
 import { getRootViewModel } from "~components/Screens/VmManager";
 import { FormProvider, useForm } from "react-hook-form";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
-import { useEffect } from "react";
 import { runInAction } from "mobx";
 import KeyboardAvoiding from "~components/Layout/KeyboardLayout";
-import MaskInput, { Masks } from "react-native-mask-input";
 
 const CreatePost = ({
   navigation,
 }: RootTabScreenProps<typeof CREATE_SCREEN_NAME.POST>) => {
   const resolver = classValidatorResolver(CreatePostDto);
-  const [creditCard, setCreditCard] = React.useState("");
 
   const form = useForm<CreatePostDto>({
     resolver,
@@ -138,25 +124,20 @@ const CreatePost = ({
     <KeyboardAvoiding>
       <FormProvider {...form}>
         <FormWrapper>
-          {/* <Wrapper> */}
-          <InnerWrapper>{renderForm()}</InnerWrapper>
-          {/* </Wrapper> */}
+          <Wrapper>
+            <InnerWrapper>{renderForm()}</InnerWrapper>
+            <DateFlexBox>
+              <DateInput
+                maxLength={8}
+                height="20px"
+                name="inputDateTime"
+                placeholder="날짜(YYYY-MM-DD)를 입력해주세요"
+                keyboardType="number-pad"
+                inputAccessoryViewID={CREATE_SCREEN_NAME.POST}
+              />
+            </DateFlexBox>
+          </Wrapper>
         </FormWrapper>
-        {/* <MaskInput
-          value={creditCard}
-          onChangeText={setCreditCard}
-          mask={Masks.DATE_YYYYMMDD}
-        /> */}
-        <DateFlexBox>
-          <DateInput
-            maxLength={8}
-            height="20px"
-            name="inputDateTime"
-            placeholder="날짜(YYYY-MM-DD)를 입력해주세요"
-            keyboardType="number-pad"
-            inputAccessoryViewID={CREATE_SCREEN_NAME.POST}
-          />
-        </DateFlexBox>
       </FormProvider>
     </KeyboardAvoiding>
   );
@@ -165,20 +146,21 @@ const CreatePost = ({
 export default observer(CreatePost);
 
 const Wrapper = styled.View`
-  margin: 0 auto;
-`;
-
-const InnerWrapper = styled.View`
-  padding-top: 32px;
-  align-items: center;
+  margin-top: 19px;
   width: ${windowWidth * 0.936 + "px"};
   height: ${windowWidth * 0.936 * 1.4986 + "px"};
   background-color: white;
 `;
 
+const InnerWrapper = styled.View`
+  position: relative;
+  flex: 1;
+  padding-top: 32px;
+  align-items: center;
+`;
+
 const FormWrapper = styled(Flex)`
   flex: 1;
-  /* border: 1px solid green; */
 `;
 
 const DateInput = styled(Input)``;
@@ -187,7 +169,6 @@ const DateFlexBox = styled(Flex)`
   position: absolute;
   right: 30px;
   bottom: 14px;
-  border: 1px solid red;
 `;
 
 const DescriptionBox = styled(View)`

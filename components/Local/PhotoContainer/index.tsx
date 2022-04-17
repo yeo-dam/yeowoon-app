@@ -11,15 +11,14 @@ import PostListModel from "~domain/model/Local/PostListModel";
 
 import Popup from "~components/Shared/Popup";
 import { Pressable } from "react-native";
-import theme from "themes";
-import { ModalContext } from "navigation/modalContext";
+import { useModalContext } from "navigation/modalContext";
 
 type Props = {
   item: PostListModel;
 };
 
 const Component: FC<Props> = ({ item, children }) => {
-  const { isModalOpen, openModal, closeModal } = useContext(ModalContext);
+  const { isModalOpen, openModal, closeModal } = useModalContext();
   const [IsClicked, setIsClicked] = useState(false);
 
   return (
