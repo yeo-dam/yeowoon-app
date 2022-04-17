@@ -123,8 +123,8 @@ const NavSection = styled.View`
 
 const TypoSection = styled.View`
   position: absolute;
-  left: 32;
-  bottom: 53;
+  left: 32px;
+  bottom: 53px;
   z-index: 1;
 `;
 

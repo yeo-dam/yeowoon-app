@@ -26,12 +26,14 @@ export const MYPAGE_SCREEN_NAME: {
   MAIN: "MyPageMain";
   LIKE: "MyPageLikes";
   MAP: "MyPageMap";
+  DETAIL: "MyPageDetail";
   SETTING: "MyPageSetting";
   USER: "MyPageUser";
 } = {
   MAIN: "MyPageMain",
   LIKE: "MyPageLikes",
   MAP: "MyPageMap",
+  DETAIL: "MyPageDetail",
   SETTING: "MyPageSetting",
   USER: "MyPageUser",
 };

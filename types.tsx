@@ -34,7 +34,9 @@ export type RootTabParamList = {
   ImageUpload: undefined;
   MyPageMain: undefined;
   MyPageLikes: undefined;
+  MyPageDetail: undefined;
   MyPageSetting: undefined;
+  MyPageMap: undefined;
   MyPageUser: undefined;
   SettingMain: undefined;
   SettingEvent: undefined;

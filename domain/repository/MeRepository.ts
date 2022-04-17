@@ -99,6 +99,10 @@ export default class MeRepositoryImpl
       throw error;
     }
   }
+  
+  // 장소를 클릭했을 때 부를 것
+  async findPlaces() {}
+
   // 장소를 클릭했을 때 부를 것
   async findPlaceById() {}
 

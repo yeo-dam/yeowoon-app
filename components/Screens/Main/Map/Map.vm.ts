@@ -6,16 +6,16 @@ import MeRepositoryImpl from "~domain/repository/MeRepository";
 import { ConstructorParameter } from "~domain/repository/Repository";
 import BaseViewModel from "../../BaseViewModel";
 
-export default class MapViewModel extends BaseViewModel {
-  private static _Instance: MapViewModel;
+export default class MainMapViewModel extends BaseViewModel {
+  private static _Instance: MainMapViewModel;
   private readonly _PlaceRepo: PlaceRepositoryImpl;
   private readonly _MeRepo: MeRepositoryImpl;
 
   static GetInstance(args: ConstructorParameter) {
-    if (!MapViewModel._Instance) {
-      MapViewModel._Instance = new MapViewModel(args);
+    if (!MainMapViewModel._Instance) {
+      MainMapViewModel._Instance = new MainMapViewModel(args);
     }
-    return MapViewModel._Instance;
+    return MainMapViewModel._Instance;
   }
   private constructor(args: ConstructorParameter) {
     super(args);
@@ -68,7 +68,7 @@ export default class MapViewModel extends BaseViewModel {
   };
 
   @action
-  load = flow(function* (this: MapViewModel) {
+  load = flow(function* (this: MainMapViewModel) {
     try {
       this._isLoading.set(true);
       yield this._MeRepo.findPlaces();
@@ -87,7 +87,7 @@ export default class MapViewModel extends BaseViewModel {
   });
 
   @action
-  findPlaceById = flow(function* (this: MapViewModel, placeId: number) {
+  findPlaceById = flow(function* (this: MainMapViewModel, placeId: number) {
     try {
       this._isLoading.set(true);
       yield this._PlaceRepo.findPlaceById({

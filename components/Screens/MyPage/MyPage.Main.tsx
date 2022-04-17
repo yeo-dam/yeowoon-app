@@ -5,7 +5,7 @@ import MyPageViewModel from "./MyPage.vm";
 import { observer } from "mobx-react";
 import Typography from "~components/Shared/Typography";
 import { FlatList, Pressable, View } from "react-native";
-import { MYPAGE_SCREEN_NAME } from "constants/SCREEN_NAME";
+import { MAIN_SCREEN_NAME, MYPAGE_SCREEN_NAME } from "constants/SCREEN_NAME";
 import { RootTabScreenProps } from "types";
 import { getRootViewModel } from "../VmManager";
 import MapLogo from "~assets/Icons/Subtract.svg";
@@ -60,7 +60,7 @@ const MyPageScreen = ({
   return (
     <Layout paddingLeft={24} paddingRight={24}>
       <IconSection>
-        <Pressable onPress={() => navigation.navigate("Map")}>
+        <Pressable onPress={() => navigation.navigate(MYPAGE_SCREEN_NAME.MAP)}>
           <MapLogo />
         </Pressable>
         <Interval width="14px" />
@@ -138,36 +138,6 @@ const MyPageScreen = ({
             data={vm.posts}
             renderItem={({ item }) => renderCard(item)}
           />
-          {/* <Image
-            width={161}
-            height={212}
-            source={{ uri: "https://picsum.photos/161/212" }}
-          /> */}
-          {/* <Image
-            width={161}
-            height={212}
-            source={{ uri: "https://picsum.photos/161/212" }}
-          />
-          <Image
-            width={161}
-            height={212}
-            source={{ uri: "https://picsum.photos/161/212" }}
-          />
-          <Image
-            width={161}
-            height={212}
-            source={{ uri: "https://picsum.photos/161/212" }}
-          />
-          <Image
-            width={161}
-            height={212}
-            source={{ uri: "https://picsum.photos/161/212" }}
-          />
-          <Image
-            width={161}
-            height={212}
-            source={{ uri: "https://picsum.photos/161/212" }}
-          /> */}
         </ContentBody>
       </ContentSection>
     </Layout>

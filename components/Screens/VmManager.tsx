@@ -16,6 +16,8 @@ import PolicyViewModel from "./MyPage/Setting/Policy/Policy.vm";
 import UserViewModel from "./MyPage/Users/UserList.vm";
 import PostViewModel from "./Create/Post/CreatePost.vm";
 import DetailViewModel from "./Main/Detail/Detail.vm";
+import MainMapViewModel from "./Main/Map/Map.vm";
+import MyPageDetailViewModel from "./MyPage/Detail/Detail.vm";
 
 const createViewModel = ({
   accessToken,
@@ -29,8 +31,10 @@ const createViewModel = ({
       Comment: CommentViewModel.GetInstance({ accessToken }),
       Post: PostViewModel.GetInstance({ accessToken }),
       MyPage: MyPageViewModel.GetInstance({ accessToken }),
+      MyPageDetail: MyPageDetailViewModel.GetInstance({ accessToken }),
       Likes: LikeViewModel.GetInstance({ accessToken }),
       Map: MapViewModel.GetInstance({ accessToken }),
+      MainMap: MainMapViewModel.GetInstance({ accessToken }),
       User: UserViewModel.GetInstance({ accessToken }),
       Setting: SettingViewModel.GetInstance({ accessToken }),
       Event: EventViewModel.GetInstance({ accessToken }),

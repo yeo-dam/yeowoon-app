@@ -2,22 +2,22 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 
 import ContentLayout from "components/Layout/ContentLayout";
-import ErrorMsg from "components/Shared/ErrorMsg";
-import Loadable from "components/Shared/Loadable";
-import MapViewModel from "./Map.vm";
+import MainMapViewModel from "./Map.vm";
 import GoogleMap from "components/Local/GoogleMap";
 import * as Location from "expo-location";
 import { Region } from "react-native-maps";
 import { View } from "react-native";
-import { MYPAGE_SCREEN_NAME } from "constants/SCREEN_NAME";
+import { MAIN_SCREEN_NAME } from "constants/SCREEN_NAME";
 import { getRootViewModel } from "~components/Screens/VmManager";
 import { RootTabScreenProps } from "types";
 import useIsMounted from "hooks/useIsMounted";
 
 const Map = ({
   navigation,
-}: RootTabScreenProps<typeof MYPAGE_SCREEN_NAME.MAP>) => {
-  const vm = getRootViewModel<MapViewModel>((viewModel) => viewModel.tab.Map);
+}: RootTabScreenProps<typeof MAIN_SCREEN_NAME.MAP>) => {
+  const vm = getRootViewModel<MainMapViewModel>(
+    (viewModel) => viewModel.tab.MainMap
+  );
   const [location, setLocation] = useState<Region>();
   const isMounted = useIsMounted();
 
@@ -40,20 +40,12 @@ const Map = ({
     })();
   }, [isMounted]);
 
-  if (vm.isLoading) {
-    return <Loadable />;
-  }
-
-  if (vm.isError) {
-    return <ErrorMsg />;
-  }
-
   return (
     <ContentLayout>
       <View>
         <GoogleMap
-          places={vm.places}
           loadList={vm.load}
+          places={vm.places}
           region={location}
           latitude={location?.latitude}
           longitude={location?.longitude}

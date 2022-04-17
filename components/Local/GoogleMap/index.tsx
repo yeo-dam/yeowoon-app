@@ -9,23 +9,26 @@ import styled from "styled-components/native";
 import { observer } from "mobx-react";
 import MapViewModel from "components/Screens/MyPage/Map/Map.vm";
 import { windowWidth, windowHeight } from "constants/Layout";
+import PlaceModel from "~domain/model/Shared/PlaceModel";
 
 type Props = {
-  vm: MapViewModel;
+  places?: PlaceModel[];
+  loadList: () => void;
   latitude?: number;
   longitude?: number;
 } & MapViewProps;
 
 const GoogleMap = ({
-  vm,
+  places,
   latitude = 37.5326,
   longitude = 127.024612,
   region,
+  loadList,
   onRegionChange,
 }: Props) => {
   useEffect(() => {
     async function loadPlaces() {
-      await vm.load();
+      await loadList();
     }
     loadPlaces();
   }, []);
@@ -43,19 +46,20 @@ const GoogleMap = ({
         }}
         onRegionChange={onRegionChange}
       >
-        {vm.places.map((item, inx) => {
-          return (
-            <Marker
-              key={inx}
-              coordinate={{
-                latitude: item.latitude,
-                longitude: item.longitude,
-              }}
-              title={item.placeName}
-              description={item.description}
-            />
-          );
-        })}
+        {places &&
+          places.map((item, inx) => {
+            return (
+              <Marker
+                key={inx}
+                coordinate={{
+                  latitude: item.latitude,
+                  longitude: item.longitude,
+                }}
+                title={item.placeName}
+                description={item.description}
+              />
+            );
+          })}
       </StyledMapView>
     </Wrapper>
   );

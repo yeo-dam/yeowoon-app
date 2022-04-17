@@ -6,9 +6,12 @@ import DropDownMenu from "~components/Shared/DropDownMenu";
 import DropDownContainer from "~components/Shared/DropDownContainer";
 import Typography from "~components/Shared/Typography";
 import WishlistLogo from "~assets/Icons/wishlist.svg";
+import WishlistClickedLogo from "~assets/Icons/wishlist_clicked.svg";
 import PostListModel from "~domain/model/Local/PostListModel";
 
 import Popup from "~components/Shared/Popup";
+import { Pressable } from "react-native";
+import theme from "themes";
 
 type Props = {
   item: PostListModel;
@@ -16,6 +19,7 @@ type Props = {
 
 const Component: FC<Props> = ({ item, children }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [IsClicked, setIsClicked] = useState(false);
 
   return (
     <Wrapper>
@@ -25,9 +29,11 @@ const Component: FC<Props> = ({ item, children }) => {
           imageSource={item.user.userImage?.url}
         />
         <IconSection>
-          <IconBox>
-            <WishlistLogo />
-          </IconBox>
+          <Pressable onPress={() => setIsClicked(!IsClicked)}>
+            <IconBox>
+              {IsClicked ? <WishlistClickedLogo /> : <WishlistLogo />}
+            </IconBox>
+          </Pressable>
           <DropDownContainer
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
