@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useContext, useState } from "react";
 import styled from "styled-components/native";
 import FlexBox from "~components/Shared/FlexBox";
 import Avatar from "~components/Shared/Avatar";
@@ -12,13 +12,14 @@ import PostListModel from "~domain/model/Local/PostListModel";
 import Popup from "~components/Shared/Popup";
 import { Pressable } from "react-native";
 import theme from "themes";
+import { ModalContext } from "navigation/modalContext";
 
 type Props = {
   item: PostListModel;
 };
 
 const Component: FC<Props> = ({ item, children }) => {
-  const [modalVisible, setModalVisible] = useState(false);
+  const { isModalOpen, openModal, closeModal } = useContext(ModalContext);
   const [IsClicked, setIsClicked] = useState(false);
 
   return (
@@ -35,8 +36,9 @@ const Component: FC<Props> = ({ item, children }) => {
             </IconBox>
           </Pressable>
           <DropDownContainer
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
+            modalVisible={isModalOpen}
+            openModal={openModal}
+            closeModal={closeModal}
             content={<Popup />}
           >
             <DropDownMenu />

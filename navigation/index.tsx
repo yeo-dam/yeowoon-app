@@ -7,7 +7,7 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-import { ColorSchemeName, Pressable } from "react-native";
+import { ColorSchemeName, Text, View } from "react-native";
 
 import MyPageScreen from "~components/Screens/MyPage";
 import CreateScreen from "~components/Screens/Create";
@@ -34,6 +34,8 @@ import CreateLogo from "~assets/Icons/Navigation/Create/Create.svg";
 import ClickedSettingLogo from "~assets/Icons/Navigation/Setting/Setting_clicked.svg";
 import SettingLogo from "~assets/Icons/Navigation/Setting/Setting.svg";
 import { getRootViewModel } from "~components/Screens/VmManager";
+import { useContext } from "react";
+import { ModalContext } from "./modalContext";
 
 export default function Navigation({
   colorScheme,
@@ -42,13 +44,18 @@ export default function Navigation({
   colorScheme: ColorSchemeName;
   setToken: (data: string) => void;
 }) {
+  const { isModalOpen, openModal, closeModal } = useContext(ModalContext);
+
   return (
     // FIXME : Linking Config 수정하기
     <NavigationContainer
       linking={LinkingConfiguration}
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
-      <RootNavigator setToken={setToken} />
+      <ModalContainer onPress={closeModal}>
+        <RootNavigator setToken={setToken} />
+        {isModalOpen && <ModalBackground />}
+      </ModalContainer>
     </NavigationContainer>
   );
 }
@@ -157,4 +164,22 @@ const BottomBarTypo = styled(Typography).attrs({
 }>`
   color: ${({ theme, isClicked }) =>
     isClicked ? theme.colors.primary.sub : theme.colors.grey.AA};
+`;
+
+const ModalContainer = styled.Pressable`
+  flex: 1;
+  height: 100%;
+`;
+
+const ModalBackground = styled(View)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  justify-content: flex-end;
+  align-items: center;
+  background-color: ${({ theme }) => theme.colors.grey.black};
+  opacity: 0.7;
+  flex: 1;
+  width: 100%;
+  height: 100%;
 `;

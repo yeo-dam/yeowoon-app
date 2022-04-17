@@ -6,19 +6,17 @@ import styled from "styled-components/native";
 type Props = {
   content: JSX.Element;
   modalVisible: boolean;
-  setModalVisible: (data: boolean) => void;
+  openModal: () => void;
+  closeModal: () => void;
 };
 
 const Component: React.FC<PropsWithChildren<Props>> = ({
   content,
   children,
   modalVisible,
-  setModalVisible,
+  openModal,
+  closeModal,
 }) => {
-  // if (modalVisible) {
-  //   return null;
-  // }
-  // FIXME : modal 바깥쪽 클릭했을 때, 모달창이 닫혀야 하는 문제
   return (
     <Wrapper>
       <Modal
@@ -27,54 +25,27 @@ const Component: React.FC<PropsWithChildren<Props>> = ({
         visible={modalVisible}
         onRequestClose={() => {
           Alert.alert("Modal has been closed.");
-          setModalVisible(false);
+          closeModal();
         }}
       >
-        <ModalContainer onPress={() => setModalVisible(false)}>
-          {/* <ModalSafeAreaView /> */}
-          {/* <ScrollView> */}
-          <ModalBackground />
-          {/* </ScrollView> */}
-        </ModalContainer>
-        {/* <PressableBox onPress={() => setModalVisible(false)}> */}
-        {/* <DropDownBox>
+        <ModalContainer onPress={closeModal}>
+          <DropDownBox>
             {content}
             <BottomSafeAreaView />
-          </DropDownBox> */}
-        {/* </PressableBox> */}
+          </DropDownBox>
+        </ModalContainer>
       </Modal>
-      <PressableBox onPress={() => setModalVisible(true)}>
-        {children}
-      </PressableBox>
+      <PressableBox onPress={openModal}>{children}</PressableBox>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.View``;
 
-const ModalSafeAreaView = styled(SafeAreaView)`
-  flex: 1;
-  background-color: ${({ theme }) => theme.colors.grey.black};
-  opacity: 0.7;
-  border: 1px solid red;
-`;
-
 const BottomSafeAreaView = styled(SafeAreaView)`
   width: 100%;
   background-color: white;
-`;
-
-const ModalBackground = styled(View)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  justify-content: flex-end;
-  align-items: center;
-  background-color: ${({ theme }) => theme.colors.grey.black};
-  opacity: 0.7;
-  flex: 1;
-  width: 100%;
-  height: 100%;
+  padding-top: 24px;
 `;
 
 const ModalContainer = styled.Pressable`
@@ -92,7 +63,7 @@ const DropDownBox = styled.View`
   background-color: white;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
-  padding: 32px 24px 24px 24px;
+  padding: 32px 24px 0 24px;
   align-items: flex-start;
 `;
 

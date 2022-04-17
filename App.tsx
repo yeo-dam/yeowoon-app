@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "expo-status-bar";
+import ModalContextProvider from "navigation/modalContext";
 import React, { useEffect, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ThemeProvider } from "styled-components";
@@ -33,12 +34,14 @@ export default function App() {
   } else {
     return (
       <ViewModelProvider accessToken={accessToken}>
-        <ThemeProvider theme={theme}>
-          <SafeAreaProvider>
-            <Navigation colorScheme={colorScheme} setToken={setAccessToken} />
-            <StatusBar />
-          </SafeAreaProvider>
-        </ThemeProvider>
+        <ModalContextProvider>
+          <ThemeProvider theme={theme}>
+            <SafeAreaProvider>
+              <Navigation colorScheme={colorScheme} setToken={setAccessToken} />
+              <StatusBar />
+            </SafeAreaProvider>
+          </ThemeProvider>
+        </ModalContextProvider>
       </ViewModelProvider>
     );
   }
