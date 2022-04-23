@@ -8,16 +8,19 @@ import {
   FieldValues,
   UnpackNestedValue,
   DeepPartial,
+  Mode,
 } from "react-hook-form";
 
 export type Props<T extends FieldValues> = React.PropsWithChildren<{
   schema: ClassConstructor<T>;
   updatedObject?: any;
   defaultValues?: UnpackNestedValue<DeepPartial<T>>;
+  mode?: Mode;
 }>;
 
 const Component = <T extends FieldValues>({
   schema,
+  mode = "all",
   defaultValues,
   updatedObject,
   children,
@@ -26,7 +29,7 @@ const Component = <T extends FieldValues>({
   const methods = useForm<T>({
     resolver,
     defaultValues,
-    mode: "all",
+    mode,
     reValidateMode: "onChange",
   });
 

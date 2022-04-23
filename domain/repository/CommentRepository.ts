@@ -1,10 +1,10 @@
 import { validate } from "class-validator";
 import { plainToClass } from "unsafe-class-transformer";
 import CommentEntity from "~data/entity/CommentEntity";
-import ListEntity from "~data/entity/ListEntity";
+import CreateCommentDto from "~domain/dto/CreateCommentDto";
 import FindDto from "~domain/dto/FindCommentDto";
+import UpdateCommentDto from "~domain/dto/UpdateCommentDto";
 import CommentModel from "~domain/model/Shared/CommentModel/model";
-import PagerModel from "~domain/model/Shared/PagerModel/model";
 import BaseRepository, { ConstructorParameter } from "./Repository";
 
 interface CommentRepository {}
@@ -27,7 +27,7 @@ export default class CommentRepositoryImpl
 
   async find(dto: {
     parameter: { postId: string };
-    query: FindDto;
+    query?: FindDto;
   }): Promise<CommentModel[]> {
     try {
       const { comments: commentEntities } = await this._remote._fetcher<{
@@ -46,15 +46,73 @@ export default class CommentRepositoryImpl
           }
         }
       });
-
-      console.log(
-        `TCL ~ [CommentRepository.ts] ~ line ~ 50 ~ commentInstances`,
-        commentInstances
-      );
-
       return commentInstances;
     } catch (error) {
       throw error;
     }
   }
+
+  // 댓글 달기
+  /** User <--> Comments <--> Post (Many to Many) **/
+  async addComment(dto: { body: CreateCommentDto }) {
+    try {
+      const { id } = await this._remote._fetcher("/comment/new", {
+        method: "PUT",
+        body: JSON.stringify(dto.body),
+      });
+
+      return id;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // 댓글 수정하기
+  async updateComment(dto: {
+    paramenter: {
+      commentId: string;
+    };
+    body: UpdateCommentDto;
+  }) {
+    try {
+      const { id } = await this._remote._fetcher(
+        `/comment/edit/${dto.paramenter.commentId}`,
+        {
+          method: "POST",
+          body: JSON.stringify(dto.body),
+        }
+      );
+
+      return id;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // 댓글 삭제하기
+  async deleteComment(dto: {
+    parameter: {
+      commentId: string;
+    };
+  }) {
+    try {
+      const id = await this._remote._fetcher(
+        `/comment/delete/${dto.parameter.commentId}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (id) {
+        console.log(id);
+      }
+
+      return id;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // 댓글 신고하기
+  async reportComment() {}
 }

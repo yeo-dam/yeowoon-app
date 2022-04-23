@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import styled from "styled-components/native";
-import { View } from "react-native";
+import { ImageSourcePropType, ImageURISource, View } from "react-native";
 import Image from "~components/Shared/Image";
 import Typography from "../Typography";
 
@@ -8,7 +8,7 @@ type Props = {
   width?: number;
   height?: number;
   name?: string;
-  imageSource?: string;
+  imageSource?: { url: string };
 };
 
 const Component: FC<Props> = ({
@@ -19,15 +19,19 @@ const Component: FC<Props> = ({
 }) => {
   return (
     <Wrapper>
-      <StyledImage
-        width={width}
-        height={height}
-        source={
-          imageSource
-            ? { uri: imageSource }
-            : require("~assets/Icons/Login/NoProfile.png")
-        }
-      />
+      {imageSource ? (
+        <StyledImage
+          width={width}
+          height={height}
+          source={{ uri: imageSource.url }}
+        />
+      ) : (
+        <StyledImage
+          width={width}
+          height={height}
+          source={require("~assets/Icons/Login/NoProfile.png")}
+        />
+      )}
       <UserName>{name}</UserName>
     </Wrapper>
   );

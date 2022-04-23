@@ -8,6 +8,7 @@ import {
 } from "class-validator";
 import CommentEntity from "~data/entity/CommentEntity";
 import UserModel from "../UserModel/model";
+import TransformDate from "helper/transformDate";
 
 class CommentModel implements CommentEntity {
   @IsString()
@@ -15,6 +16,7 @@ class CommentModel implements CommentEntity {
   commentId: string;
 
   @IsDate()
+  @TransformDate()
   @IsNotEmpty()
   createdDateTime: Date;
 

@@ -36,7 +36,7 @@ const Component: FC<Props> = () => {
   };
 
   return (
-    <View>
+    <Wrapper>
       <Pressable onPress={onShare}>
         <FlexBox>
           <ShareLogo />
@@ -60,10 +60,14 @@ const Component: FC<Props> = () => {
           <DropDownTypo>신고</DropDownTypo>
         </FlexBox>
       </Pressable>
-    </View>
+    </Wrapper>
   );
 };
 
 export default Component;
 
 const DropDownTypo = styled(Typography).attrs({ variant: "subhead-regular" })``;
+
+const Wrapper = styled.View`
+  flex: 1;
+`;

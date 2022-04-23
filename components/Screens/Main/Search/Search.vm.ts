@@ -66,14 +66,14 @@ export default class SearchViewModel extends BaseViewModel {
   @action
   load = flow(function* (this: SearchViewModel, query: FindDto) {
     try {
-      this._isLoading.set(true);
-      const [pagerInstance, commentInstances] = yield this._commentRepo.find({
-        query,
-      });
-      commentInstances.forEach((item: CommentModel) => {
-        this._comments.set(item.id, item);
-      });
-      this._pager.set(pagerInstance);
+      // this._isLoading.set(true);
+      // const [pagerInstance, commentInstances] = yield this._commentRepo.find({
+      //   query,
+      // });
+      // commentInstances.forEach((item: CommentModel) => {
+      //   this._comments.set(item.id, item);
+      // });
+      // this._pager.set(pagerInstance);
     } catch (error) {
       console.error(error);
       this._isError.set(true);
@@ -87,7 +87,7 @@ export default class SearchViewModel extends BaseViewModel {
   addComment = flow(function* (this: SearchViewModel) {
     try {
       this._isLoading.set(true);
-      yield this._meRepo.addComment();
+      // yield this._meRepo.addComment();
     } catch (error) {
       console.error(error);
       this._isError.set(true);

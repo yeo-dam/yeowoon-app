@@ -98,8 +98,8 @@ const NotiBox = styled(FlexBox)`
 
 const TypoSection = styled.View`
   position: absolute;
-  left: 24;
-  bottom: 32;
+  left: 24px;
+  bottom: 32px;
   z-index: 1;
 `;
 

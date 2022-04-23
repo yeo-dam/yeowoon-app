@@ -75,7 +75,7 @@ const InputWrapper = styled.View<{
   ${({ FullWidth }) =>
     FullWidth &&
     css`
-      width: 90%;
+      width: 100%;
     `}
 `;
 

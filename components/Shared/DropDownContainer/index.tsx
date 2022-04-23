@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import styled from "styled-components/native";
 
 type Props = {
+  animationType: "none" | "slide" | "fade" | undefined;
   content: JSX.Element;
   modalVisible: boolean;
   openModal: () => void;
@@ -16,11 +17,12 @@ const Component: React.FC<PropsWithChildren<Props>> = ({
   modalVisible,
   openModal,
   closeModal,
+  animationType = "slide",
 }) => {
   return (
     <Wrapper>
       <Modal
-        animationType="slide"
+        animationType={animationType}
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
@@ -51,6 +53,7 @@ const BottomSafeAreaView = styled(SafeAreaView)`
 const ModalContainer = styled.Pressable`
   flex: 1;
   height: 100%;
+  border: 1px solid blue;
 `;
 const PressableBox = styled.Pressable`
   width: 100%;

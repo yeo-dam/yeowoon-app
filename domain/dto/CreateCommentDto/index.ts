@@ -1,7 +1,13 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
-export default class QueryDto {
+export default class CreateCommentDto {
+  postId: string;
+  
   @IsString()
   @IsNotEmpty()
   comment: string;
+
+  @IsNumber()
+  @IsOptional()
+  group?: number;
 }

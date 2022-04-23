@@ -73,7 +73,7 @@ const MyPageScreen = ({
         <Avatar
           width={58}
           height={58}
-          imageSource={userDetail?.user.userImage?.url}
+          imageSource={userDetail?.user?.userImage}
         />
         <ProfileTextBox>
           <Typography variant="subhead-medium">

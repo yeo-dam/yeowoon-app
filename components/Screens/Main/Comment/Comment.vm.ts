@@ -1,5 +1,6 @@
 import { action, computed, flow, observable } from "mobx";
 import FindDto from "~domain/dto/FindPostDto";
+import UpdateCommentDto from "~domain/dto/UpdateCommentDto";
 import CommentModel from "~domain/model/Shared/CommentModel";
 import PagerModel from "~domain/model/Shared/PagerModel";
 import CommentRepositoryImpl from "~domain/repository/CommentRepository";
@@ -70,6 +71,8 @@ export default class CommentViewModel extends BaseViewModel {
     query: FindDto
   ) {
     try {
+      // 페이지에서 새롭게 조회할 때 리셋
+      this._comments.clear();
       this._isLoading.set(true);
       const commentInstances = yield this._commentRepo.find({
         parameter: {
@@ -92,17 +95,27 @@ export default class CommentViewModel extends BaseViewModel {
   addComment = flow(function* (
     this: CommentViewModel,
     postId: string,
-    content: string
+    comment: string,
+    group?: number
   ) {
     try {
       this._isLoading.set(true);
-      const res = yield this._meRepo.addComment({
+      const { id } = yield this._commentRepo.addComment({
         body: {
           postId,
-          content,
+          comment,
+          group,
         },
       });
-      this._comments.set(res.id, res);
+
+      const commentInstances = yield this._commentRepo.find({
+        parameter: {
+          postId,
+        },
+      });
+      commentInstances.forEach((item: CommentModel) => {
+        this._comments.set(item.commentId, item);
+      });
     } catch (error) {
       console.error(error);
       this._isError.set(true);
@@ -112,10 +125,19 @@ export default class CommentViewModel extends BaseViewModel {
   });
 
   @action
-  addNestedComment = flow(function* (this: CommentViewModel) {
+  updateComment = flow(function* (
+    this: CommentViewModel,
+    commentId: string,
+    dto: UpdateCommentDto
+  ) {
     try {
       this._isLoading.set(true);
-      yield this._meRepo.addNestedComment();
+      yield this._commentRepo.updateComment({
+        paramenter: {
+          commentId,
+        },
+        body: dto,
+      });
     } catch (error) {
       console.error(error);
       this._isError.set(true);
@@ -125,23 +147,16 @@ export default class CommentViewModel extends BaseViewModel {
   });
 
   @action
-  updateComment = flow(function* (this: CommentViewModel) {
+  deleteComment = flow(function* (this: CommentViewModel, commentId: string) {
     try {
       this._isLoading.set(true);
-      yield this._meRepo.updateComment();
-    } catch (error) {
-      console.error(error);
-      this._isError.set(true);
-    } finally {
-      this._isLoading.set(false);
-    }
-  });
+      const id = yield this._commentRepo.deleteComment({
+        parameter: {
+          commentId,
+        },
+      });
 
-  @action
-  deleteComment = flow(function* (this: CommentViewModel) {
-    try {
-      this._isLoading.set(true);
-      yield this._meRepo.deleteComment();
+      this._comments.delete(id);
     } catch (error) {
       console.error(error);
       this._isError.set(true);
@@ -154,7 +169,7 @@ export default class CommentViewModel extends BaseViewModel {
   reportComment = flow(function* (this: CommentViewModel) {
     try {
       this._isLoading.set(true);
-      yield this._meRepo.reportComment();
+      yield this._commentRepo.reportComment();
     } catch (error) {
       console.error(error);
       this._isError.set(true);

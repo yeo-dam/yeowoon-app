@@ -25,8 +25,8 @@ const Component: FC<Props> = ({ item, children }) => {
     <Wrapper>
       <PhotoHeader>
         <Avatar
-          name={item.user.userName}
-          imageSource={item.user.userImage?.url}
+          name={item?.user?.userName}
+          imageSource={item?.user?.userImage}
         />
         <IconSection>
           <Pressable onPress={() => setIsClicked(!IsClicked)}>
@@ -35,6 +35,7 @@ const Component: FC<Props> = ({ item, children }) => {
             </IconBox>
           </Pressable>
           <DropDownContainer
+            animationType="slide"
             modalVisible={isModalOpen}
             openModal={openModal}
             closeModal={closeModal}

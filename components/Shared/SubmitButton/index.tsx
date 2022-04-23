@@ -22,8 +22,8 @@ const Component = ({ label, onSubmit, width, ...rest }: Props) => {
 
 export default Component;
 
-const StyledButton = styled(Button)<{ width?: string }>`
+const StyledButton = styled(Button)<{ width?: string; color?: string }>`
   width: ${({ width }) => (width ? width : "100%")};
+  background-color: ${({ color }) => (color ? color : "grey")};
   flex: 1;
-  background-color: grey;
 `;

@@ -46,18 +46,16 @@ export default class MeRepositoryImpl
         `/profile/view/${dto.parameter.userId}`
       );
 
-      // FIXME : 타입에러 잡기
-      const userInstance = plainToClass<UserDetailModel, UserEntity>(
+      const userInstance = plainToClass<UserDetailModel, UserDetailJson>(
         UserDetailModel,
         userDetail
       );
 
-      // FIXME: validation Error 잡기
-      // const validateError = await validate(userInstance);
+      const validateError = await validate(userInstance);
 
-      // if (validateError) {
-      //   throw validateError;
-      // }
+      if (validateError) {
+        throw validateError;
+      }
 
       return userInstance;
     } catch (error) {
@@ -99,7 +97,7 @@ export default class MeRepositoryImpl
       throw error;
     }
   }
-  
+
   // 장소를 클릭했을 때 부를 것
   async findPlaces() {}
 
@@ -153,35 +151,5 @@ export default class MeRepositoryImpl
 
   async findWishlist() {}
 
-  /** User <--> Comments <--> Post (Many to Many) **/
-  // 댓글 달기
-  async addComment(dto: {
-    body: {
-      postId: string;
-      content: string;
-    };
-  }) {
-    try {
-      const res = await this._remote._fetcher("/comment/new", {
-        method: "PUT",
-        body: JSON.stringify(dto.body),
-      });
-      console.log(`TCL ~ [MeRepository.ts] ~ line ~ 165 ~ res`, res);
-      return res;
-    } catch (error) {
-      throw error;
-    }
-  }
 
-  // 댓글 수정하기
-  async updateComment() {}
-
-  // 댓글 삭제하기
-  async deleteComment() {}
-
-  // 댓글 신고하기
-  async reportComment() {}
-
-  // TODO : 대댓글 달기. 클라에선 코멘트 ID만 전송해주면 된다. 관계 설정하고 처리해주는 건 백엔드 몫. 단, 유즈케이스는 분리하는게 맞아보임.
-  async addNestedComment() {}
 }
