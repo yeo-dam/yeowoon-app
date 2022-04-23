@@ -42,11 +42,6 @@ const Component = ({
     await vm.deleteLikes(postId, userId);
   };
 
-  console.log(
-    `TCL ~ [index.tsx] ~ line ~ 27 ~ navigation.getState()`,
-    route.params.id
-  );
-
   return (
     <Wrapper>
       <Header>

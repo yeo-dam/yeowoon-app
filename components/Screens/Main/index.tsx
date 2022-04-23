@@ -63,10 +63,7 @@ const MainScreen = ({
       initialRouteName={MAIN_SCREEN_NAME.HOME}
     >
       <Stack.Screen name={MAIN_SCREEN_NAME.HOME} component={Main} />
-      <Stack.Screen
-        name={MAIN_SCREEN_NAME.DETAIL}
-        component={Detail}
-      />
+      <Stack.Screen name={MAIN_SCREEN_NAME.DETAIL} component={Detail} />
       <Stack.Screen
         name={MAIN_SCREEN_NAME.SEARCH}
         component={Search}

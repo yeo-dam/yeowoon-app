@@ -19,8 +19,6 @@ const Component: FC<Props> = ({
   height,
   ...rest
 }) => {
-  console.log(`TCL ~ [index.tsx] ~ line ~ 22 ~ width`, width);
-
   return (
     <StyledButton
       label=""

@@ -47,7 +47,6 @@ const Wrapper = styled.KeyboardAvoidingView<Props>`
 
 const InnerWrapper = styled.View`
   flex: 1;
-  border: 1px solid yellow;
 `;
 
 export default KeyboardAvoding;

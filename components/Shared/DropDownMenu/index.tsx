@@ -15,5 +15,5 @@ const Component: FC<Props> = () => {
 export default Component;
 
 const DropDownBox = styled.View`
-  margin-right: 12px;
+  margin-left: 12px;
 `;

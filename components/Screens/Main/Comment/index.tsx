@@ -6,7 +6,6 @@ import Typography from "~components/Shared/Typography";
 import { RootTabScreenProps } from "types";
 import {
   View,
-  Text,
   Pressable,
   InputAccessoryView,
   ScrollView,
@@ -21,7 +20,7 @@ import Interval from "~components/Shared/Interval";
 import timeForToday from "helper/Formatter/CalculateDayBefore";
 import { MAIN_SCREEN_NAME } from "constants/SCREEN_NAME";
 import { getRootViewModel } from "~components/Screens/VmManager";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import KeyboardAvoding from "~components/Layout/KeyboardLayout";
 import FlexBox from "~components/Shared/FlexBox";
 import theme from "themes";
@@ -31,10 +30,7 @@ import SubmitButton from "~components/Shared/SubmitButton";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
 import { useModalContext } from "navigation/modalContext";
-import Popup from "~components/Shared/Popup";
 import PopUpContainer from "~components/Shared/PopUpContainer";
-import DropDownContainer from "~components/Shared/DropDownContainer";
-import UpdateCommentDto from "~domain/dto/UpdateCommentDto";
 
 const MyPageScreen = ({
   navigation,
@@ -43,11 +39,15 @@ const MyPageScreen = ({
   const vm = getRootViewModel<CommentViewModel>(
     (viewModel) => viewModel.tab.Comment
   );
-  const [selectedCommentId, setCommentId] = useState<string>("");
+  const [selectedComment, selectComment] = useState<{
+    commentId: string;
+    commentIdx?: number;
+  }>({
+    commentId: "",
+    commentIdx: 0,
+  });
   const { isModalOpen, openModal, closeModal } = useModalContext();
   const inputRef = useRef<TextInput>();
-
-  console.log(`TCL ~ [index.tsx] ~ line ~ 47 ~ inputRef`, inputRef);
 
   const resolver = classValidatorResolver(CreateCommentDto);
   const form = useForm<CreateCommentDto>({
@@ -69,14 +69,20 @@ const MyPageScreen = ({
   const handleSubmit = async (dto: CreateCommentDto) => {
     if (route.params) {
       const postId = (route.params as any)?.postId;
-      await vm.addComment(postId, dto.comment, Number(selectedCommentId));
-      setCommentId("");
+      await vm.addComment(
+        postId,
+        dto.comment,
+        Number(selectedComment.commentId)
+      );
+      selectComment({
+        commentId: "",
+        commentIdx: 0,
+      });
       form.reset();
     }
   };
 
   const onCommentSelect = (commentId: string) => {
-    setCommentId(commentId);
     // console.log(`TCL ~ [index.tsx] ~ line ~ 75 ~ commentId`, commentId);
     // console.log(`TCL ~ [index.tsx] ~ line ~ 78 ~ inputRef`, inputRef);
     // inputRef.current.focus();
@@ -91,19 +97,22 @@ const MyPageScreen = ({
   };
 
   const onCommentDelete = async (commentId: string) => {
-    console.log(`TCL ~ [index.tsx] ~ line ~ 94 ~ commentId`, commentId);
-
     await vm.deleteComment(commentId);
   };
 
-  console.log(`TCL ~ [index.tsx] ~ line ~ 99 ~ vm.comments`, vm.comments);
+  const onModalOpen = (commentId: string, commentIdx: number) => {
+    selectComment({ commentId, commentIdx });
+    openModal();
+  };
 
   const renderComments = () => {
+    const multiLine = vm.comments.map((comment) => {
+      const commentLength = comment.content.length;
+      return commentLength > 25 ? Math.floor(commentLength / 25) : 0;
+    });
     return (
       <View>
-        {vm.comments.map((item) => {
-          console.log(`TCL ~ [index.tsx] ~ line ~ 105 ~ item`, item.commentId);
-
+        {vm.comments.map((item, index) => {
           return (
             <View key={item.commentId}>
               <Flex>
@@ -113,46 +122,23 @@ const MyPageScreen = ({
                 <RightContentBox>
                   <UserFlexBox>
                     <Flex>
-                      <Text>{item?.user?.userName}</Text>
+                      <Typography>{item?.user?.userName}</Typography>
                       <Interval width="8px" />
                       <GreyTypo>{timeForToday(item.createdDateTime)}</GreyTypo>
                     </Flex>
-                    <DropDownContainer
-                      animationType={"slide"}
-                      modalVisible={isModalOpen}
-                      openModal={openModal}
+                    <PopUpContainer
                       closeModal={closeModal}
-                      content={
-                        <PopupWrapper>
-                          <Pressable
-                            onPress={() => console.log(item.commentId)}
-                          >
-                            <FlexBox>
-                              <DropDownTypo>삭제</DropDownTypo>
-                            </FlexBox>
-                          </Pressable>
-                          {/* <Interval height="24px" />
-                          <Pressable
-                            onPress={() => onCommentUpdate(item.commentId)}
-                          >
-                            <FlexBox>
-                              <DropDownTypo>수정</DropDownTypo>
-                            </FlexBox>
-                          </Pressable> */}
-                          <Interval height="24px" />
-                          <Pressable onPress={() => console.log("신고")}>
-                            <FlexBox>
-                              <DropDownTypo>신고</DropDownTypo>
-                            </FlexBox>
-                          </Pressable>
-                        </PopupWrapper>
-                      }
+                      modalVisible={isModalOpen}
+                      commentId={selectedComment.commentId}
+                      multiLine={multiLine}
+                      order={selectedComment.commentIdx || 0}
+                      openModal={() => onModalOpen(item.commentId, index)}
                     >
                       <DropDownMenu />
-                    </DropDownContainer>
+                    </PopUpContainer>
                   </UserFlexBox>
                   <CommentContentBox>
-                    <Text>{item.content}</Text>
+                    <Typography>{item.content}</Typography>
                   </CommentContentBox>
                   <LikeContentBox>
                     <GreyTypo>좋아요 {item.likeCount}개</GreyTypo>
@@ -242,9 +228,3 @@ const InnerWrapper = styled(FlexBox)`
 const GreyTypo = styled(Typography)`
   color: ${({ theme }) => theme.colors.grey[99]};
 `;
-
-const PopupWrapper = styled.View`
-  flex: 1;
-`;
-
-const DropDownTypo = styled(Typography).attrs({ variant: "subhead-regular" })``;

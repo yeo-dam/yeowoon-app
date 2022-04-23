@@ -9,7 +9,6 @@ type Props = {
 
 const Component = ({ label, onSubmit, width, ...rest }: Props) => {
   const { handleSubmit } = useFormContext();
-  console.log(`TCL ~ [index.tsx] ~ line ~ 12 ~ width`, width);
   return (
     <StyledButton
       width={width}

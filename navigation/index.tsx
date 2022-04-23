@@ -6,7 +6,7 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
-import { ColorSchemeName, Text, View } from "react-native";
+import { ColorSchemeName, View } from "react-native";
 
 import MyPageScreen from "~components/Screens/MyPage";
 import CreateScreen from "~components/Screens/Create";
@@ -15,12 +15,7 @@ import useColorScheme from "../hooks/useColorScheme";
 import ModalScreen from "~components/Screens/ModalScreen";
 import NotFoundScreen from "~components/Screens/NotFoundScreen";
 import SignInScreen from "~components/Screens/SignInScreen";
-import TabTwoScreen from "~components/Screens/TabTwoScreen";
-import {
-  RootStackParamList,
-  RootTabParamList,
-  RootTabScreenProps,
-} from "../types";
+import { RootStackParamList } from "../types";
 import LinkingConfiguration from "./LinkingConfiguration";
 import { BNB_SCREEN_NAME } from "constants/SCREEN_NAME";
 import MainScreen from "~components/Screens/Main";
@@ -45,7 +40,6 @@ export default function Navigation({
   const { isModalOpen, openModal, closeModal } = useModalContext();
 
   return (
-    // FIXME : Linking Config 수정하기
     <NavigationContainer
       linking={LinkingConfiguration}
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
@@ -64,7 +58,6 @@ function RootNavigator({ setToken }: { setToken: (data: string) => void }) {
   const authVm = getRootViewModel((vm) => vm.auth);
   const accessToken = authVm.auth?.accessToken;
 
-  console.log(`TCL ~ [index.tsx] ~ line ~ 70 ~ accessToken`, accessToken);
   return (
     <Stack.Navigator>
       {!accessToken && (
@@ -171,13 +164,15 @@ const ModalContainer = styled.Pressable`
 
 const ModalBackground = styled(View)`
   position: absolute;
+  z-index: 1;
   top: 0;
   left: 0;
   justify-content: flex-end;
   align-items: center;
   background-color: ${({ theme }) => theme.colors.grey.black};
+  z-index: 0;
   opacity: 0.7;
-  flex: 1;
   width: 100%;
   height: 100%;
+  flex: 1;
 `;

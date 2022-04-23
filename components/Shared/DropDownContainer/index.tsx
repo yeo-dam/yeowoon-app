@@ -22,7 +22,7 @@ const Component: React.FC<PropsWithChildren<Props>> = ({
   return (
     <Wrapper>
       <Modal
-        animationType={animationType}
+        animationType={"slide"}
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {

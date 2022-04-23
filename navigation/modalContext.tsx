@@ -26,7 +26,7 @@ export const useModalContext = () => {
   return value;
 };
 
-const ModalContextProvider = ({ children }: any) => {
+const ModalProvider = ({ children }: any) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
@@ -41,4 +41,4 @@ const ModalContextProvider = ({ children }: any) => {
   );
 };
 
-export default ModalContextProvider;
+export default ModalProvider;
