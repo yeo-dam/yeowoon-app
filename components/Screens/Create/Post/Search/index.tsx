@@ -37,7 +37,6 @@ const MyPageScreen = ({
       vm.selectPlace(placeId);
       vm.formReset(true);
     });
-    // runInAction(() => );
     navigation.navigate("CreatePost");
   };
 
@@ -45,10 +44,6 @@ const MyPageScreen = ({
     console.log("등록 화면으로 이동합니다..", data);
 
   // TODO : 추후 BottomBar를 숨겨줘야 합니다.
-  console.log(
-    `TCL ~ [index.tsx] ~ line ~ 48 ~ vm.searchedWord`,
-    !!vm.searchedWord
-  );
   return (
     <KeyboardAvoding justifyContent="flex-end">
       <ContentBox hasBottomButton={!!vm.searchedWord}>
@@ -91,7 +86,7 @@ const Content = styled.Pressable``;
 const ContentBox = styled.ScrollView<{ hasBottomButton: boolean }>`
   width: ${windowWidth + "px"};
   padding: 16px 24px 32px 24px;
-  margin-bottom: ${({ hasBottomButton }) => hasBottomButton && "5px"};
+  margin-bottom: ${({ hasBottomButton }) => (hasBottomButton ? "5px" : "0px")};
 `;
 
 const Title = styled(Typography)`
@@ -105,6 +100,7 @@ const Description = styled(Typography)`
 const ButtonBox = styled.View`
   width: 100%;
   align-items: center;
+  margin-bottom: 10px;
 `;
 
 const StyledButton = styled(Button).attrs({

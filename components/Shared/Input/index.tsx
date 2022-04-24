@@ -10,6 +10,7 @@ export type Props = {
   hidden?: boolean;
   errMsg?: string;
   fontSize?: string;
+  handleOnChange?: (data: string) => void;
   placeholderTextColor?: string;
   color?: string;
   disabled?: boolean;
@@ -26,6 +27,7 @@ const Component: FC<Props> = ({
   width,
   height,
   fontSize,
+  handleOnChange,
   color,
   disabled = false,
   FullWidth,
@@ -44,6 +46,9 @@ const Component: FC<Props> = ({
           <StyledTextInput
             name={name}
             onChangeText={(e) => {
+              if(handleOnChange){
+                handleOnChange(e);
+              }
               onChange(e);
             }}
             value={value}

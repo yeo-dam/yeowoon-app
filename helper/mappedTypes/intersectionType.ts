@@ -2,9 +2,9 @@ import {
   inheritPropertyInitializers,
   inheritTransformationMetadata,
   inheritValidationMetadata,
-} from './_helper';
-import { MappedType } from './_mappedTypeInterface';
-import { Type } from './_type';
+} from "./_helper";
+import { MappedType } from "./_mappedTypeInterface";
+import { Type } from "./_type";
 
 export function IntersectionType<A, B>(
   target: Type<A>,
@@ -45,9 +45,9 @@ export function IntersectionType<A, T extends { new (...arg: any): any }[]>(
 
   const intersectedNames = allClassRefs.reduce(
     (prev, ref) => prev + ref.name,
-    ''
+    ""
   );
-  Object.defineProperty(IntersectionClassType, 'name', {
+  Object.defineProperty(IntersectionClassType, "name", {
     value: `Intersection${intersectedNames}`,
   });
   return IntersectionClassType as MappedType<A>;

@@ -115,11 +115,6 @@ const CreatePost = ({
     }
   };
 
-  console.log(
-    `TCL ~ [index.tsx] ~ line ~ 133 ~ form.watch('inputDateTime')`,
-    form.watch("inputDateTime")
-  );
-
   return (
     <KeyboardAvoiding>
       <FormProvider {...form}>

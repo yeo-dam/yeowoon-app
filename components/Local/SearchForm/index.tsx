@@ -5,32 +5,28 @@ import { RootTabScreenProps } from "types";
 import { CREATE_SCREEN_NAME, MAIN_SCREEN_NAME } from "constants/SCREEN_NAME";
 import BackPushLogo from "~assets/Icons/Back.svg";
 import Interval from "~components/Shared/Interval";
-import Form from "~components/Shared/Form";
-import FindPostDto from "~domain/dto/FindPostDto";
 import FlexBox from "~components/Shared/FlexBox";
 import SearchLogo from "~assets/Icons/SearchIcon.svg";
 import Input from "~components/Shared/Input";
 import theme from "themes";
 import Button from "~components/Shared/Button";
+import { FormProvider, UseFormReturn } from "react-hook-form";
+import FindPlaceDto from "~domain/dto/FindPlaceDto";
+import SubmitButton from "~components/Shared/SubmitButton";
 
 type Props = {
+  form: UseFormReturn<FindPlaceDto, any>;
   onSubmit: (inputValue: string) => void;
   handleNavigate: () => void;
 };
 
-const Component: FC<Props> = ({ handleNavigate, onSubmit }) => {
-  const [inputTextValue, setInputTextValue] = useState<string | undefined>(
-    undefined
-  );
-
-  const handleChange = (e: any) => {
-    setInputTextValue(e);
-  };
-
-  const handleOnSubmit = () => {
-    if (inputTextValue) {
-      onSubmit(inputTextValue);
-    }
+const Component: FC<Props> = ({ form, handleNavigate, onSubmit }) => {
+  const handleOnChange = (keyword: string) => {
+    setTimeout(() => {
+      if (keyword) {
+        onSubmit(keyword);
+      }
+    }, 1000);
   };
 
   return (
@@ -39,7 +35,7 @@ const Component: FC<Props> = ({ handleNavigate, onSubmit }) => {
         <BackPushLogo />
       </Pressable>
       <Interval width="10px" />
-      <Form schema={FindPostDto}>
+      <FormProvider {...form}>
         <SearchBox>
           <IconBox>
             <SearchLogo />
@@ -47,8 +43,7 @@ const Component: FC<Props> = ({ handleNavigate, onSubmit }) => {
           <Input
             name="placeName"
             placeholderTextColor="#999999"
-            value={inputTextValue}
-            onChangeText={handleChange}
+            handleOnChange={handleOnChange}
             placeholder="장소 이름 검색"
             FullWidth
             height="30px"
@@ -56,13 +51,13 @@ const Component: FC<Props> = ({ handleNavigate, onSubmit }) => {
           />
         </SearchBox>
         <InputAccessoryView nativeID={CREATE_SCREEN_NAME.SEARCH}>
-          <Button
+          <SubmitButton
             label="검색하기"
-            onPress={handleOnSubmit}
+            onSubmit={onSubmit}
             color={theme.colors.grey.AA}
           />
         </InputAccessoryView>
-      </Form>
+      </FormProvider>
     </>
   );
 };

@@ -24,6 +24,9 @@ import BackPushLogo from "~assets/Icons/Back.svg";
 import SearchLogo from "~assets/Icons/SearchIcon.svg";
 import { getRootViewModel } from "../VmManager";
 import SearchForm from "~components/Local/SearchForm";
+import { useForm } from "react-hook-form";
+import { classValidatorResolver } from "@hookform/resolvers/class-validator";
+import FindPlaceDto from "~domain/dto/FindPlaceDto";
 
 export type BnbCreateNavigator = {
   [CREATE_SCREEN_NAME.POST]: undefined;
@@ -37,6 +40,11 @@ const CreateScreen = ({ navigation }: any) => {
   const vm = getRootViewModel<CreatePostViewModel>(
     (viewModel) => viewModel.tab.Post
   );
+  const form = useForm({
+    resolver: classValidatorResolver(FindPlaceDto),
+    mode: "onChange",
+    reValidateMode: "onSubmit",
+  });
 
   const handleClick = useCallback(
     (bool: boolean) => {
@@ -44,13 +52,6 @@ const CreateScreen = ({ navigation }: any) => {
     },
     [vm.isFront]
   );
-
-  console.log(
-    `TCL ~ [index.tsx] ~ line ~ 48 ~ vm.resetTrigger`,
-    vm.resetTrigger
-  );
-  // useEffect(() => {
-  // }, [vm.resetTrigger])
 
   const onSubmit = async (inputTextValue: string) => {
     const findDto: PlaceSearchDto = {
@@ -125,6 +126,7 @@ const CreateScreen = ({ navigation }: any) => {
           headerLeft: () => {
             return (
               <SearchForm
+                form={form}
                 handleNavigate={() =>
                   navigation.navigate(CREATE_SCREEN_NAME.POST)
                 }

@@ -131,7 +131,7 @@ export default class CreatePostViewModel extends BaseViewModel {
 
   @action
   setSearchWord(word: string) {
-    if (word) {
+    if (word && word.length > 0) {
       this._searchedWord.set(word);
     }
   }
@@ -209,6 +209,7 @@ export default class CreatePostViewModel extends BaseViewModel {
     }
   ) {
     try {
+      this._searchedList.clear();
       this._isSearchLoading.set(true);
 
       const searchInstances = yield this._placeRepo.findPlace({
