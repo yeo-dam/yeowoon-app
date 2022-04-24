@@ -36,8 +36,7 @@ const Component: FC<Props> = ({
 export default Component;
 
 const StyledButton = styled(TouchableOpacity)<Props>`
-  /* width: ${({ width }) => (width ? width : "100%")}; */
-  width: 100px;
+  width: ${({ width }) => (width ? width : "100%")};
   align-items: center;
   justify-content: center;
   height: 50px;

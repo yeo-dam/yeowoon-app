@@ -45,10 +45,13 @@ const MyPageScreen = ({
     console.log("등록 화면으로 이동합니다..", data);
 
   // TODO : 추후 BottomBar를 숨겨줘야 합니다.
-
+  console.log(
+    `TCL ~ [index.tsx] ~ line ~ 48 ~ vm.searchedWord`,
+    !!vm.searchedWord
+  );
   return (
     <KeyboardAvoding justifyContent="flex-end">
-      <ContentBox>
+      <ContentBox hasBottomButton={!!vm.searchedWord}>
         {vm.searchedList &&
           vm.searchedList.map((item) => {
             return (
@@ -83,15 +86,12 @@ const MyPageScreen = ({
 
 export default observer(MyPageScreen);
 
-const ContentLayoutWrapper = styled(ContentLayout)`
-  padding: 16px 24px 0px 24px;
-  width: ${windowWidth + "px"};
-`;
-
 const Content = styled.Pressable``;
 
-const ContentBox = styled.ScrollView`
-  flex: 11.5;
+const ContentBox = styled.ScrollView<{ hasBottomButton: boolean }>`
+  width: ${windowWidth + "px"};
+  padding: 16px 24px 32px 24px;
+  margin-bottom: ${({ hasBottomButton }) => hasBottomButton && "5px"};
 `;
 
 const Title = styled(Typography)`
@@ -102,15 +102,14 @@ const Description = styled(Typography)`
   color: ${({ theme }) => theme.colors.grey[99]};
 `;
 
-const StyledInputAccessoryView = styled(InputAccessoryView)`
-  flex: 1;
+const ButtonBox = styled.View`
+  width: 100%;
+  align-items: center;
 `;
 
-const ButtonBox = styled(FlexBox)`
-  flex: 1;
-  align-items: flex-end;
-`;
-
-const StyledButton = styled(Button)`
+const StyledButton = styled(Button).attrs({
+  width: "87.2%",
+  height: "54px",
+})`
   border-radius: 6px;
 `;
