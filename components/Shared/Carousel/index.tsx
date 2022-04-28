@@ -16,7 +16,7 @@ export type Props = {
   slideWidth?: number;
   slideHeight?: number;
 } & Pick<CarouselItem, "aspectRatio"> &
-  Omit<RootTabScreenProps<typeof MAIN_SCREEN_NAME.HOME>, "route">;
+  Partial<Omit<RootTabScreenProps<typeof MAIN_SCREEN_NAME.HOME>, "route">>;
 
 const Component = ({
   pages,
@@ -33,9 +33,11 @@ const Component = ({
 
   const onPressHandler = (id: string, url?: string) => {
     // 디테일 페이지 조회를 위한 ID
-    navigation.navigate(MAIN_SCREEN_NAME.DETAIL, {
-      id: id,
-    });
+    if (navigation) {
+      navigation.navigate(MAIN_SCREEN_NAME.DETAIL, {
+        id: id,
+      });
+    }
   };
 
   const renderItemForIos = ({ item }: any) => {

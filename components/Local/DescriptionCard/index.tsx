@@ -24,7 +24,6 @@ const Component = ({
 }: Props) => {
   const handlePress = () => navigation.push(MAIN_SCREEN_NAME.MAP);
 
-  console.log(`TCL ~ [index.tsx] ~ line ~ 25 ~ item.like`, item.like);
   return (
     <Pressable onPress={() => setIsFront(true)}>
       <PhotoFrame>

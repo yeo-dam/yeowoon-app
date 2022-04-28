@@ -57,6 +57,7 @@ const ImageUploadSection = styled(View)`
   align-items: center;
   width: ${windowWidth * 0.85 + "px"};
   height: ${windowWidth * 0.85 * 1.2225 + "px"};
+  margin: 0px 16px 0px 16px;
   background-color: ${({ theme }) => theme.colors.grey.ED};
 `;
 

@@ -10,12 +10,11 @@ import SearchLogo from "~assets/Icons/SearchIcon.svg";
 import Input from "~components/Shared/Input";
 import theme from "themes";
 import Button from "~components/Shared/Button";
-import { FormProvider, UseFormReturn } from "react-hook-form";
-import FindPlaceDto from "~domain/dto/FindPlaceDto";
+import { FieldValues, FormProvider, UseFormReturn } from "react-hook-form";
 import SubmitButton from "~components/Shared/SubmitButton";
 
 type Props = {
-  form: UseFormReturn<FindPlaceDto, any>;
+  form: UseFormReturn<FieldValues, any>;
   onSubmit: (inputValue: string) => void;
   handleNavigate: () => void;
 };

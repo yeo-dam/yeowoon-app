@@ -12,7 +12,7 @@ import Flex from "~components/Shared/FlexBox";
 import { CREATE_SCREEN_NAME } from "constants/SCREEN_NAME";
 import DescriptionForm from "~components/Local/DescriptionForm";
 import ImageForm from "~components/Local/ImageForm";
-import { windowWidth } from "constants/Layout";
+import { windowWidth, windowHeight } from "constants/Layout";
 import { getRootViewModel } from "~components/Screens/VmManager";
 import { FormProvider, useForm } from "react-hook-form";
 import { classValidatorResolver } from "@hookform/resolvers/class-validator";
@@ -72,14 +72,14 @@ const CreatePost = ({
     const month = dateTime.slice(4, 6);
     const day = dateTime.slice(6, 8);
     const transformed = `${year}.${month}.${day}`;
-    const ImageIds = vm.uploadedImages.map((item) => item.id);
+    const ImageIds = vm.uploadedImages.map((item) => item?.id);
     const newTags = data.tags.filter((tag) => tag !== "");
     const formmatedDto: CreatePostDto = {
       ...data,
       place: { ...vm.selectedPlace, type: data.place.type },
       tags: newTags,
       date: transformed,
-      images: ImageIds,
+      images: ImageIds as number[],
     };
 
     console.log(`formmatedDto >>> `, formmatedDto);
@@ -121,16 +121,18 @@ const CreatePost = ({
         <FormWrapper>
           <Wrapper>
             <InnerWrapper>{renderForm()}</InnerWrapper>
-            <DateFlexBox>
-              <DateInput
-                maxLength={8}
-                height="20px"
-                name="inputDateTime"
-                placeholder="날짜(YYYY-MM-DD)를 입력해주세요"
-                keyboardType="number-pad"
-                inputAccessoryViewID={CREATE_SCREEN_NAME.POST}
-              />
-            </DateFlexBox>
+            {!vm.isFront && (
+              <DateFlexBox>
+                <DateInput
+                  maxLength={8}
+                  height="20px"
+                  name="inputDateTime"
+                  placeholder="날짜(YYYY-MM-DD)를 입력해주세요"
+                  keyboardType="number-pad"
+                  inputAccessoryViewID={CREATE_SCREEN_NAME.POST}
+                />
+              </DateFlexBox>
+            )}
           </Wrapper>
         </FormWrapper>
       </FormProvider>
@@ -141,20 +143,20 @@ const CreatePost = ({
 export default observer(CreatePost);
 
 const Wrapper = styled.View`
-  margin-top: 19px;
+  margin: 19px 0px;
   width: ${windowWidth * 0.936 + "px"};
-  height: ${windowWidth * 0.936 * 1.4986 + "px"};
+  height: ${windowHeight < 700 ? "95" : "none"};
+  height: ${windowHeight < 750 ? "90%" : "none"};
+  height: ${windowHeight >= 750 ? "81.55%" : "none"};
   background-color: white;
 `;
 
 const InnerWrapper = styled.View`
   position: relative;
   flex: 1;
+  width: 100%;
   padding-top: 32px;
   align-items: center;
-  width: ${windowWidth * 0.936 + "px"};
-  height: ${windowWidth * 0.936 * 1.4986 + "px"};
-  background-color: white;
 `;
 
 const FormWrapper = styled(Flex)`
@@ -172,38 +174,7 @@ const DateFlexBox = styled(Flex)`
 const DescriptionBox = styled(View)`
   justify-content: center;
   width: ${windowWidth * 0.85 + "px"};
-  height: ${windowWidth * 0.85 * 1.2225 + "px"};
+  height: 88.75%;
+  margin: 0px 16px;
   background-color: ${({ theme }) => theme.colors.grey.black};
-`;
-
-const DescriptionInnerBox = styled.View`
-  padding: 0px 12px 16px 12px;
-`;
-
-const ImageUploadText = styled(Typography)`
-  color: #aaaaaa;
-`;
-
-const NoImageComponent = styled(Image)``;
-
-const DropDownTypo = styled(Typography).attrs({ variant: "subhead-medium" })``;
-
-const PlaceTypeBox = styled(Flex)`
-  justify-content: space-around;
-`;
-
-const GreyTypo = styled(Typography).attrs({ variant: "caption-light" })`
-  color: ${({ theme }) => theme.colors.grey[99]};
-`;
-
-const ContentInputBox = styled.View`
-  width: 100%;
-  height: 117px;
-  background-color: #2f2f2f;
-`;
-
-const TagInputBox = styled.View`
-  width: 100%;
-  height: 19px;
-  background-color: #2f2f2f;
 `;
