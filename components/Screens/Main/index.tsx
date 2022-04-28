@@ -2,7 +2,6 @@ import * as React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Main from "./index.Main";
 import Comment from "./Comment";
-import Map from "../MyPage/Map";
 import { Pressable, TouchableWithoutFeedback, Text } from "react-native";
 import Typography from "~components/Shared/Typography";
 import styled from "styled-components/native";
@@ -17,6 +16,7 @@ import Form from "~components/Shared/Form";
 import SearchForm from "~components/Local/SearchForm";
 import PlaceSearchDto from "~domain/dto/PlaceSearchDto";
 import { RootTabScreenProps } from "types";
+import Map from "./Map";
 import { runInAction } from "mobx";
 import Detail from "./Detail";
 

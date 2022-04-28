@@ -9,10 +9,10 @@ import styled from "styled-components/native";
 import { observer } from "mobx-react";
 import MapViewModel from "components/Screens/MyPage/Map/Map.vm";
 import { windowWidth, windowHeight } from "constants/Layout";
-import PlaceModel from "~domain/model/Shared/PlaceModel";
+import MapListModel from "~domain/model/Local/MapListModel";
 
 type Props = {
-  places?: PlaceModel[];
+  places?: MapListModel[];
   loadList: () => void;
   latitude?: number;
   longitude?: number;
@@ -28,7 +28,7 @@ const GoogleMap = ({
 }: Props) => {
   useEffect(() => {
     async function loadPlaces() {
-      await loadList();
+      // await loadList();
     }
     loadPlaces();
   }, []);
@@ -46,6 +46,7 @@ const GoogleMap = ({
         }}
         onRegionChange={onRegionChange}
       >
+        {/* FIXME: 주석해제 필요  */}
         {places &&
           places.map((item, inx) => {
             return (
@@ -55,7 +56,7 @@ const GoogleMap = ({
                   latitude: item.latitude,
                   longitude: item.longitude,
                 }}
-                title={item.placeName}
+                title={item.title}
                 description={item.description}
               />
             );
