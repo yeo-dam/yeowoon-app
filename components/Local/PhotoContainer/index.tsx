@@ -41,7 +41,7 @@ const Component: FC<Props> = ({ item, children }) => {
             closeModal={closeModal}
             content={<Popup />}
           >
-            <DropDownMenu />
+            <DropDownMenu hasMarginRight />
           </DropDownContainer>
         </IconSection>
       </PhotoHeader>

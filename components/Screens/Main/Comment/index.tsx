@@ -134,7 +134,7 @@ const MyPageScreen = ({
                       order={selectedComment.commentIdx || 0}
                       openModal={() => onModalOpen(item.commentId, index)}
                     >
-                      <DropDownMenu />
+                      <DropDownMenu hasMarginLeft />
                     </PopUpContainer>
                   </UserFlexBox>
                   <CommentContentBox>

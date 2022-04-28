@@ -81,6 +81,7 @@ const Component = ({
   return (
     <Container>
       <Carousel
+        layout="default"
         ref={carouselRef}
         data={pages}
         renderItem={renderItemForIos}

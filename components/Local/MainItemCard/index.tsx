@@ -104,10 +104,6 @@ const Component: FC<Props> = ({
 
 export default Component;
 
-const StyledText = styled.Text`
-  width: 100%;
-`;
-
 const OverlayBox = styled.View`
   position: absolute;
   align-items: center;
