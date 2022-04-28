@@ -152,6 +152,9 @@ const InnerWrapper = styled.View`
   flex: 1;
   padding-top: 32px;
   align-items: center;
+  width: ${windowWidth * 0.936 + "px"};
+  height: ${windowWidth * 0.936 * 1.4986 + "px"};
+  background-color: white;
 `;
 
 const FormWrapper = styled(Flex)`
