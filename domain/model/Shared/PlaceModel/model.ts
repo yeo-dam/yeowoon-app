@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 import PlaceType from "~domain/enum/PlaceType";
 
 class PlaceModel {
@@ -33,6 +33,14 @@ class PlaceModel {
   @IsString()
   @IsNotEmpty()
   address: string;
+
+  @IsString()
+  @IsNotEmpty()
+  image: string;
+
+  @IsOptional()
+  @IsNumber()
+  likeCount?: number;
 }
 
 export default PlaceModel;

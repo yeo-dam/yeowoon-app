@@ -35,6 +35,7 @@ const MyPageScreen = ({
 
   const [currentTab, setTab] = useState<Tabs>("게시글");
 
+  // FIXME : 유저 프로필 정보 불러올 때 에러 발생됨
   useEffect(() => {
     async function load() {
       await vm.loadProfile(userId);
@@ -137,6 +138,7 @@ const MyPageScreen = ({
             numColumns={2}
             data={vm.posts}
             renderItem={({ item }) => renderCard(item)}
+            keyExtractor={(item) => item.postId}
           />
         </ContentBody>
       </ContentSection>
@@ -174,7 +176,7 @@ const GreyTypo = styled(Typography)`
   /* padding-right: 72px; */
 `;
 
-const ContentSection = styled.ScrollView``;
+const ContentSection = styled.View``;
 
 const ContentHeader = styled(FlexBox)`
   justify-content: space-around;
