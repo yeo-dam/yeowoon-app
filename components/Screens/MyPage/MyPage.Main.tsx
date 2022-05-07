@@ -38,7 +38,7 @@ const MyPageScreen = ({
   // FIXME : 유저 프로필 정보 불러올 때 에러 발생됨
   useEffect(() => {
     async function load() {
-      await vm.loadProfile(userId);
+      // await vm.loadProfile(userId);
       await vm.loadPosts(userId, 0);
     }
     load();
