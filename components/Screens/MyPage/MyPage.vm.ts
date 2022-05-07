@@ -116,8 +116,6 @@ export default class ThisViewModel extends BaseViewModel {
 
       this._userDetail.set(userMeInfo);
     } catch (error) {
-      console.error(error);
-      this._isError.set(true);
       throw error;
     } finally {
       this._isLoading.set(false);

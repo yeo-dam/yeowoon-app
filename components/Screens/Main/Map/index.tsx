@@ -30,6 +30,7 @@ const Map = ({
       }
 
       let locationInfo = await Location.getCurrentPositionAsync({});
+      await vm.load();
 
       setLocation({
         latitude: locationInfo.coords.latitude,
@@ -44,7 +45,6 @@ const Map = ({
     <ContentLayout>
       <View>
         <GoogleMap
-          loadList={vm.load}
           places={vm.places}
           region={location}
           latitude={location?.latitude}

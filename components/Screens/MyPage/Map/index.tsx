@@ -13,6 +13,8 @@ import { MYPAGE_SCREEN_NAME } from "constants/SCREEN_NAME";
 import { getRootViewModel } from "~components/Screens/VmManager";
 import { RootTabScreenProps } from "types";
 import useIsMounted from "hooks/useIsMounted";
+import { genPlaceMockObject } from "~domain/model/Shared/PlaceModel/mock";
+import { markers } from "~domain/model/Local/MapListModel/mock";
 
 const Map = ({
   navigation,
@@ -30,6 +32,7 @@ const Map = ({
       }
 
       let locationInfo = await Location.getCurrentPositionAsync({});
+      await vm.load();
 
       setLocation({
         latitude: locationInfo.coords.latitude,
@@ -40,26 +43,14 @@ const Map = ({
     })();
   }, [isMounted]);
 
-  if (vm.isLoading) {
-    return <Loadable />;
-  }
-
-  if (vm.isError) {
-    return <ErrorMsg />;
-  }
-
   return (
     <ContentLayout>
       <View>
         <GoogleMap
           places={vm.places}
-          loadList={vm.load}
           region={location}
           latitude={location?.latitude}
           longitude={location?.longitude}
-          onRegionChange={(region) => {
-            // setLocation(region);
-          }}
         />
       </View>
     </ContentLayout>

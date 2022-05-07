@@ -5,6 +5,7 @@ import PlaceModel from "~domain/model/Shared/PlaceModel/model";
 import MeRepositoryImpl from "~domain/repository/MeRepository";
 import { ConstructorParameter } from "~domain/repository/Repository";
 import BaseViewModel from "../../BaseViewModel";
+import MapListModel from "~domain/model/Local/MapListModel";
 
 export default class MapViewModel extends BaseViewModel {
   private static _Instance: MapViewModel;
@@ -40,7 +41,7 @@ export default class MapViewModel extends BaseViewModel {
   private _pager = observable.box<PagerModel>(undefined);
 
   @observable
-  private _places = observable.map<number, PlaceModel>(undefined);
+  private _places = observable.map<string, MapListModel>(undefined);
 
   @computed
   public get isLoading() {
@@ -71,16 +72,13 @@ export default class MapViewModel extends BaseViewModel {
   load = flow(function* (this: MapViewModel) {
     try {
       this._isLoading.set(true);
-      yield this._MeRepo.findPlaces();
-      // const [pager, placeInstances] = yield this._MeRepo.findPlaces();
-      // placeInstances.forEach((item: PlaceModel) => {
-      //   this._places.set(item.placeId, item);
-      // });
-      // this._pager.set(pager);
+      const placeInstances = this._MeRepo.findPlaces();
+
+      placeInstances.forEach((item: MapListModel) => {
+        this._places.set(item.placeId, item);
+      });
     } catch (error) {
       console.error(error);
-      this._isError.set(true);
-      throw error;
     } finally {
       this._isLoading.set(false);
     }
