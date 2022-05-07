@@ -11,10 +11,6 @@ import MapListModel from "~domain/model/Local/MapListModel";
 
 type Props = {
   places?: MapListModel[];
-<<<<<<< HEAD
-=======
-  loadList: () => void;
->>>>>>> f27df783ec7daadbece89a0409c986c3ec780c32
   latitude?: number;
   longitude?: number;
 } & MapViewProps;
