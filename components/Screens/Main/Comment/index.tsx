@@ -107,8 +107,10 @@ const MyPageScreen = ({
 
   const renderComments = () => {
     const multiLine = vm.comments.map((comment) => {
-      const commentLength = comment.content.length;
-      return commentLength > 25 ? Math.floor(commentLength / 25) : 0;
+      if (comment.content) {
+        const commentLength = comment.content.length;
+        return commentLength > 25 ? Math.floor(commentLength / 25) : 0;
+      }
     });
     return (
       <View>
@@ -131,6 +133,7 @@ const MyPageScreen = ({
                       modalVisible={isModalOpen}
                       commentId={selectedComment.commentId}
                       multiLine={multiLine}
+                      onCommentDelete={onCommentDelete}
                       order={selectedComment.commentIdx || 0}
                       openModal={() => onModalOpen(item.commentId, index)}
                     >

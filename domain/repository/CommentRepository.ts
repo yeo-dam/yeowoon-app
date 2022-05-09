@@ -56,12 +56,10 @@ export default class CommentRepositoryImpl
   /** User <--> Comments <--> Post (Many to Many) **/
   async addComment(dto: { body: CreateCommentDto }) {
     try {
-      const { id } = await this._remote._fetcher("/comment/new", {
+      return await this._remote._fetcher("/comment/new", {
         method: "PUT",
         body: JSON.stringify(dto.body),
       });
-
-      return id;
     } catch (error) {
       throw error;
     }

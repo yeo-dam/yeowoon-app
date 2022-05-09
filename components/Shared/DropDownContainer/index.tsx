@@ -53,8 +53,8 @@ const BottomSafeAreaView = styled(SafeAreaView)`
 const ModalContainer = styled.Pressable`
   flex: 1;
   height: 100%;
-  border: 1px solid blue;
 `;
+
 const PressableBox = styled.Pressable`
   width: 100%;
 `;
