@@ -12,6 +12,7 @@ type Props = {
   multiLine: number[];
   commentId: string;
   modalVisible: boolean;
+  onCommentDelete: (id: string) => void;
   openModal: () => void;
   closeModal: () => void;
 };
@@ -24,6 +25,7 @@ const Component: React.FC<PropsWithChildren<Props>> = ({
   openModal,
   closeModal,
   modalVisible,
+  onCommentDelete,
 }) => {
   const headerHeight = useHeaderHeight();
   const firstHeaderHeight = headerHeight + 16 + 18 + 8;
@@ -57,7 +59,12 @@ const Component: React.FC<PropsWithChildren<Props>> = ({
             commentHeight={commentHeight}
           >
             <ButtonBox>
-              <Pressable onPress={() => console.log(commentId)}>
+              <Pressable
+                onPress={() => {
+                  onCommentDelete(commentId);
+                  closeModal();
+                }}
+              >
                 <DropDownTypo>삭제</DropDownTypo>
               </Pressable>
             </ButtonBox>

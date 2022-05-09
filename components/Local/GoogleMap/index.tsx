@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useEffect } from "react";
 import MapView, {
   MapViewProps,
   Marker,
@@ -7,13 +6,11 @@ import MapView, {
 } from "react-native-maps";
 import styled from "styled-components/native";
 import { observer } from "mobx-react";
-import MapViewModel from "components/Screens/MyPage/Map/Map.vm";
 import { windowWidth, windowHeight } from "constants/Layout";
-import PlaceModel from "~domain/model/Shared/PlaceModel";
+import MapListModel from "~domain/model/Local/MapListModel";
 
 type Props = {
-  places?: PlaceModel[];
-  loadList: () => void;
+  places?: MapListModel[];
   latitude?: number;
   longitude?: number;
 } & MapViewProps;
@@ -23,16 +20,8 @@ const GoogleMap = ({
   latitude = 37.5326,
   longitude = 127.024612,
   region,
-  loadList,
   onRegionChange,
 }: Props) => {
-  useEffect(() => {
-    async function loadPlaces() {
-      await loadList();
-    }
-    loadPlaces();
-  }, []);
-
   return (
     <Wrapper>
       <StyledMapView
@@ -46,16 +35,19 @@ const GoogleMap = ({
         }}
         onRegionChange={onRegionChange}
       >
+        {/* FIXME: 주석해제 필요  */}
         {places &&
-          places.map((item, inx) => {
+          places.map((item) => {
             return (
-              <Marker
-                key={inx}
+              <StyledMarker
+                key={item.placeId}
+                // image={{ uri: item.image }}
+                // image={require("../../../assets/images/Marker.png")}
                 coordinate={{
                   latitude: item.latitude,
                   longitude: item.longitude,
                 }}
-                title={item.placeName}
+                title={item.title}
                 description={item.description}
               />
             );
@@ -75,6 +67,11 @@ const Wrapper = styled.View`
 const StyledMapView = styled(MapView)`
   width: ${windowWidth + "px"};
   height: ${windowHeight + "px"};
+`;
+
+const StyledMarker = styled(Marker)`
+  width: 10px;
+  height: 10px;
 `;
 
 export default observer(GoogleMap);

@@ -100,7 +100,7 @@ export default class CommentViewModel extends BaseViewModel {
   ) {
     try {
       this._isLoading.set(true);
-      const { id } = yield this._commentRepo.addComment({
+      const id = yield this._commentRepo.addComment({
         body: {
           postId,
           comment,
@@ -108,14 +108,16 @@ export default class CommentViewModel extends BaseViewModel {
         },
       });
 
-      const commentInstances = yield this._commentRepo.find({
-        parameter: {
-          postId,
-        },
-      });
-      commentInstances.forEach((item: CommentModel) => {
-        this._comments.set(item.commentId, item);
-      });
+      if (id) {
+        const commentInstances = yield this._commentRepo.find({
+          parameter: {
+            postId,
+          },
+        });
+        commentInstances.forEach((item: CommentModel) => {
+          this._comments.set(item.commentId, item);
+        });
+      }
     } catch (error) {
       console.error(error);
       this._isError.set(true);
@@ -155,8 +157,9 @@ export default class CommentViewModel extends BaseViewModel {
           commentId,
         },
       });
-
-      this._comments.delete(id);
+      if (id) {
+        this._comments.delete(commentId);
+      }
     } catch (error) {
       console.error(error);
       this._isError.set(true);

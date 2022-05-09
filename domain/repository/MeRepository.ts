@@ -2,6 +2,7 @@ import { validate } from "class-validator";
 import { plainToClass } from "unsafe-class-transformer";
 import PlaceEntity from "~data/entity/PlaceEntity";
 import UserEntity from "~data/entity/UserEntity";
+import { markers } from "~domain/model/Local/MapListModel/mock";
 import PostListModel from "~domain/model/Local/PostListModel";
 import UserDetailModel, {
   UserDetailJson,
@@ -46,6 +47,11 @@ export default class MeRepositoryImpl
         `/profile/view/${dto.parameter.userId}`
       );
 
+      console.log(
+        `TCL ~ [MeRepository.ts] ~ line ~ 50 ~ userDetail`,
+        userDetail
+      );
+
       const userInstance = plainToClass<UserDetailModel, UserDetailJson>(
         UserDetailModel,
         userDetail
@@ -53,7 +59,7 @@ export default class MeRepositoryImpl
 
       const validateError = await validate(userInstance);
 
-      if (validateError) {
+      if (validateError.length > 0) {
         throw validateError;
       }
 
@@ -71,7 +77,7 @@ export default class MeRepositoryImpl
     querystring: {
       pageNum: number;
     };
-  }): Promise<PostListModel[]> {
+  }) {
     try {
       const { posts: placeEntities } = await this._remote._fetcher<{
         posts: PlaceEntity[];
@@ -94,12 +100,20 @@ export default class MeRepositoryImpl
 
       return placeInstances;
     } catch (error) {
-      throw error;
+      console.error(error);
     }
   }
 
   // 장소를 클릭했을 때 부를 것
-  async findPlaces() {}
+  findPlaces() {
+    try {
+      // if (process.env.mode === "DEVELOPMENT") {
+      return markers;
+      // }
+    } catch (error) {
+      throw error;
+    }
+  }
 
   // 장소를 클릭했을 때 부를 것
   async findPlaceById() {}
@@ -150,6 +164,4 @@ export default class MeRepositoryImpl
   async addWishlist() {}
 
   async findWishlist() {}
-
-
 }
