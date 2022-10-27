@@ -6,27 +6,41 @@
 
 - git clone
 
-```
+```shell
 git clone https://github.com/yeo-dam/yeowoon-app.git
 ```
 
 - package install
 
-```
-yarn install
+```shell
+yarn install && cd ios && pod install
 ```
 
 - ios run
 
-```
+```shell
 yarn ios
 ```
 
 - android run
 
-```
+```shell
 yarn android
 ```
+
+### 주요기능
+
+- 소셜 로그인 (구글)
+- 이미지 등록
+- 게시글 
+  - 작성 
+  - 즐겨찾기
+  - 좋아요
+  - 공유 
+  - 위치 등록 
+- 댓글 
+  - 좋아요 
+  - 대댓글 작성
 
 ### 소개
 
